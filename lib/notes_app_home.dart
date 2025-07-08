@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -8,9 +9,14 @@ import 'package:noted_d/create_notes.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
 import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/services%20/notes_local_service.dart';
+import 'package:noted_d/settings_page.dart';
 import 'package:noted_d/widgets/home_note_widget.dart';
 import 'package:noted_d/widgets/home_screen_searchbox.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart' as p;
+
+
 
 class NotesAppHome extends StatefulWidget {
   const NotesAppHome({super.key});
@@ -51,29 +57,39 @@ class _NotesAppHomeState extends State<NotesAppHome> {
       body: Column(
         children: [
           Gap(10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                onPressed: () async {
-                  await NotesLocalServiceInterfaceImpl().getAllNotes();
-                },
-                icon: Icon(HugeIcons.strokeRoundedFolder01),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(HugeIcons.strokeRoundedSettings03),
-              ),
-            ],
-          ),
           Padding(
-            padding: const EdgeInsets.only(left: 20, top: 30, right: 20),
-            child: Consumer<NavbarPro>(
-              builder: (context, value, child) {
-                return value.index == 0
-                    ? notesBody(screenWidth: screenWidth)
-                    : taskBody();
-              },
+            padding: const EdgeInsets.only(top: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () async {
+                    log('Tapped');
+                    await NotesLocalServiceInterfaceImpl().getAllNotes();
+                  },
+                  icon: Icon(HugeIcons.strokeRoundedFolder01),
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => SettingsPage()),
+                    );
+                  },
+                  icon: Icon(HugeIcons.strokeRoundedSettings03),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, top: 30, right: 20),
+              child: Consumer<NavbarPro>(
+                builder: (context, value, child) {
+                  return value.index == 0
+                      ? notesBody(screenWidth: screenWidth)
+                      : taskBody();
+                },
+              ),
             ),
           ),
         ],
@@ -128,8 +144,7 @@ class _NotesAppHomeState extends State<NotesAppHome> {
 
 Widget taskBody() => Column(children: [Text('Tasks')]);
 
-Widget notesBody({required double screenWidth}) => Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
+Widget notesBody({required double screenWidth}) => ListView(
   children: [
     Text(
       'Notes',
@@ -146,17 +161,19 @@ Widget notesBody({required double screenWidth}) => Column(
           return SizedBox.shrink();
         } else {
           return GridView.builder(
+            physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
             ),
             shrinkWrap: true,
             itemCount: value.notesList.length,
             itemBuilder: (context, index) {
-              return HomeNoteWidget(notesModel: value.notesList[index]);
+              return HomeNoteWidget(homeNotesModel: value.notesList[index]);
             },
           );
         }
       },
     ),
+    Gap(20),
   ],
 );

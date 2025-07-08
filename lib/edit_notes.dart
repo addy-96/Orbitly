@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -21,7 +20,7 @@ class _EditNotesState extends State<EditNotes> {
   late TextEditingController _titleController;
   late TextEditingController _contentController;
   final Map<int, String> months = {
-    0: 'January',
+    1: 'January',
     2: 'February',
     3: 'March',
     4: 'April',
@@ -53,12 +52,14 @@ class _EditNotesState extends State<EditNotes> {
       text: widget.notesModel.notesTitle,
     );
     _contentController = TextEditingController(
-      text: widget.notesModel.notesContent,
+      text: widget.notesModel.notesContentHighLight,
     );
   }
 
   void onBackAction(NotesPro notesProvider) async {
-    if (_titleController.text.trim() == widget.notesModel.notesTitle &&
+    
+
+    /* if (_titleController.text.trim() == widget.notesModel.notesTitle &&
         _contentController.text == widget.notesModel.notesContent) {
     } else if (_titleController.text.trim().isEmpty &&
         _contentController.text.trim().isEmpty) {
@@ -72,9 +73,9 @@ class _EditNotesState extends State<EditNotes> {
         notesContent: _contentController.text,
       );
       notesProvider.editNote(notesModel: newNotesModel);
-    }
+    }*/
     Navigator.of(context).pop();
-    return;
+    return; 
   }
 
   @override

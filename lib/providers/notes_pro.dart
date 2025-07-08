@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:noted_d/models/notes_model.dart';
 import 'package:noted_d/services%20/notes_local_service.dart';
@@ -6,9 +8,9 @@ class NotesPro with ChangeNotifier {
   final NotesLocalServiceInterface notesLocalServiceInterface;
   NotesPro({required this.notesLocalServiceInterface});
 
-  List<NotesModel> _notesList = [];
+  List<HomeNotesModel> _notesList = [];
 
-  List<NotesModel> get notesList => _notesList;
+  List<HomeNotesModel> get notesList => _notesList;
 
   Future loadAllNotes() async {
     _notesList = await notesLocalServiceInterface.getAllNotes();
@@ -16,23 +18,17 @@ class NotesPro with ChangeNotifier {
   }
 
   Future addNote({
-    required String notesTitle,
-    required String notesContent,
+required NotesModel notesModel,
   }) async {
-    await notesLocalServiceInterface.saveNewNote(
-      noteTitle: notesTitle,
-      noteContent: notesContent,
-    );
-    loadAllNotes();
+    notesLocalServiceInterface.saveNewNote(notesModel: notesModel);
+    notifyListeners();
   }
 
-  Future editNote({required NotesModel notesModel}) async {
-    await notesLocalServiceInterface.editNote(notesModel: notesModel);
-    loadAllNotes();
+Future<NotesModel> editNote({required HomeNotesModel homeNotesModel}) async {
+    return notesLocalServiceInterface.editNote(homeNotesModel: homeNotesModel);
   }
 
   Future deleteNote({required int notesId}) async {
-    await notesLocalServiceInterface.deleteNote(notesId: notesId);
-    loadAllNotes();
+   
   }
 }
