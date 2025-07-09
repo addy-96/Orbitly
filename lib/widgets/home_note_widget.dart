@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:noted_d/core/textstyle.dart';
-import 'package:noted_d/edit_notes.dart';
+import 'package:noted_d/pages/edit_notes_page.dart';
 import 'package:noted_d/models/notes_model.dart';
 import 'package:noted_d/providers/notes_pro.dart';
-import 'package:noted_d/services%20/notes_local_service.dart';
 import 'package:provider/provider.dart';
 
 class HomeNoteWidget extends StatelessWidget {
@@ -53,14 +52,17 @@ class HomeNoteWidget extends StatelessWidget {
                       )
                     : SizedBox.shrink(),
                 homeNotesModel.notesContentHighlight != null
-                    ? Text(
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
-                        'asdf',
-                        style: textStyleOS(
-                          fontSize: 15,
-                          fontColor: Colors.grey.shade500,
-                        ).copyWith(fontWeight: FontWeight.w400),
+                    ? Center(
+                        child: Text(
+                          maxLines: 4,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          homeNotesModel.notesContentHighlight,
+                          style: textStyleOS(
+                            fontSize: 15,
+                            fontColor: Colors.grey.shade500,
+                          ).copyWith(fontWeight: FontWeight.w400),
+                        ),
                       )
                     : SizedBox.shrink(),
               ],

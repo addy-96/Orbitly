@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:noted_d/models/notes_model.dart';
@@ -17,18 +16,28 @@ class NotesPro with ChangeNotifier {
     notifyListeners();
   }
 
-  Future addNote({
-required NotesModel notesModel,
-  }) async {
+  Future addNote({required NotesModel notesModel}) async {
     notesLocalServiceInterface.saveNewNote(notesModel: notesModel);
+    
+    loadAllNotes();
     notifyListeners();
   }
 
-Future<NotesModel> editNote({required HomeNotesModel homeNotesModel}) async {
-    return notesLocalServiceInterface.editNote(homeNotesModel: homeNotesModel);
+  Future<NotesModel> editNote({required HomeNotesModel homeNotesModel}) async {
+    return notesLocalServiceInterface.enterEditNote(
+      homeNotesModel: homeNotesModel,
+    );
   }
 
-  Future deleteNote({required int notesId}) async {
-   
+  Future deleteNote({required String notesId}) async {
+    await notesLocalServiceInterface.deleteNote(notesId: notesId);
+    loadAllNotes();
+    notifyListeners();
+  }
+
+  Future updateNote({required NotesModel notesModel}) async {
+    await notesLocalServiceInterface.updateNote(notesModel: notesModel);
+    loadAllNotes();
+    notifyListeners();
   }
 }

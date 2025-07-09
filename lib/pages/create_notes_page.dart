@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/models/notes_model.dart';
 import 'package:noted_d/providers/notes_pro.dart';
@@ -19,29 +20,9 @@ class CreateNotesPage extends StatefulWidget {
 class _CreateNotesPageState extends State<CreateNotesPage> {
   final _titleController = TextEditingController();
 
-  final Map<int, String> months = {
-    0: 'January',
-    2: 'February',
-    3: 'March',
-    4: 'April',
-    5: 'May',
-    6: 'June',
-    7: 'July',
-    8: 'August',
-    9: 'Septemeber',
-    10: 'October',
-    11: 'November',
-    12: 'December',
-  };
-
-  DateTime getDateTime() {
-    return DateTime.now();
-  }
-
   @override
   void dispose() {
     _titleController.dispose();
-
     for (final block in sectionList) {
       if (block is TextBlock) {
         block.textEditingController.dispose();
@@ -49,8 +30,6 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
     }
     super.dispose();
   }
-
-
 
   List<NoteBlocks> sectionList = [
     TextBlock(textEditingController: TextEditingController(), blokCount: 1),
@@ -70,12 +49,12 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
       int size = sectionList.length;
       setState(() {
         sectionList.add(
-          Imageblock(imagePath: selectImage.path, blokCount: size++),
+          Imageblock(imagePath: selectImage.path, blokCount: ++size),
         );
         sectionList.add(
           TextBlock(
             textEditingController: TextEditingController(),
-            blokCount: size++,
+            blokCount: ++size,
           ),
         );
       });
@@ -85,7 +64,121 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
   }
 
   void onBackAction(NotesPro notesProvider) async {
-    bool isContentThere = true;
+    log('section list lenght ${sectionList.length}');
+    for (var section in sectionList) {
+      if (section is TextBlock) {
+        log('text block count ${section.blokCount}');
+      }
+      if (section is Imageblock) {
+        log('image block count ${section.blokCount}');
+      }
+    }
+
+    bool contentPresent = false;
+
+    for (var section in sectionList) {
+      if (section is Imageblock) {
+        contentPresent = true;
+        break;
+      }
+      if (section is TextBlock) {
+        section.textEditingController.text.trim().isNotEmpty
+            ? contentPresent = true
+            : contentPresent = false;
+      }
+    }
+    if (_titleController.text.trim().isNotEmpty) {
+      contentPresent = true;
+    }
+
+    if (!contentPresent) {
+      Navigator.of(context).pop();
+      return;
+    } else {
+      final List<SectionModel> sectionModelList = [];
+
+      String notesContentHiglight = '';
+      bool gotTextHiglight = false;
+      for (var item in sectionList) {
+        SectionModel sectionModel;
+
+        if (item is Imageblock) {
+          notesContentHiglight = 'Image Note';
+          sectionModel = SectionModel(
+            sectionNo: item.blokCount,
+            sectionType: 'I',
+            sectionContnet: item.imagePath,
+          );
+
+          sectionModelList.add(sectionModel);
+        } else if (item is TextBlock) {
+          if (!gotTextHiglight) {
+            if (item.textEditingController.text.trim().isNotEmpty) {
+              if (item.textEditingController.text.length < 15) {
+                notesContentHiglight = item.textEditingController.text
+                    .substring(0, item.textEditingController.text.length - 1);
+              } else {
+                notesContentHiglight = item.textEditingController.text
+                    .trim()
+                    .substring(0, 15);
+                gotTextHiglight = true;
+              }
+            }
+          }
+          sectionModel = SectionModel(
+            sectionNo: item.blokCount,
+            sectionType: 'T',
+            sectionContnet: item.textEditingController.text,
+          );
+
+          sectionModelList.add(sectionModel);
+        }
+      }
+      if (_titleController.text.trim().isNotEmpty) {
+        notesContentHiglight = _titleController.text.trim().substring(0, 15);
+      }
+
+      final NotesModel notesModel = NotesModel(
+        createdAt: DateTime.now(),
+        modifiedAt: DateTime.now(),
+        notesTitle: _titleController.text,
+        notesContentHighLight: notesContentHiglight,
+        sectionList: sectionModelList,
+      );
+
+      await notesProvider.addNote(notesModel: notesModel);
+
+      Navigator.of(context).pop();
+      return;
+    }
+
+    /*
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    */
+    /*  bool isContentThere = true;
+
     for (var item in sectionList) {
       if (item is TextBlock) {
         item.textEditingController.text.trim().isEmpty
@@ -96,12 +189,14 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
         isContentThere = true;
       }
       if (_titleController.text.trim().isEmpty && !isContentThere) {
+        log('here 1!');
         Navigator.of(context).pop();
         return;
       }
     }
 
     final String noteHIghLIght = 'abc';
+
     List<SectionModel> sectionlist = [];
 
     for (var section in sectionList) {
@@ -132,7 +227,7 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
         sectionList: sectionlist,
       ),
     );
-    Navigator.of(context).pop();
+    Navigator.of(context).pop();*/
   }
 
   @override
@@ -210,29 +305,32 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
                       return TextField(
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
-                  minLines: null,
-                  style: textStyleOS(fontSize: 20, fontColor: Colors.black)
-                      .copyWith(
-                        wordSpacing: 5,
-                        fontWeight: FontWeight.w400,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
+                        minLines: null,
+                        style:
+                            textStyleOS(
+                              fontSize: 20,
+                              fontColor: Colors.black,
+                            ).copyWith(
+                              wordSpacing: 5,
+                              fontWeight: FontWeight.w400,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
                           hintText: sectionList.length == 1
                               ? 'Start Your note...'
                               : '',
-                    hintStyle: textStyleOS(
-                      fontSize: 20,
-                      fontColor: Colors.grey.shade400,
-                    ).copyWith(fontWeight: FontWeight.w300),
+                          hintStyle: textStyleOS(
+                            fontSize: 20,
+                            fontColor: Colors.grey.shade400,
+                          ).copyWith(fontWeight: FontWeight.w300),
 
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 0,
-                    ),
-                    isDense: false,
-                  ),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 0,
+                          ),
+                          isDense: false,
+                        ),
                         controller: section.textEditingController,
                       );
                     }
@@ -285,9 +383,6 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
     );
   }
 }
-
-
-
 
 abstract class NoteBlocks {}
 

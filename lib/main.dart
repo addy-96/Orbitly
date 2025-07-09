@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:noted_d/notes_app_home.dart';
+import 'package:noted_d/pages/notes_home_page.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
 import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/services%20/notes_local_service.dart';

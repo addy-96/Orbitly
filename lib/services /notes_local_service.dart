@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/models/notes_model.dart';
 import 'package:path/path.dart' as p;
-
 import 'package:sqflite/sqflite.dart';
 
 abstract interface class NotesLocalServiceInterface {
@@ -10,9 +9,11 @@ abstract interface class NotesLocalServiceInterface {
 
   Future<List<HomeNotesModel>> getAllNotes();
 
-  Future<NotesModel> editNote({required HomeNotesModel homeNotesModel});
+  Future<NotesModel> enterEditNote({required HomeNotesModel homeNotesModel});
 
-  Future deleteNote({required int notesId});
+  Future deleteNote({required String notesId});
+
+  Future updateNote({required NotesModel notesModel});
 }
 
 class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
@@ -28,25 +29,25 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
         path,
         version: 1,
         onCreate: (db, version) async {
-await db.execute('''
-  CREATE TABLE IF NOT EXISTS $notesTable (
-    $notesIdNTC TEXT PRIMARY KEY NOT NULL,
-    $notesTitleNTC TEXT,
-    $createdAtNTC TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    $modifiedAtNTC TEXT NOT NULL,
-    $notesContentHighLightNTC TEXT
-  );
-''');
+          await db.execute('''
+          CREATE TABLE IF NOT EXISTS $notesTable (
+          $notesIdNTC TEXT PRIMARY KEY NOT NULL,
+          $notesTitleNTC TEXT,
+          $createdAtNTC TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          $modifiedAtNTC TEXT NOT NULL,
+          $notesContentHighLightNTC TEXT
+          );
+      ''');
 
           await db.execute('''
-  CREATE TABLE IF NOT EXISTS $sectionTable (
-    $sectioonIdSTC TEXT PRIMARY KEY NOT NULL,
-    $notesIdSTC TEXT NOT NULL,
-    $sectionNoSTC INT NOT NULL,
-    $typeSTC TEXT NOT NULL,
-    $contentSTC TEXT NOT NULL
-  );
-''');
+          CREATE TABLE IF NOT EXISTS $sectionTable (
+          $sectioonIdSTC TEXT PRIMARY KEY NOT NULL,
+          $notesIdSTC TEXT NOT NULL,
+          $sectionNoSTC INT NOT NULL,
+          $typeSTC TEXT NOT NULL,
+          $contentSTC TEXT NOT NULL
+          );
+      ''');
         },
       );
       return database;
@@ -68,8 +69,6 @@ await db.execute('''
         notesContentHighLightNTC: notesModel.notesContentHighLight,
       });
 
-
-
       for (var sec in notesModel.sectionList) {
         await db.insert(sectionTable, {
           sectioonIdSTC: sec.sectionId,
@@ -79,6 +78,8 @@ await db.execute('''
           contentSTC: sec.sectionContnet,
         });
       }
+
+      log('save new note called');
     } catch (err) {
       log(err.toString());
       throw Exception(err);
@@ -104,6 +105,8 @@ await db.execute('''
 
         notesList.add(homeNotesModel);
     }
+
+      log('get all notes called');
     return notesList;
     } catch (err) {
       log(err.toString());
@@ -113,22 +116,17 @@ await db.execute('''
   }
 
   @override
-  Future<NotesModel> editNote({required HomeNotesModel homeNotesModel}) async {
+  Future<NotesModel> enterEditNote({
+    required HomeNotesModel homeNotesModel,
+  }) async {
     try {
       final db = await createDatabase();
-      
-
-final resilt1 = await db.query(sectionTable);
-
-      log(resilt1.toString());
 
       final getSectionResult = await db.query(
         sectionTable,
         where: '$notesIdSTC = ?',
         whereArgs: [homeNotesModel.notesId],
       );
-
-      log(getSectionResult.toString());
 
       List<SectionModel> sectionModelList = [];
 
@@ -138,11 +136,11 @@ final resilt1 = await db.query(sectionTable);
           sectionType: entry[typeSTC] as String,
           sectionContnet: entry[contentSTC] as String,
         );
-
         sectionModelList.add(sectionModel);
       }
 
       NotesModel notesModel = NotesModel(
+        notesId: homeNotesModel.notesId,
         createdAt: homeNotesModel.createdAt,
         modifiedAt: homeNotesModel.modifiedAt,
         notesTitle: homeNotesModel.notesTitle,
@@ -150,6 +148,7 @@ final resilt1 = await db.query(sectionTable);
         sectionList: sectionModelList,
       );
 
+      log('enter edit note called');
       return notesModel;
 
     } catch (err) {
@@ -159,12 +158,67 @@ final resilt1 = await db.query(sectionTable);
   }
 
   @override
-  Future deleteNote({required int notesId}) async {
+  Future deleteNote({required String notesId}) async {
     try {
       final db = await createDatabase();
-      await db.delete('notes', where: 'notesId = ?', whereArgs: [notesId]);
+      await db.delete(
+        notesTable,
+        where: '$notesIdNTC = ?',
+        whereArgs: [notesId],
+      );
+      await db.delete(
+        sectionTable,
+        where: '$notesIdSTC = ?',
+        whereArgs: [notesId],
+      );
+
+      log('delete note called');
     } catch (err) {
       log(err.toString());
+      throw Exception();
+    }
+  }
+
+  @override
+  Future updateNote({required NotesModel notesModel}) async {
+    try {
+
+      log('update for noteId ${notesModel.notesId} requested');
+
+      final db = await createDatabase();
+
+      final deleteAllSections = await db.delete(
+        sectionTable,
+        where: '$notesIdSTC = ?',
+        whereArgs: [notesModel.notesId],
+      );
+
+      final updateNotesTable = await db.update(
+        notesTable,
+        {
+          modifiedAtNTC: notesModel.modifiedAt.toIso8601String(),
+          notesTitleNTC: notesModel.notesTitle,
+          notesContentHighLightNTC: notesModel.notesContentHighLight,
+        },
+        where: '$notesIdNTC = ?',
+        whereArgs: [notesModel.notesId],
+      );
+
+      //inserting new sections
+      for (var sec in notesModel.sectionList) {
+        await db.insert(sectionTable, {
+          sectioonIdSTC: sec.sectionId,
+          notesIdSTC: notesModel.notesId,
+          sectionNoSTC: sec.sectionNo,
+          typeSTC: sec.sectionType,
+          contentSTC: sec.sectionContnet,
+        });
+      }
+
+      log('update note called');
+    } catch (err) {
+      log(err.toString());
+      throw Exception();
     }
   }
 }
