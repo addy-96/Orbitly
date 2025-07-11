@@ -14,6 +14,8 @@ abstract interface class NotesLocalServiceInterface {
   Future deleteNote({required String notesId});
 
   Future updateNote({required NotesModel notesModel});
+
+  Future<List<HomeNotesModel>> getSearchedNotes({required String searchQuery});
 }
 
 class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
@@ -219,6 +221,50 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
     } catch (err) {
       log(err.toString());
       throw Exception();
+    }
+  }
+  
+  @override
+  Future<List<HomeNotesModel>> getSearchedNotes({
+    required String searchQuery,
+  }) async {
+    try {
+      final List<HomeNotesModel> searchedNotes = [];
+      final db = await createDatabase();
+      final sections = await db.query(
+        sectionTable,
+        where: '$contentSTC LIKE ?',
+        whereArgs: ['%$searchQuery%'],
+      );
+
+      String lastAddedNoteid = '';
+      for (var section in sections) {
+        if (lastAddedNoteid == section[notesIdSTC]) {
+          continue;
+        }
+        final notes = await db.query(
+          notesTable,
+          where: '$notesIdNTC = ?',
+          whereArgs: [section[notesIdSTC]],
+        );
+
+        final HomeNotesModel homeNotesModel = HomeNotesModel(
+          notesId: section[notesIdSTC] as String,
+          createdAt: DateTime.parse(notes.first[createdAtNTC] as String),
+          modifiedAt: DateTime.parse(notes.first[modifiedAtNTC] as String),
+          notesContentHighlight:
+              notes.first[notesContentHighLightNTC] as String,
+          notesTitle: notes.first[notesContentHighLightNTC] as String,
+        );
+
+        searchedNotes.add(homeNotesModel);
+        lastAddedNoteid = section[notesIdSTC] as String;
+      }
+
+      return searchedNotes;
+    } catch (err) {
+      log(err.toString());
+      throw Exception(err);
     }
   }
 }

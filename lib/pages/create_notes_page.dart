@@ -135,7 +135,13 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
         }
       }
       if (_titleController.text.trim().isNotEmpty) {
-        notesContentHiglight = _titleController.text.trim().substring(0, 15);
+
+        notesContentHiglight = _titleController.text.trim().length < 15
+            ? _titleController.text.trim().substring(
+                0,
+                _titleController.text.trim().length - 1,
+              )
+            : _titleController.text.trim().substring(0, 15);
       }
 
       final NotesModel notesModel = NotesModel(

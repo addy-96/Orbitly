@@ -5,9 +5,12 @@ import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/pages/create_notes_page.dart';
+import 'package:noted_d/pages/folder_page.dart';
+import 'package:noted_d/pages/search_page.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
 import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/pages/settings_page.dart';
+import 'package:noted_d/providers/search_box_pro.dart';
 import 'package:noted_d/widgets/home_note_widget.dart';
 import 'package:noted_d/widgets/home_screen_searchbox.dart';
 import 'package:provider/provider.dart';
@@ -58,7 +61,11 @@ class _NotesAppHomeState extends State<NotesAppHome> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 IconButton(
-                  onPressed: () async {},
+                  onPressed: () async {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => FolderPage()),
+                    );
+                  },
                   icon: Icon(HugeIcons.strokeRoundedFolder01),
                 ),
                 IconButton(
@@ -78,7 +85,27 @@ class _NotesAppHomeState extends State<NotesAppHome> {
               child: Consumer<NavbarPro>(
                 builder: (context, value, child) {
                   return value.index == 0
-                      ? notesBody(screenWidth: screenWidth)
+                      ? Consumer<SearchBoxPro>(
+                          builder: (context, value, child) {
+                            if (value.isSearchBoxOpened) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => SearchPage(),
+                                  ),
+                                );
+                              });
+
+                              return const SizedBox.shrink(); // return something small temporarily
+                            } else {
+                              return notesBody(
+                                screenWidth: screenWidth,
+                                context: context,
+                              );
+                            }
+                          },
+                        )
+
                       : taskBody();
                 },
               ),
@@ -139,7 +166,11 @@ class _NotesAppHomeState extends State<NotesAppHome> {
 
 Widget taskBody() => Column(children: [Text('Tasks')]);
 
-Widget notesBody({required double screenWidth}) => ListView(
+Widget notesBody({required BuildContext context, required double screenWidth}) {
+  final searchBoxUiProvider = Provider.of<SearchBoxPro>(context);
+
+  return ListView(
+
   children: [
     Text(
       'Notes',
@@ -149,7 +180,12 @@ Widget notesBody({required double screenWidth}) => ListView(
       ).copyWith(fontWeight: FontWeight.w300),
     ),
     Gap(10),
-    HomeScreenSearchbox(),
+      InkWell(
+        onTap: () {
+          searchBoxUiProvider.toggelSearchBox();
+        },
+        child: HomeScreenSearchbox(isWithInputFIeld: false),
+      ),
     Consumer<NotesPro>(
       builder: (context, value, child) {
         if (value.notesList.isEmpty) {
@@ -173,3 +209,5 @@ Widget notesBody({required double screenWidth}) => ListView(
     Gap(20),
   ],
 );
+}
+
