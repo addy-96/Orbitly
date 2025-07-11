@@ -3,18 +3,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/pages/create_notes_page.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
 import 'package:noted_d/providers/notes_pro.dart';
-import 'package:noted_d/services%20/notes_local_service.dart';
 import 'package:noted_d/pages/settings_page.dart';
 import 'package:noted_d/widgets/home_note_widget.dart';
 import 'package:noted_d/widgets/home_screen_searchbox.dart';
 import 'package:provider/provider.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart' as p;
 
 class NotesAppHome extends StatefulWidget {
   const NotesAppHome({super.key});
@@ -48,6 +44,7 @@ class _NotesAppHomeState extends State<NotesAppHome> {
   @override
   Widget build(BuildContext context) {
     final navIndexPro = Provider.of<NavbarPro>(context);
+    
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -132,9 +129,9 @@ class _NotesAppHomeState extends State<NotesAppHome> {
                 )
               : log('tasks add');
         },
-        backgroundColor: Colors.black87,
+        backgroundColor: Colors.deepOrange,
         shape: CircleBorder(),
-        child: Icon(HugeIcons.strokeRoundedAdd02, color: Colors.deepOrange),
+        child: Icon(HugeIcons.strokeRoundedAdd02, color: Colors.white),
       ),
     );
   }
