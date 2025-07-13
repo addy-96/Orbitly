@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -23,9 +22,11 @@ class SearchPage extends StatelessWidget {
         }
       },
       child: Scaffold(
-        body: Consumer<SearchBoxPro>(
+        backgroundColor: Colors.grey.shade200,
+        body: Selector<SearchBoxPro, bool>(
+          selector: (p0, p1) => p1.isSearchBoxOpened,
           builder: (context, value, child) {
-            if (!value.isSearchBoxOpened) {
+            if (!value) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 Navigator.of(context).pop();
               });
@@ -43,7 +44,7 @@ class SearchPage extends StatelessWidget {
                       builder: (context, value, child) {
                         final listOfSearchedNotes = searchBoxPro.searchNotes;
                         if (searchBoxPro.searchController.text.trim().isEmpty) {
-                          return Center(child: Text('Search to find notes!'));
+                          return Center(child: Text('Search to find notes!n'));
                         }
                         if (searchBoxPro.searchController.text
                                 .trim()
@@ -60,6 +61,7 @@ class SearchPage extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return HomeNoteWidget(
                                 homeNotesModel: listOfSearchedNotes[index],
+                                isSearchedResult: true,
                               );
                             },
                           );

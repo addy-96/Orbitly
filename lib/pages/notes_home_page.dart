@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -8,11 +7,11 @@ import 'package:noted_d/pages/create_notes_page.dart';
 import 'package:noted_d/pages/folder_page.dart';
 import 'package:noted_d/pages/search_page.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
-import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/pages/settings_page.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
-import 'package:noted_d/widgets/home_note_widget.dart';
-import 'package:noted_d/widgets/home_screen_searchbox.dart';
+import 'package:noted_d/providers/task_pro.dart';
+import 'package:noted_d/widgets/home_notes_body_section.dart';
+import 'package:noted_d/widgets/home_notes_tasks_section.dart';
 import 'package:provider/provider.dart';
 
 class NotesAppHome extends StatefulWidget {
@@ -25,29 +24,10 @@ class NotesAppHome extends StatefulWidget {
 class _NotesAppHomeState extends State<NotesAppHome> {
   var scaffoldBackgroudCOlor = Colors.grey.shade200;
 
-  bool _isInitialized = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!_isInitialized) {
-      Provider.of<NotesPro>(context, listen: false).loadAllNotes();
-      _isInitialized = true;
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() {
-      Provider.of<NotesPro>(context, listen: false).loadAllNotes();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final navIndexPro = Provider.of<NavbarPro>(context);
-    
+    final taskPro = Provider.of<TaskPro>(context);
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -98,15 +78,12 @@ class _NotesAppHomeState extends State<NotesAppHome> {
 
                               return const SizedBox.shrink(); // return something small temporarily
                             } else {
-                              return notesBody(
-                                screenWidth: screenWidth,
-                                context: context,
-                              );
+                              return HomeNotesBodySection();
                             }
                           },
                         )
 
-                      : taskBody();
+                      : HomeNotesTasksSection();
                 },
               ),
             ),
@@ -116,8 +93,11 @@ class _NotesAppHomeState extends State<NotesAppHome> {
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: scaffoldBackgroudCOlor,
         currentIndex: navIndexPro.index,
-        onTap: (value) {
+        onTap: (value) async {
           navIndexPro.changeIndex(value);
+          if (navIndexPro.index == 1 && value == 0) {
+            await Provider.of<TaskPro>(context).saveCurrentTasks();
+          }
         },
         unselectedLabelStyle: textStyleOS(
           fontSize: 8,
@@ -149,12 +129,17 @@ class _NotesAppHomeState extends State<NotesAppHome> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          navIndexPro.index == 0
-              ? Navigator.of(context).push(
+        onPressed: () async {
+          if (navIndexPro.index == 0) {
+            Navigator.of(
+              context,
+            ).push(
                   MaterialPageRoute(builder: (context) => CreateNotesPage()),
-                )
-              : log('tasks add');
+                );
+          } else {
+            taskPro.onAddTask();
+          }
+              
         },
         backgroundColor: Colors.deepOrange,
         shape: CircleBorder(),
@@ -164,50 +149,7 @@ class _NotesAppHomeState extends State<NotesAppHome> {
   }
 }
 
-Widget taskBody() => Column(children: [Text('Tasks')]);
 
-Widget notesBody({required BuildContext context, required double screenWidth}) {
-  final searchBoxUiProvider = Provider.of<SearchBoxPro>(context);
 
-  return ListView(
 
-  children: [
-    Text(
-      'Notes',
-      style: textStyleOS(
-        fontSize: screenWidth / 12,
-        fontColor: Colors.black,
-      ).copyWith(fontWeight: FontWeight.w300),
-    ),
-    Gap(10),
-      InkWell(
-        onTap: () {
-          searchBoxUiProvider.toggelSearchBox();
-        },
-        child: HomeScreenSearchbox(isWithInputFIeld: false),
-      ),
-    Consumer<NotesPro>(
-      builder: (context, value, child) {
-        if (value.notesList.isEmpty) {
-          return SizedBox.shrink();
-        } else {
-          return GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-            ),
-            shrinkWrap: true,
-            itemCount: value.notesList.length,
-            itemBuilder: (context, index) {
-              log('noteId:  ${value.notesList[index].notesId}');
-              return HomeNoteWidget(homeNotesModel: value.notesList[index]);
-            },
-          );
-        }
-      },
-    ),
-    Gap(20),
-  ],
-);
-}
 

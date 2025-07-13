@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:noted_d/core/constant.dart';
+import 'package:noted_d/core/snackbr.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/pages/create_notes_page.dart';
 import 'package:noted_d/models/notes_model.dart';
@@ -395,7 +396,13 @@ class _EditNotesState extends State<EditNotes> {
                       icon: Icon(HugeIcons.strokeRoundedCheckmarkSquare01),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        cSnack(
+                          message: 'Feture comming soon!',
+                          backgroundColor: Colors.white,
+                          context: context,
+                        );
+                      },
                       icon: Icon(HugeIcons.strokeRoundedText),
                     ),
                   ],

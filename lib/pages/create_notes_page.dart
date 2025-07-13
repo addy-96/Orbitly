@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:noted_d/core/constant.dart';
+import 'package:noted_d/core/snackbr.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/models/notes_model.dart';
 import 'package:noted_d/providers/notes_pro.dart';
@@ -157,7 +158,7 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
       Navigator.of(context).pop();
       return;
     }
-
+ 
   
   }
 
@@ -301,7 +302,11 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
                   ),
                   IconButton(
                     onPressed: () {
-                      log(sectionList.length.toString());
+                      cSnack(
+                        message: 'Feature comming soon!',
+                        backgroundColor: Colors.white,
+                        context: context,
+                      );
                     },
                     icon: Icon(HugeIcons.strokeRoundedText),
                   ),
@@ -327,4 +332,10 @@ final class Imageblock extends NoteBlocks {
   final int blokCount;
   final String imagePath;
   Imageblock({required this.imagePath, required this.blokCount});
+}
+
+final class TaskBlock extends NoteBlocks {
+  final int blockcount;
+  final String taskName;
+  TaskBlock({required this.taskName, required this.blockcount});
 }

@@ -16,6 +16,8 @@ abstract interface class NotesLocalServiceInterface {
   Future updateNote({required NotesModel notesModel});
 
   Future<List<HomeNotesModel>> getSearchedNotes({required String searchQuery});
+
+
 }
 
 class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
@@ -26,11 +28,11 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
 
       final dbPath = await getDatabasesPath();
       final path = p.join(dbPath, 'notes.db');
-
       final database = await openDatabase(
         path,
         version: 1,
         onCreate: (db, version) async {
+          
           await db.execute('''
           CREATE TABLE IF NOT EXISTS $notesTable (
           $notesIdNTC TEXT PRIMARY KEY NOT NULL,
@@ -50,8 +52,19 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
           $contentSTC TEXT NOT NULL
           );
       ''');
+
+          await db.execute('''
+          CREATE TABLE IF NOT EXISTS $taskTable (
+          $taskIdTTC TEXT PRIMARY KEY NOT NULL,
+          $taskContentTTC TEXT NOT NULL,
+          $completeStatusTTC INT NOT NULL
+          );
+       ''');
+
+          log('notes database created!');
         },
       );
+
       return database;
     } catch (err) {
       log(err.toString());
@@ -267,6 +280,8 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
       throw Exception(err);
     }
   }
+  
+ 
 }
 
 

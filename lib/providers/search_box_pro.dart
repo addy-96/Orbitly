@@ -30,7 +30,7 @@ class SearchBoxPro with ChangeNotifier {
     _searchedNotes.clear();
   }
 
-  onSearch({required String searchedString}) async {
+  void onSearch({required String searchedString}) async {
     _searchedNotes = await notesLocalServiceInterface.getSearchedNotes(
       searchQuery: searchedString,
     );

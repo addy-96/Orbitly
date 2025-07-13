@@ -1,5 +1,7 @@
 const notesTable = 'notes';
 const sectionTable = 'sections';
+const taskTable = 'tasks';
+
 
 //notes table columns -ntc
 const notesIdNTC = 'notesId';
@@ -8,12 +10,17 @@ const createdAtNTC = 'createdAt';
 const modifiedAtNTC = 'modifiedAt';
 const notesContentHighLightNTC = 'notesContentHighLight';
 
-//seectiosn table columns -stc
+//sections table columns -stc
 const sectioonIdSTC = 'sectionId';
 const notesIdSTC = 'notesId';
 const sectionNoSTC = 'sectionNo';
 const typeSTC = 'type';
 const contentSTC = 'content';
+
+//tasks table coumn ttc
+const taskIdTTC = 'taskId';
+const taskContentTTC = 'taskContent';
+const completeStatusTTC = 'completeStatus';
 
 
 const Map<int, String> months = {

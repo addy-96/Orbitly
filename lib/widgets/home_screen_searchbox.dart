@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -21,9 +20,10 @@ class HomeScreenSearchbox extends StatelessWidget {
             child: Hero(
               tag: 'search-box',
               child: Material(
+                borderRadius: BorderRadius.circular(50),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade300.withOpacity(0.7),
+                    color: Colors.grey.shade300,
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: Padding(
@@ -32,6 +32,7 @@ class HomeScreenSearchbox extends StatelessWidget {
                       vertical: 0,
                     ),
                     child: TextField(
+                      style: textStyleOS(fontSize: 18, fontColor: Colors.black),
                       onChanged: (value) {
                         if (searchBoxUiPro.searchController.text
                             .trim()

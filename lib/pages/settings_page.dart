@@ -1,6 +1,5 @@
-
 import 'dart:developer';
-
+import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -8,6 +7,7 @@ import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/pages/notes_home_page.dart';
 import 'package:noted_d/providers/settings_pro.dart' hide ListView;
 import 'package:provider/provider.dart' as provider;
+import 'package:sqflite/sqflite.dart';
 
 
 class SettingsPage extends StatefulWidget {
@@ -45,7 +45,17 @@ final settingsProvider = provider.Provider.of<SettingsPro>(context);
           },
           icon: Icon(Icons.arrow_back),
         ),
-
+actions: [
+          IconButton(
+            onPressed: () async {
+              final dbPath = await getDatabasesPath();
+              final path = p.join(dbPath, 'notes.db');
+              await deleteDatabase(path);
+              log('deleted $path');
+            },
+            icon: Icon(Icons.delete),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
