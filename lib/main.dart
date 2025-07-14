@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:noted_d/pages/notes_home_page.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
 import 'package:noted_d/providers/notes_pro.dart';
+import 'package:noted_d/providers/notes_section_pro.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
 import 'package:noted_d/providers/settings_pro.dart';
 import 'package:noted_d/providers/task_pro.dart';
@@ -36,6 +37,9 @@ void main() {
           create: (context) => TaskPro(
             tasksLocalServiceInterface: TasksLocalServiceInterfaceImpl(),
           )
+        
+        ),
+        ChangeNotifierProvider(create: (context) => NotesSectionPro()
         
         ),
       ],

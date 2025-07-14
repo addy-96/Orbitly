@@ -1,4 +1,4 @@
-import 'dart:developer';
+/* import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -398,7 +398,7 @@ class _EditNotesState extends State<EditNotes> {
                     IconButton(
                       onPressed: () {
                         cSnack(
-                          message: 'Feture comming soon!',
+                          message: 'Feature comming soon!',
                           backgroundColor: Colors.white,
                           context: context,
                         );
@@ -415,3 +415,11 @@ class _EditNotesState extends State<EditNotes> {
     );
   }
 }
+
+
+
+
+
+
+
+*/

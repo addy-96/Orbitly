@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:noted_d/core/textstyle.dart';
 
@@ -18,7 +17,6 @@ cSnack({
       behavior: SnackBarBehavior.floating,
       duration: Duration(seconds: 2),
       elevation: 50,
-
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusGeometry.circular(14),
       ),

@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/snackbr.dart';
 import 'package:noted_d/core/textstyle.dart';
-import 'package:noted_d/models/notes_model.dart';
 import 'package:noted_d/providers/notes_pro.dart';
+import 'package:noted_d/providers/notes_section_pro.dart';
+import 'package:noted_d/widgets/task_inside_note.dart';
 import 'package:provider/provider.dart';
 
 class CreateNotesPage extends StatefulWidget {
@@ -21,73 +21,64 @@ class CreateNotesPage extends StatefulWidget {
 class _CreateNotesPageState extends State<CreateNotesPage> {
   final _titleController = TextEditingController();
 
+  
+
   @override
   void dispose() {
     _titleController.dispose();
-    for (final block in sectionList) {
+    final notesSectionProvider = Provider.of<NotesSectionPro>(context);
+    for (final block in notesSectionProvider.sectionList) {
       if (block is TextBlock) {
+        block.textEditingController.dispose();
+      }
+
+      if (block is TaskBlock) {
         block.textEditingController.dispose();
       }
     }
     super.dispose();
   }
 
-  List<NoteBlocks> sectionList = [
-    TextBlock(textEditingController: TextEditingController(), blokCount: 1),
-  ];
+ 
 
-  onSelectImage() async {
-    try {
-      final selectImage = await ImagePicker().pickImage(
-        source: ImageSource.gallery,
-      );
-      if (selectImage == null) {
-        return;
-      }
+  
 
-      log(selectImage.path);
-      log(sectionList.length.toString());
-      int size = sectionList.length;
-      setState(() {
-        sectionList.add(
-          Imageblock(imagePath: selectImage.path, blokCount: ++size),
-        );
-        sectionList.add(
-          TextBlock(
-            textEditingController: TextEditingController(),
-            blokCount: ++size,
-          ),
-        );
-      });
-    } catch (eerr) {
-      log(eerr.toString());
-    }
-  }
-
-  void onBackAction(NotesPro notesProvider) async {
-    log('section list lenght ${sectionList.length}');
-    for (var section in sectionList) {
+  /* void onBackAction(NotesPro notesProvider) async {
+    
+    /* for (var section in sectionList) {
       if (section is TextBlock) {
         log('text block count ${section.blokCount}');
       }
       if (section is Imageblock) {
         log('image block count ${section.blokCount}');
       }
-    }
+    } */
 
     bool contentPresent = false;
 
     for (var section in sectionList) {
+
       if (section is Imageblock) {
+
         contentPresent = true;
+
         break;
+
       }
       if (section is TextBlock) {
         section.textEditingController.text.trim().isNotEmpty
             ? contentPresent = true
             : contentPresent = false;
       }
+      /*  if (section is TaskBlock) {
+        section.textEditingController.text.trim().isNotEmpty
+            ? contentPresent = true
+            : contentPresent = false;
+      }*/
     }
+
+
+
     if (_titleController.text.trim().isNotEmpty) {
       contentPresent = true;
     }
@@ -112,7 +103,7 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
           );
 
           sectionModelList.add(sectionModel);
-        } else if (item is TextBlock) {
+        } /*else if (item is TextBlock) {
           if (!gotTextHiglight) {
             if (item.textEditingController.text.trim().isNotEmpty) {
               if (item.textEditingController.text.length < 15) {
@@ -133,7 +124,7 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
           );
 
           sectionModelList.add(sectionModel);
-        }
+        }*/ 
       }
       if (_titleController.text.trim().isNotEmpty) {
 
@@ -157,19 +148,20 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
 
       Navigator.of(context).pop();
       return;
-    }
+    } */
  
   
-  }
+  
 
   @override
   Widget build(BuildContext context) {
     final notesProvider = Provider.of<NotesPro>(context);
+    final notesSectionProvider = Provider.of<NotesSectionPro>(context);
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (!didPop) {
-          onBackAction(notesProvider);
+          //onBackAction(notesProvider);
         }
         return;
       },
@@ -179,13 +171,25 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
           forceMaterialTransparency: true,
           leading: IconButton(
             onPressed: () async {
-              onBackAction(notesProvider);
+              // onBackAction(notesProvider);
             },
             icon: Icon(HugeIcons.strokeRoundedArrowLeft02),
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                for (var section in notesSectionProvider.sectionList) {
+                  if (section is TextBlock) {
+                    log('text block count ${section.blokCount}');
+                  }
+                  if (section is Imageblock) {
+                    log('image block count ${section.blokCount}');
+                  }
+                  if (section is TaskBlock) {
+                    log('task block count ${section.blockcount}');
+                  }
+                }
+              },
               icon: Icon(HugeIcons.strokeRoundedShare01),
             ),
             IconButton(
@@ -228,67 +232,107 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
                 ).copyWith(fontWeight: FontWeight.w400),
               ),
               Gap(10),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: sectionList.length,
-                  itemBuilder: (context, index) {
-                    final section = sectionList[index];
-                    if (section is TextBlock) {
-                      return TextField(
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        minLines: null,
-                        style:
-                            textStyleOS(
-                              fontSize: 20,
-                              fontColor: Colors.black,
-                            ).copyWith(
-                              wordSpacing: 5,
-                              fontWeight: FontWeight.w400,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: sectionList.length == 1
-                              ? 'Start Your note...'
-                              : '',
-                          hintStyle: textStyleOS(
-                            fontSize: 20,
-                            fontColor: Colors.grey.shade400,
-                          ).copyWith(fontWeight: FontWeight.w300),
+              Consumer<NotesSectionPro>(
+                builder: (context, notesSectionProvider, child) {
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: notesSectionProvider.sectionList.length,
+                      itemBuilder: (context, index) {
+                        final section = notesSectionProvider.sectionList[index];
+                        if (section is TextBlock) {
+                          return TextField(
+                            autofocus: true,
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            minLines: null,
+                            style:
+                                textStyleOS(
+                                  fontSize: 18,
+                                  fontColor: Colors.black,
+                                ).copyWith(
+                                  wordSpacing: 5,
+                                  fontWeight: FontWeight.w400,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText:
+                                  notesSectionProvider.sectionList.length == 1
+                                  ? 'Start Your note...'
+                                  : '',
+                              hintStyle: textStyleOS(
+                                fontSize: 20,
+                                fontColor: Colors.grey.shade400,
+                              ).copyWith(fontWeight: FontWeight.w300),
 
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 0,
-                          ),
-                          isDense: false,
-                        ),
-                        controller: section.textEditingController,
-                      );
-                    }
-                    if (section is Imageblock) {
-                      return SizedBox(
-                        height: 170,
-                        width: double.infinity,
-                        child: ClipRRect(
-                          borderRadius: BorderRadiusGeometry.circular(18),
-                          child: Image.file(
-                            File(section.imagePath),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      );
-                    }
-                    return null;
-                  },
-                ),
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 0,
+                              ),
+                              isDense: false,
+                            ),
+                            controller: section.textEditingController,
+                          );
+                        }
+                       else if (section is Imageblock) {
+                          return Padding(
+                            padding: EdgeInsetsGeometry.symmetric(
+                              vertical: 10,
+                              horizontal: 0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Material(
+                                  color: Colors.transparent,
+                                  elevation: 10,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadiusGeometry.circular(
+                                      18,
+                                    ),
+                                    child: Image.file(
+                                      alignment: Alignment.center,
+                                      File(section.imagePath),
+                                      fit: BoxFit.contain,
+                                      height: 300,
+                                      scale: 0.2,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else if (section is TaskBlock) {
+                          return TaskInsideNote(
+                            textController: section.textEditingController,
+                          );
+                        } else if (section is GestureBlock) {
+                          return GestureDetector(
+                            onTap: () {
+                              notesSectionProvider.addTextsection();
+                            },
+                            child: Container(
+                              height: MediaQuery.of(context).size.height / 2,
+                              color: Colors.yellow,
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Text('-----End----'),
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  );
+                },
               ),
+             
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   IconButton(
-                    onPressed: () {
-                      onSelectImage();
+                    onPressed: () async {
+                      await notesSectionProvider.addImageSection();
                     },
                     icon: Icon(HugeIcons.strokeRoundedImageAdd01),
                   ),
@@ -297,7 +341,9 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
                     icon: Icon(HugeIcons.strokeRoundedCurvyUpDownDirection),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      notesSectionProvider.addTaskSection(context);
+                    },
                     icon: Icon(HugeIcons.strokeRoundedCheckmarkSquare01),
                   ),
                   IconButton(
@@ -318,24 +364,5 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
       ),
     );
   }
-}
 
-abstract class NoteBlocks {}
-
-final class TextBlock extends NoteBlocks {
-  final int blokCount;
-  final TextEditingController textEditingController;
-  TextBlock({required this.textEditingController, required this.blokCount});
-}
-
-final class Imageblock extends NoteBlocks {
-  final int blokCount;
-  final String imagePath;
-  Imageblock({required this.imagePath, required this.blokCount});
-}
-
-final class TaskBlock extends NoteBlocks {
-  final int blockcount;
-  final String taskName;
-  TaskBlock({required this.taskName, required this.blockcount});
 }

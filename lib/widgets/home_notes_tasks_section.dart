@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/models/task_model.dart';
 import 'package:noted_d/providers/task_pro.dart';

@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:noted_d/core/textstyle.dart';
-import 'package:noted_d/pages/edit_notes_page.dart';
 import 'package:noted_d/models/notes_model.dart';
 import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
@@ -52,11 +51,11 @@ class HomeNoteWidget extends StatelessWidget {
           final res = await notesProvider.editNote(
             homeNotesModel: homeNotesModel,
           );
-          Navigator.of(context).push(
+          /* Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => EditNotes(notesModel: res),
             ),
-          ); 
+          ); */
 
         },
         child: Hero(
