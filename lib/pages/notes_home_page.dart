@@ -1,4 +1,4 @@
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -8,6 +8,7 @@ import 'package:noted_d/pages/folder_page.dart';
 import 'package:noted_d/pages/search_page.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
 import 'package:noted_d/pages/settings_page.dart';
+import 'package:noted_d/providers/notes_section_pro.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
 import 'package:noted_d/providers/task_pro.dart';
 import 'package:noted_d/widgets/home_notes_body_section.dart';
@@ -23,6 +24,7 @@ class NotesAppHome extends StatefulWidget {
 
 class _NotesAppHomeState extends State<NotesAppHome> {
   var scaffoldBackgroudCOlor = Colors.grey.shade200;
+
 
   @override
   Widget build(BuildContext context) {

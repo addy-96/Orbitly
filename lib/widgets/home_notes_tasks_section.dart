@@ -139,7 +139,7 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
         taskId: task.taskId!,
         taskContent: text.trim(),
       );
-      log('${taskProvider.taskList[index].taskId} edited');
+  
     },
     controller: task.textEditingController,
     style: textStyleOS(

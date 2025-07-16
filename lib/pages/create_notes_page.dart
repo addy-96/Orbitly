@@ -19,149 +19,19 @@ class CreateNotesPage extends StatefulWidget {
 }
 
 class _CreateNotesPageState extends State<CreateNotesPage> {
-  final _titleController = TextEditingController();
-
-  
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    final notesSectionProvider = Provider.of<NotesSectionPro>(context);
-    for (final block in notesSectionProvider.sectionList) {
-      if (block is TextBlock) {
-        block.textEditingController.dispose();
-      }
-
-      if (block is TaskBlock) {
-        block.textEditingController.dispose();
-      }
-    }
-    super.dispose();
-  }
-
- 
-
-  
-
-  /* void onBackAction(NotesPro notesProvider) async {
-    
-    /* for (var section in sectionList) {
-      if (section is TextBlock) {
-        log('text block count ${section.blokCount}');
-      }
-      if (section is Imageblock) {
-        log('image block count ${section.blokCount}');
-      }
-    } */
-
-    bool contentPresent = false;
-
-    for (var section in sectionList) {
-
-      if (section is Imageblock) {
-
-        contentPresent = true;
-
-        break;
-
-      }
-      if (section is TextBlock) {
-        section.textEditingController.text.trim().isNotEmpty
-            ? contentPresent = true
-            : contentPresent = false;
-      }
-      /*  if (section is TaskBlock) {
-        section.textEditingController.text.trim().isNotEmpty
-            ? contentPresent = true
-            : contentPresent = false;
-      }*/
-    }
-
-
-
-    if (_titleController.text.trim().isNotEmpty) {
-      contentPresent = true;
-    }
-
-    if (!contentPresent) {
-      Navigator.of(context).pop();
-      return;
-    } else {
-      final List<SectionModel> sectionModelList = [];
-
-      String notesContentHiglight = '';
-      bool gotTextHiglight = false;
-      for (var item in sectionList) {
-        SectionModel sectionModel;
-
-        if (item is Imageblock) {
-          notesContentHiglight = 'Image Note';
-          sectionModel = SectionModel(
-            sectionNo: item.blokCount,
-            sectionType: 'I',
-            sectionContnet: item.imagePath,
-          );
-
-          sectionModelList.add(sectionModel);
-        } /*else if (item is TextBlock) {
-          if (!gotTextHiglight) {
-            if (item.textEditingController.text.trim().isNotEmpty) {
-              if (item.textEditingController.text.length < 15) {
-                notesContentHiglight = item.textEditingController.text
-                    .substring(0, item.textEditingController.text.length - 1);
-              } else {
-                notesContentHiglight = item.textEditingController.text
-                    .trim()
-                    .substring(0, 15);
-                gotTextHiglight = true;
-              }
-            }
-          }
-          sectionModel = SectionModel(
-            sectionNo: item.blokCount,
-            sectionType: 'T',
-            sectionContnet: item.textEditingController.text,
-          );
-
-          sectionModelList.add(sectionModel);
-        }*/ 
-      }
-      if (_titleController.text.trim().isNotEmpty) {
-
-        notesContentHiglight = _titleController.text.trim().length < 15
-            ? _titleController.text.trim().substring(
-                0,
-                _titleController.text.trim().length - 1,
-              )
-            : _titleController.text.trim().substring(0, 15);
-      }
-
-      final NotesModel notesModel = NotesModel(
-        createdAt: DateTime.now(),
-        modifiedAt: DateTime.now(),
-        notesTitle: _titleController.text,
-        notesContentHighLight: notesContentHiglight,
-        sectionList: sectionModelList,
-      );
-
-      await notesProvider.addNote(notesModel: notesModel);
-
-      Navigator.of(context).pop();
-      return;
-    } */
- 
-  
-  
 
   @override
   Widget build(BuildContext context) {
-    final notesProvider = Provider.of<NotesPro>(context);
-    final notesSectionProvider = Provider.of<NotesSectionPro>(context);
+    final notesProvider = Provider.of<NotesPro>(context, listen: false);
+    final notesSectionProvider = Provider.of<NotesSectionPro>(
+      context,
+      listen: false,
+    );
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
+      onPopInvokedWithResult: (didPop, result) async {
         if (!didPop) {
-          //onBackAction(notesProvider);
+          await notesSectionProvider.saveNote(context: context);
         }
         return;
       },
@@ -171,24 +41,16 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
           forceMaterialTransparency: true,
           leading: IconButton(
             onPressed: () async {
-              // onBackAction(notesProvider);
+              await notesSectionProvider.saveNote(context: context);
+
             },
             icon: Icon(HugeIcons.strokeRoundedArrowLeft02),
           ),
           actions: [
             IconButton(
               onPressed: () {
-                for (var section in notesSectionProvider.sectionList) {
-                  if (section is TextBlock) {
-                    log('text block count ${section.blokCount}');
-                  }
-                  if (section is Imageblock) {
-                    log('image block count ${section.blokCount}');
-                  }
-                  if (section is TaskBlock) {
-                    log('task block count ${section.blockcount}');
-                  }
-                }
+             
+                notesSectionProvider.saveNote(context: context);
               },
               icon: Icon(HugeIcons.strokeRoundedShare01),
             ),
@@ -209,7 +71,7 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
             children: [
               Gap(10),
               TextField(
-                controller: _titleController,
+                controller: notesSectionProvider.titleController,
                 style: textStyleOS(
                   fontSize: 25,
                   fontColor: Colors.grey.shade400,
@@ -290,12 +152,34 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
                                     borderRadius: BorderRadiusGeometry.circular(
                                       18,
                                     ),
-                                    child: Image.file(
-                                      alignment: Alignment.center,
-                                      File(section.imagePath),
-                                      fit: BoxFit.contain,
-                                      height: 300,
-                                      scale: 0.2,
+                                    child: Stack(
+                                      children: [
+                                        Image.file(
+                                          alignment: Alignment.center,
+                                          File(section.imagePath),
+                                          fit: BoxFit.contain,
+                                          height: 300,
+                                          scale: 0.2,
+                                        ),
+                                        Positioned(
+                                          right: 0,
+                                          top: 0,
+                                          child: IconButton(
+                                            onPressed: () {
+                                              log('tapped');
+                                              notesSectionProvider
+                                                  .removeImageOrTask(
+                                                    index: index,
+                                                  );
+                                            },
+                                            icon: Icon(
+                                              HugeIcons
+                                                  .strokeRoundedMultiplicationSignCircle,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -305,6 +189,7 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
                         } else if (section is TaskBlock) {
                           return TaskInsideNote(
                             textController: section.textEditingController,
+                            index: index,
                           );
                         } else if (section is GestureBlock) {
                           return GestureDetector(
@@ -321,6 +206,7 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
                             ),
                           );
                         }
+                        return null;
                       },
                     ),
                   );

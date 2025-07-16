@@ -54,23 +54,25 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
                 ),
               );
             } else {
-              return ListView(
-                children: [
-                  GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
+              return Expanded(
+                child: ListView(
+                  children: [
+                    GridView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      shrinkWrap: true,
+                      itemCount: value.notesList.length,
+                      itemBuilder: (context, index) {
+                        return HomeNoteWidget(
+                          homeNotesModel: value.notesList[index],
+                          isSearchedResult: false,
+                        );
+                      },
                     ),
-                    shrinkWrap: true,
-                    itemCount: value.notesList.length,
-                    itemBuilder: (context, index) {
-                      return HomeNoteWidget(
-                        homeNotesModel: value.notesList[index],
-                        isSearchedResult: false,
-                      );
-                    },
-                  ),
-                ],
+                  ],
+                ),
               );
             }
           },

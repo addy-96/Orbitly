@@ -42,7 +42,7 @@ final class TasksLocalServiceInterfaceImpl
       final db = await createDatabase();
 
       final getTasks = await db.query(taskTable);
-
+log(getTasks.toString());
       for (var task in getTasks) {
         final TaskModel taskModel = TaskModel(
           taskId: task[taskIdTTC] as String,
@@ -51,6 +51,7 @@ final class TasksLocalServiceInterfaceImpl
         );
         taskModelList.add(taskModel);
       }
+      log('inside task local service : ${taskModelList.length.toString()}');
       return taskModelList;
     } catch (err) {
       log(err.toString());

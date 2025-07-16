@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:noted_d/models/task_model.dart';
@@ -41,6 +43,7 @@ class TaskPro with ChangeNotifier {
   }
 
   void initializeTask() async {
+    log('initialize task called');
     final getalltasks = await tasksLocalServiceInterface.loadAllTasks();
     final List<DisplayTaskModel> storedTaskList = [];
     for (var item in getalltasks) {
@@ -52,6 +55,7 @@ class TaskPro with ChangeNotifier {
         ),
       );
       _tasksList = storedTaskList;
+      log(_tasksList.length.toString());
       notifyListeners();
     }
   }

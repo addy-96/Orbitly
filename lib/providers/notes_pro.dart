@@ -9,11 +9,7 @@ class NotesPro with ChangeNotifier {
 
   List<HomeNotesModel> _notesList = [];
 
-
-
   List<HomeNotesModel> get notesList => _notesList;
-
- 
 
   Future loadAllNotes() async {
     _notesList = await notesLocalServiceInterface.getAllNotes();
@@ -21,9 +17,10 @@ class NotesPro with ChangeNotifier {
   }
 
   Future addNote({required NotesModel notesModel}) async {
-    notesLocalServiceInterface.saveNewNote(notesModel: notesModel);
-    loadAllNotes();
-    notifyListeners();
+    await notesLocalServiceInterface.saveNewNote(notesModel: notesModel);
+
+    await loadAllNotes();
+
   }
 
   Future<NotesModel> editNote({required HomeNotesModel homeNotesModel}) async {

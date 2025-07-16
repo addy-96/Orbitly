@@ -30,17 +30,21 @@ void main() {
         ChangeNotifierProvider(
           create: (context) => SearchBoxPro(
             notesLocalServiceInterface: NotesLocalServiceInterfaceImpl(),
-          )
-        
+          ),
         ),
         ChangeNotifierProvider(
           create: (context) => TaskPro(
             tasksLocalServiceInterface: TasksLocalServiceInterfaceImpl(),
-          )
-        
+          ),
         ),
-        ChangeNotifierProvider(create: (context) => NotesSectionPro()
-        
+        ChangeNotifierProxyProvider<NotesPro, NotesSectionPro>(
+          create: (context) =>
+              NotesSectionPro(notesPro: context.read<NotesPro>()),
+          update: (context, notesPro, previous) {
+            previous ??= NotesSectionPro(notesPro: notesPro);
+            previous.notesPro = notesPro;
+            return previous;
+          },
         ),
       ],
       child: MyApp(),
@@ -67,7 +71,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     if (!_isInitialized) {
       settings = Provider.of<SettingsPro>(context, listen: false);
       settings!.initializeSettings();
