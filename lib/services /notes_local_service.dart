@@ -9,7 +9,7 @@ abstract interface class NotesLocalServiceInterface {
 
   Future<List<HomeNotesModel>> getAllNotes();
 
-  Future<NotesModel> enterEditNote({required HomeNotesModel homeNotesModel});
+  Future<NotesModel> enterEditNote({required String noteId});
 
   Future deleteNote({required String notesId});
 
@@ -25,7 +25,6 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
 
   Future<Database> createDatabase() async {
     try {
-
       final dbPath = await getDatabasesPath();
       final path = p.join(dbPath, 'notes.db');
       final database = await openDatabase(
@@ -121,7 +120,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
         notesList.add(homeNotesModel);
     }
 
-      log('get all notes called');
+      log('get all notes completed');
     return notesList;
     } catch (err) {
       log(err.toString());
@@ -132,7 +131,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
 
   @override
   Future<NotesModel> enterEditNote({
-    required HomeNotesModel homeNotesModel,
+    required String noteId,
   }) async {
     try {
       final db = await createDatabase();
@@ -140,7 +139,13 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
       final getSectionResult = await db.query(
         sectionTable,
         where: '$notesIdSTC = ?',
-        whereArgs: [homeNotesModel.notesId],
+        whereArgs: [noteId],
+      );
+
+      final getNotesDetail = await db.query(
+        notesTable,
+        where: '$notesIdNTC=?',
+        whereArgs: [noteId],
       );
 
       List<SectionModel> sectionModelList = [];
@@ -155,15 +160,18 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
       }
 
       NotesModel notesModel = NotesModel(
-        notesId: homeNotesModel.notesId,
-        createdAt: homeNotesModel.createdAt,
-        modifiedAt: homeNotesModel.modifiedAt,
-        notesTitle: homeNotesModel.notesTitle,
-        notesContentHighLight: homeNotesModel.notesContentHighlight,
+        notesId: noteId,
+        createdAt: DateTime.parse(getNotesDetail.first[createdAtNTC] as String),
+        modifiedAt: DateTime.parse(
+          getNotesDetail.first[modifiedAtNTC] as String,
+        ),
+        notesTitle: getNotesDetail.first[notesTitleNTC] as String,
+        notesContentHighLight:
+            getNotesDetail.first[notesContentHighLightNTC] as String,
         sectionList: sectionModelList,
       );
 
-      log('enter edit note called');
+      log('enter edit note completed');
       return notesModel;
 
     } catch (err) {
@@ -187,7 +195,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
         whereArgs: [notesId],
       );
 
-      log('delete note called');
+      log('delete note completed');
     } catch (err) {
       log(err.toString());
       throw Exception();
@@ -199,7 +207,10 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
     try {
 
       log('update for noteId ${notesModel.notesId} requested');
-
+      log(notesModel.sectionList.first.sectionContnet);
+      notesModel.notesContentHighLight != null
+          ? log(notesModel.notesContentHighLight!)
+          : log('highlight null');
       final db = await createDatabase();
 
       final deleteAllSections = await db.delete(
@@ -230,7 +241,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
         });
       }
 
-      log('update note called');
+      log('update note completed');
     } catch (err) {
       log(err.toString());
       throw Exception();

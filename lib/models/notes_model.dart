@@ -20,7 +20,6 @@ class NotesModel {
 
 class SectionModel {
   final String sectionId;
-
   final int sectionNo;
   final String sectionType;
   final String sectionContnet;

@@ -8,7 +8,6 @@ import 'package:noted_d/pages/folder_page.dart';
 import 'package:noted_d/pages/search_page.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
 import 'package:noted_d/pages/settings_page.dart';
-import 'package:noted_d/providers/notes_section_pro.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
 import 'package:noted_d/providers/task_pro.dart';
 import 'package:noted_d/widgets/home_notes_body_section.dart';

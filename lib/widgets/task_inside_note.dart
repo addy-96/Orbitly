@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/core/textstyle.dart';
-import 'package:noted_d/providers/notes_section_pro.dart';
+import 'package:noted_d/providers/notes_pro.dart';
 import 'package:provider/provider.dart';
 
 class TaskInsideNote extends StatefulWidget {
@@ -25,7 +25,6 @@ class _TaskInsideNoteState extends State<TaskInsideNote> {
   void initState() {
     super.initState();
     taskFocusNode = FocusNode();
-
     taskFocusNode.addListener(() {
       setState(() {}); // Rebuild on focus change
     });
@@ -35,7 +34,7 @@ class _TaskInsideNoteState extends State<TaskInsideNote> {
 
   @override
   Widget build(BuildContext context) {
-    final notesSectionProvider = Provider.of<NotesSectionPro>(context);
+    final notesSectionProvider = Provider.of<NotesPro>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       child: Row(
@@ -50,7 +49,6 @@ class _TaskInsideNoteState extends State<TaskInsideNote> {
           Expanded(
             child: TextField(
               focusNode: taskFocusNode,
-              autofocus: true,
               style: textStyleOS(fontSize: 15, fontColor: Colors.black),
               controller: widget.textController,
               decoration: InputDecoration(

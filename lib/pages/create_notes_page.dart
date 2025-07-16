@@ -6,8 +6,8 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/snackbr.dart';
 import 'package:noted_d/core/textstyle.dart';
+import 'package:noted_d/pages/drawing_page.dart';
 import 'package:noted_d/providers/notes_pro.dart';
-import 'package:noted_d/providers/notes_section_pro.dart';
 import 'package:noted_d/widgets/task_inside_note.dart';
 import 'package:provider/provider.dart';
 
@@ -20,10 +20,27 @@ class CreateNotesPage extends StatefulWidget {
 
 class _CreateNotesPageState extends State<CreateNotesPage> {
 
+late NotesPro notesPro;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isFirstTime) {
+      _isFirstTime = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notesPro = Provider.of<NotesPro>(context, listen: false);
+        notesPro.reset();
+      });
+    }
+  }
+
+  bool _isFirstTime = true;
+
+
+
   @override
   Widget build(BuildContext context) {
-    final notesProvider = Provider.of<NotesPro>(context, listen: false);
-    final notesSectionProvider = Provider.of<NotesSectionPro>(
+    final notesSectionProvider = Provider.of<NotesPro>(
       context,
       listen: false,
     );
@@ -31,7 +48,11 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
         if (!didPop) {
-          await notesSectionProvider.saveNote(context: context);
+          await notesSectionProvider.saveNote(
+            context: context,
+            isForEditPage: false,
+            noteId: null,
+          );
         }
         return;
       },
@@ -41,7 +62,11 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
           forceMaterialTransparency: true,
           leading: IconButton(
             onPressed: () async {
-              await notesSectionProvider.saveNote(context: context);
+              await notesSectionProvider.saveNote(
+                context: context,
+                isForEditPage: false,
+                noteId: null,
+              );
 
             },
             icon: Icon(HugeIcons.strokeRoundedArrowLeft02),
@@ -49,8 +74,7 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
           actions: [
             IconButton(
               onPressed: () {
-             
-                notesSectionProvider.saveNote(context: context);
+        
               },
               icon: Icon(HugeIcons.strokeRoundedShare01),
             ),
@@ -94,7 +118,7 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
                 ).copyWith(fontWeight: FontWeight.w400),
               ),
               Gap(10),
-              Consumer<NotesSectionPro>(
+              Consumer<NotesPro>(
                 builder: (context, notesSectionProvider, child) {
                   return Expanded(
                     child: ListView.builder(
@@ -223,7 +247,11 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
                     icon: Icon(HugeIcons.strokeRoundedImageAdd01),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => DrawingPage()),
+                      );
+                    },
                     icon: Icon(HugeIcons.strokeRoundedCurvyUpDownDirection),
                   ),
                   IconButton(
