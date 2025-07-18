@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -190,7 +189,7 @@ late NotesPro notesPro;
                                           top: 0,
                                           child: IconButton(
                                             onPressed: () {
-                                              log('tapped');
+                                
                                               notesSectionProvider
                                                   .removeImageOrTask(
                                                     index: index,
@@ -248,7 +247,7 @@ late NotesPro notesPro;
                   ),
                   IconButton(
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(
+                      Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => DrawingPage()),
                       );
                     },

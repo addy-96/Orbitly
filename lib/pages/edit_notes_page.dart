@@ -6,7 +6,6 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/snackbr.dart';
 import 'package:noted_d/core/textstyle.dart';
-import 'package:noted_d/core/util_functions.dart';
 import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/widgets/task_inside_note.dart';
 import 'package:provider/provider.dart';

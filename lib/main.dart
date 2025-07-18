@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:noted_d/pages/drawing_page.dart';
 import 'package:noted_d/pages/notes_home_page.dart';
 import 'package:noted_d/providers/drawing_pro.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
@@ -40,7 +39,7 @@ void main() {
             tasksLocalServiceInterface: TasksLocalServiceInterfaceImpl(),
           ),
         ),
-      ],
+      ],      
       child: MyApp(),
     ),
   );
@@ -77,7 +76,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Notes',
-      home: SafeArea(child: DrawingPage()),
+      home: SafeArea(child: NotesAppHome()),
     );
   }
 }
