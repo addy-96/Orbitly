@@ -221,7 +221,7 @@ late NotesPro notesPro;
                             },
                             child: Container(
                               height: MediaQuery.of(context).size.height / 2,
-                              color: Colors.yellow,
+                              color: Colors.white,
                               child: Align(
                                 alignment: Alignment.bottomCenter,
                                 child: Text('-----End----'),

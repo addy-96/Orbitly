@@ -1,11 +1,15 @@
 import 'dart:developer';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/models/notes_model.dart';
+import 'package:noted_d/models/sketch_model.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
 abstract interface class NotesLocalServiceInterface {
-  Future saveNewNote({required NotesModel notesModel});
+  Future saveNewNote({
+    required NotesModel notesModel,
+    required List<DrawingModel>? drawingList,
+  });
 
   Future<List<HomeNotesModel>> getAllNotes();
 
@@ -22,6 +26,8 @@ abstract interface class NotesLocalServiceInterface {
 
 class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
   NotesLocalServiceInterfaceImpl();
+
+
 
   Future<Database> createDatabase() async {
     try {
@@ -60,6 +66,17 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
           );
        ''');
 
+          await db.execute('''
+          CREATE TABLE IF NOT EXIST $drawingTable(
+          $drawingIdDTC TEXT PRIMARY KEY NOT NULL,
+          $notesIdDTC TEXT NOT NULL,
+          $sectionNoDTC INT NOT NULL,
+          $sketchColorDTC TEXT NOT NULL,
+          $sketchStrokeDTC TEXT NOT NULL, 
+          $sketchPointsDTC TEXT NOT NULL,
+         );
+       ''');
+
           log('notes database created!');
         },
       );
@@ -72,7 +89,10 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
   }
 
   @override
-  Future saveNewNote({required NotesModel notesModel}) async {
+  Future saveNewNote({
+    required NotesModel notesModel,
+    required List<DrawingModel>? drawingList,
+  }) async {
     try {
       final db = await createDatabase();
       final noteId = notesModel.notesId;
@@ -92,6 +112,26 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
           contentSTC: sec.sectionContnet,
         });
       }
+
+      // fetch section type  if section type is drawing store it in drawing table
+
+      var getDrawingId = await db.query(
+        sectionTable,
+        where: '$notesIdSTC = ?',
+        whereArgs: [noteId],
+      );
+
+      for (var i = 0; i < getDrawingId.length; i++) {
+        /*        if (getDrawingId[i][typeSTC] == 'drawing') {
+            await db.insert(drawingTable, {
+            drawingIdDTC : getDrawingId[i][typeSTC],
+            sectionNoDTC : getDrawingId[i][]
+          }); 
+        } */
+      }
+
+  
+
 
       log('save new note called');
     } catch (err) {

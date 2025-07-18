@@ -1,7 +1,7 @@
 const notesTable = 'notes';
 const sectionTable = 'sections';
 const taskTable = 'tasks';
-
+const drawingTable = 'drawings';
 
 //notes table columns -ntc
 const notesIdNTC = 'notesId';
@@ -22,6 +22,13 @@ const taskIdTTC = 'taskId';
 const taskContentTTC = 'taskContent';
 const completeStatusTTC = 'completeStatus';
 
+//drawing table column dtc
+const drawingIdDTC = 'drawingId';
+const notesIdDTC = 'noteId';
+const sectionNoDTC = 'sectionNo';
+const sketchColorDTC = 'sketchColor';
+const sketchStrokeDTC = 'sketchStroke';
+const sketchPointsDTC = 'sketchPoint';
 
 const Map<int, String> months = {
   0: 'January',

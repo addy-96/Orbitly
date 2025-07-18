@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:uuid/uuid.dart';
 
 class SketchModel {
   final List<Offset> points;
@@ -10,4 +11,23 @@ class SketchModel {
     required this.sketchColor,
     required this.strokeWidth,
   });
+}
+
+
+class DrawingModel {
+  final String drawingId;
+  final String? noteId;
+  final DateTime createdAt;
+  final DateTime modifiedAt;
+  final int sectionNumber;
+  final List<SketchModel> sketchList;
+
+  DrawingModel({
+    required this.createdAt,
+    required this.modifiedAt,
+    required this.sectionNumber,
+    required this.sketchList,
+    this.noteId,
+    String? drawingId,
+  }) : drawingId = drawingId ?? Uuid().v4();
 }

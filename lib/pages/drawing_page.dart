@@ -90,7 +90,9 @@ class _DrawingPageState extends State<DrawingPage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              log(drawingProvider.sketchList.first.points.toString());
+            },
             icon: Icon(HugeIcons.strokeRoundedTick02, size: 30),
           ),
         ],

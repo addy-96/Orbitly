@@ -370,7 +370,10 @@ class NotesPro with ChangeNotifier {
 
   //add note <---- called from save note inside
   Future addNote({required NotesModel notesModel}) async {
-    await notesLocalServiceInterface.saveNewNote(notesModel: notesModel);
+    await notesLocalServiceInterface.saveNewNote(
+      notesModel: notesModel,
+      drawingList: null,
+    );
     await loadAllNotes();
   }
 
