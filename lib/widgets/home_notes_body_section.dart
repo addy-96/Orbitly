@@ -24,7 +24,7 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final searchBoxUiProvider = Provider.of<SearchBoxPro>(context);
     return Column(
@@ -36,17 +36,17 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
             fontColor: Colors.black,
           ).copyWith(fontWeight: FontWeight.w300),
         ),
-        Gap(10),
+        const Gap(10),
         InkWell(
           onTap: () {
             searchBoxUiProvider.toggelSearchBox();
           },
-          child: HomeScreenSearchbox(isWithInputFIeld: false),
+          child: const HomeScreenSearchbox(isWithInputFIeld: false),
         ),
         Consumer<NotesPro>(
-          builder: (context, value, child) {
+          builder: (final context, final value, final child) {
             if (value.notesList.isEmpty) {
-              return Expanded(
+              return const Expanded(
                 child: Center(
                   child: Text(
                     'Click on add icon below to start creating notes!',
@@ -58,13 +58,13 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
                 child: ListView(
                   children: [
                     GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                       ),
                       shrinkWrap: true,
                       itemCount: value.notesList.length,
-                      itemBuilder: (context, index) {
+                      itemBuilder: (final context, final index) {
                         return HomeNoteWidget(
                           homeNotesModel: value.notesList[index],
                           isSearchedResult: false,
@@ -77,7 +77,7 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
             }
           },
         ),
-        Gap(20),
+        const Gap(20),
       ],
     );
   }

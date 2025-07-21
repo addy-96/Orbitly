@@ -5,10 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract interface class SettingsLocalService {
   Future initalizeSettings();
   Future changeSetting({
-    required String settingKey,
-    required String settingValue,
+    required final String settingKey,
+    required final String settingValue,
   });
-  Future<String> getSetting({required String settingKey});
+  Future<String> getSetting({required final String settingKey});
 
   Future resetSettings();
 }
@@ -47,8 +47,8 @@ final class SettingsLocalServiceImpl implements SettingsLocalService {
 
   @override
   Future changeSetting({
-    required String settingKey,
-    required String settingValue,
+    required final String settingKey,
+    required final String settingValue,
   }) async {
     try {
       final sharedPref = await SharedPreferences.getInstance();
@@ -60,7 +60,7 @@ final class SettingsLocalServiceImpl implements SettingsLocalService {
   }
 
   @override
-  Future<String> getSetting({required String settingKey}) async {
+  Future<String> getSetting({required final String settingKey}) async {
     try {
       final sharedPref = await SharedPreferences.getInstance();
 

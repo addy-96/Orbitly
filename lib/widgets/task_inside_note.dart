@@ -33,7 +33,7 @@ class _TaskInsideNoteState extends State<TaskInsideNote> {
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final notesSectionProvider = Provider.of<NotesPro>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -43,9 +43,9 @@ class _TaskInsideNoteState extends State<TaskInsideNote> {
           Gap(MediaQuery.of(context).size.width / 30),
           IconButton(
             onPressed: () {},
-            icon: Icon(HugeIcons.strokeRoundedSquare, size: 18),
+            icon: const Icon(HugeIcons.strokeRoundedSquare, size: 18),
           ),
-          Gap(10),
+          const Gap(10),
           Expanded(
             child: TextField(
               focusNode: taskFocusNode,
@@ -64,12 +64,12 @@ class _TaskInsideNoteState extends State<TaskInsideNote> {
                   onPressed: () {
                     notesSectionProvider.removeImageOrTask(index: widget.index);
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     HugeIcons.strokeRoundedMultiplicationSign,
                     size: 10,
                   ),
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
           Gap(MediaQuery.of(context).size.width / 30),
         ],
       ),

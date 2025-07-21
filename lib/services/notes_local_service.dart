@@ -1,25 +1,24 @@
 import 'dart:developer';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/models/notes_model.dart';
-import 'package:noted_d/models/sketch_model.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
 abstract interface class NotesLocalServiceInterface {
   Future saveNewNote({
-    required NotesModel notesModel,
-    required List<DrawingModel>? drawingList,
+    required final NotesModel notesModel,
+
   });
 
   Future<List<HomeNotesModel>> getAllNotes();
 
-  Future<NotesModel> enterEditNote({required String noteId});
+  Future<NotesModel> enterEditNote({required final String noteId});
 
-  Future deleteNote({required String notesId});
+  Future deleteNote({required final String notesId});
 
-  Future updateNote({required NotesModel notesModel});
+  Future updateNote({required final NotesModel notesModel});
 
-  Future<List<HomeNotesModel>> getSearchedNotes({required String searchQuery});
+  Future<List<HomeNotesModel>> getSearchedNotes({required final String searchQuery});
 
 
 }
@@ -36,7 +35,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
       final database = await openDatabase(
         path,
         version: 1,
-        onCreate: (db, version) async {
+        onCreate: (final db, final version) async {
           
           await db.execute('''
           CREATE TABLE IF NOT EXISTS $notesTable (
@@ -90,8 +89,8 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
 
   @override
   Future saveNewNote({
-    required NotesModel notesModel,
-    required List<DrawingModel>? drawingList,
+    required final NotesModel notesModel,
+    
   }) async {
     try {
       final db = await createDatabase();
@@ -115,7 +114,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
 
       // fetch section type  if section type is drawing store it in drawing table
 
-      var getDrawingId = await db.query(
+      final getDrawingId = await db.query(
         sectionTable,
         where: '$notesIdSTC = ?',
         whereArgs: [noteId],
@@ -146,7 +145,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
     final db = await createDatabase();
       final getNotesResult = await db.query(notesTable);
 
-      List<HomeNotesModel> notesList = [];
+      final List<HomeNotesModel> notesList = [];
 
       for (var item in getNotesResult) {
         final HomeNotesModel homeNotesModel = HomeNotesModel(
@@ -171,7 +170,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
 
   @override
   Future<NotesModel> enterEditNote({
-    required String noteId,
+    required final String noteId,
   }) async {
     try {
       final db = await createDatabase();
@@ -188,7 +187,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
         whereArgs: [noteId],
       );
 
-      List<SectionModel> sectionModelList = [];
+      final List<SectionModel> sectionModelList = [];
 
       for (var entry in getSectionResult) {
         final SectionModel sectionModel = SectionModel(
@@ -199,7 +198,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
         sectionModelList.add(sectionModel);
       }
 
-      NotesModel notesModel = NotesModel(
+      final NotesModel notesModel = NotesModel(
         notesId: noteId,
         createdAt: DateTime.parse(getNotesDetail.first[createdAtNTC] as String),
         modifiedAt: DateTime.parse(
@@ -221,7 +220,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
   }
 
   @override
-  Future deleteNote({required String notesId}) async {
+  Future deleteNote({required final String notesId}) async {
     try {
       final db = await createDatabase();
       await db.delete(
@@ -243,7 +242,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
   }
 
   @override
-  Future updateNote({required NotesModel notesModel}) async {
+  Future updateNote({required final NotesModel notesModel}) async {
     try {
 
       log('update for noteId ${notesModel.notesId} requested');
@@ -290,7 +289,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
   
   @override
   Future<List<HomeNotesModel>> getSearchedNotes({
-    required String searchQuery,
+    required final String searchQuery,
   }) async {
     try {
       final List<HomeNotesModel> searchedNotes = [];

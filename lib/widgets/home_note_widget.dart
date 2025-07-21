@@ -17,7 +17,7 @@ class HomeNoteWidget extends StatelessWidget {
   final HomeNotesModel homeNotesModel;
   final bool isSearchedResult;
 
-  List<TextSpan> highlightWords(SearchBoxPro searchProvider) {
+  List<TextSpan> highlightWords(final SearchBoxPro searchProvider) {
     final List<TextSpan> characters = [];
     for (var i = 0; i <= homeNotesModel.notesContentHighlight.length - 1; i++) {
       characters.add(
@@ -39,7 +39,7 @@ class HomeNoteWidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final notesProvider = Provider.of<NotesPro>(context);
     final seachProvider = Provider.of<SearchBoxPro>(context);
 
@@ -52,7 +52,7 @@ class HomeNoteWidget extends StatelessWidget {
        
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => EditNotes(noteId: homeNotesModel.notesId),
+              builder: (final context) => EditNotes(noteId: homeNotesModel.notesId),
             ),
           ); 
 
@@ -60,7 +60,7 @@ class HomeNoteWidget extends StatelessWidget {
         child: Hero(
           tag: homeNotesModel.notesId,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             height: double.minPositive,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -79,7 +79,7 @@ class HomeNoteWidget extends StatelessWidget {
                           fontColor: Colors.black,
                         ).copyWith(fontWeight: FontWeight.w600),
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
                 homeNotesModel.notesContentHighlight.isNotEmpty
                     ? Center(
                         child: !isSearchedResult
@@ -94,7 +94,7 @@ class HomeNoteWidget extends StatelessWidget {
                           ).copyWith(fontWeight: FontWeight.w400),
                               )
                             : Consumer(
-                                builder: (context, value, child) {
+                                builder: (final context, final value, final child) {
                                   return RichText(
                                     text: TextSpan(
                                       text: '',
@@ -105,7 +105,7 @@ class HomeNoteWidget extends StatelessWidget {
                      
                               ),
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
               ],
             ),
           ),

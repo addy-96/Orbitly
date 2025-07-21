@@ -5,7 +5,7 @@ class NavbarPro extends ChangeNotifier {
 
   int get index => _index;
 
-  void changeIndex(int index) {
+  void changeIndex(final int index) {
     _index = index;
     notifyListeners();
   }

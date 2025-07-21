@@ -5,7 +5,7 @@ class FolderPage extends StatelessWidget {
   const FolderPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -29,7 +29,7 @@ class FolderPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(width: 3, color: Colors.grey.shade300),
                 ),
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 child: Center(
                   child: Text(
                     'Make a folder',

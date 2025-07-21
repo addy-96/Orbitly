@@ -1,49 +1,54 @@
-
 import 'package:flutter/material.dart';
-import 'package:noted_d/pages/notes_home_page.dart';
 import 'package:noted_d/providers/drawing_pro.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
 import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
 import 'package:noted_d/providers/settings_pro.dart';
 import 'package:noted_d/providers/task_pro.dart';
-import 'package:noted_d/services%20/notes_local_service.dart';
-import 'package:noted_d/services%20/settings_local_service.dart';
-import 'package:noted_d/services%20/tasks_local_service.dart';
+import 'package:noted_d/services/notes_local_service.dart';
+import 'package:noted_d/services/settings_local_service.dart';
+import 'package:noted_d/services/tasks_local_service.dart';
 import 'package:provider/provider.dart';
+import 'package:noted_d/core/router.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => NavbarPro()),
+        ChangeNotifierProvider(create: (final context) => NavbarPro()),
         ChangeNotifierProvider(
-          create: (context) => NotesPro(
+          create: (final context) => NotesPro(
             notesLocalServiceInterface: NotesLocalServiceInterfaceImpl(),
           ),
         ),
         ChangeNotifierProvider(
-          create: (context) =>
+          create: (final context) =>
               SettingsPro(settingsLocalService: SettingsLocalServiceImpl()),
         ),
         ChangeNotifierProvider(
-          create: (context) => SearchBoxPro(
+          create: (final context) => SearchBoxPro(
             notesLocalServiceInterface: NotesLocalServiceInterfaceImpl(),
           ),
         ),
         ChangeNotifierProvider(
-          create: (context) => DrawingPro()),
+          create: (final context) => DrawingPro(
+            notesPro: NotesPro(
+              notesLocalServiceInterface: NotesLocalServiceInterfaceImpl(),
+            ),
+          ),
+        ),
         ChangeNotifierProvider(
-          create: (context) => TaskPro(
+          create: (final context) => TaskPro(
             tasksLocalServiceInterface: TasksLocalServiceInterfaceImpl(),
           ),
         ),
       ],      
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
+
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -53,11 +58,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   bool _isInitialized = false;
   SettingsPro? settings;
 
@@ -72,11 +72,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(final BuildContext context) {
+    return MaterialApp.router(
+      routerConfig: goRouterConfig,
       debugShowCheckedModeBanner: false,
-      title: 'Notes',
-      home: SafeArea(child: NotesAppHome()),
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:developer';
-
 import 'package:flutter/widgets.dart';
-import 'package:noted_d/services%20/settings_local_service.dart';
+import 'package:noted_d/services/settings_local_service.dart';
 
 class SettingsPro with ChangeNotifier {
   final SettingsLocalService settingsLocalService;
@@ -35,8 +34,8 @@ class SettingsPro with ChangeNotifier {
   }
 
   void changeSettings({
-    required String settingKey,
-    required String settingValue,
+    required final String settingKey,
+    required final String settingValue,
   }) {
     settingsLocalService.changeSetting(
       settingKey: settingKey,

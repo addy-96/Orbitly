@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:noted_d/models/task_model.dart';
-import 'package:noted_d/services%20/tasks_local_service.dart';
+import 'package:noted_d/services/tasks_local_service.dart';
 
 class TaskPro with ChangeNotifier {
   TaskPro({required this.tasksLocalServiceInterface});
@@ -29,8 +29,8 @@ class TaskPro with ChangeNotifier {
   }
 
   void onEditTaskField({
-    required String taskId,
-    required String taskContent,
+    required final String taskId,
+    required final String taskContent,
   }) async {
     if (taskContent.trim().isEmpty) {
       for (var i = 0; i < _tasksList.length; i++) {
@@ -74,8 +74,8 @@ class TaskPro with ChangeNotifier {
   }
 
   Future updateTaskStatus({
-    required String taskid,
-    required int iscomplete,
+    required final String taskid,
+    required final int iscomplete,
   }) async {
     await tasksLocalServiceInterface.updateTaskCheckBox(
       isComplete: iscomplete,

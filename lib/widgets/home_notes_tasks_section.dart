@@ -34,7 +34,7 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
   void getDivederIndent(final int length) {}
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -46,10 +46,10 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
             fontColor: Colors.black,
           ),
         ),
-        Gap(30),
+        const Gap(30),
         Expanded(
           child: Consumer<TaskPro>(
-            builder: (context, taskProvider, child) {
+            builder: (final context, final taskProvider, final child) {
               if (taskProvider.taskList.isEmpty) {
                 return Center(
                   child: Text(
@@ -63,7 +63,7 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
               } else {
                 return ListView.builder(
                   itemCount: taskProvider.taskList.length,
-                  itemBuilder: (context, index) {
+                  itemBuilder: (final context, final index) {
                     final task = taskProvider.taskList[index];
                     return Padding(
                       padding: const EdgeInsets.symmetric(
@@ -91,7 +91,7 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
                                         child: Container(
                                           height: 1,
                                           width: 100,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             color: Colors.transparent,
                                           ),
                                           child: Align(
@@ -129,11 +129,11 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
   }
 
   Widget taskTextArea({
-    required TaskPro taskProvider,
-    required DisplayTaskModel task,
-    required int index,
+    required final TaskPro taskProvider,
+    required final DisplayTaskModel task,
+    required final int index,
   }) => TextField(
-    onChanged: (text) {
+    onChanged: (final text) {
       taskProvider.onEditTaskField(
         taskId: task.taskId!,
         taskContent: text.trim(),

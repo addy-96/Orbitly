@@ -1,10 +1,13 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:noted_d/core/snackbr.dart';
 import 'package:noted_d/core/util_functions.dart';
 import 'package:noted_d/models/notes_model.dart';
-import 'package:noted_d/services%20/notes_local_service.dart';
+import 'package:noted_d/models/sketch_model.dart';
+import 'package:noted_d/services/notes_local_service.dart';
 
 
 abstract class NoteBlocks {}
@@ -26,6 +29,18 @@ final class Imageblock extends NoteBlocks {
   final String imagePath;
 
   Imageblock({required this.imagePath});
+}
+
+final class DrawingBlock extends NoteBlocks {
+  final String drawingImagePath;
+  final List<SketchModel> sketchList;
+  final String drawingId;
+
+  DrawingBlock({
+    required this.drawingImagePath,
+    required this.sketchList,
+    required this.drawingId,
+  });
 }
 
 final class GestureBlock extends NoteBlocks {}
@@ -67,6 +82,9 @@ class NotesPro with ChangeNotifier {
   }
 
   void reset() {
+
+
+    log('reset called');
     _titleController.clear();
     for (var item in _sectionList) {
       if (item is TextBlock) {
@@ -165,7 +183,7 @@ class NotesPro with ChangeNotifier {
   }
 
   //add task section to notes
-  void addTaskSection(BuildContext context) {
+  void addTaskSection(final BuildContext context) {
     if (_sectionList.length == 1) {
       _sectionList.insert(
         0,
@@ -208,10 +226,62 @@ class NotesPro with ChangeNotifier {
   }
 
   //add drawing section to notes
-  void addDrawingSection() {}
+  Future<void> addDrawingSection({
+    required final DrawingBlock drawingBlock,
+    required final BuildContext context,
+  }) async {
+    try {
+      log('add drawing section called..........');
+      if (_sectionList.length == 1) {
+        log('length==1..........');
+        log(drawingBlock.drawingImagePath);
+        _sectionList.insert(
+          0,
+          DrawingBlock(
+            drawingImagePath: drawingBlock.drawingImagePath,
+            sketchList: drawingBlock.sketchList,
+            drawingId: drawingBlock.drawingId,
+          ),
+        );
+        log('After insert: sectionList has ${_sectionList.length} items');
+        for (var block in _sectionList) {
+          log('Block type: ${block.runtimeType}');
+        }
+
+        Navigator.of(context).pop();
+        notifyListeners();
+        return;
+      }
+      final secondLastSection = sectionList[_sectionList.length - 2];
+
+      if (secondLastSection is TextBlock) {
+        if (secondLastSection.textEditingController.text.trim().isEmpty) {
+          sectionList[_sectionList.length - 2] = drawingBlock;
+          Navigator.of(context).pop();
+          notifyListeners();
+          return;
+        }
+      } else if (secondLastSection is TaskBlock) {
+        if (secondLastSection.textEditingController.text.trim().isEmpty) {
+          sectionList[_sectionList.length - 2] = drawingBlock;
+          Navigator.of(context).pop();
+          notifyListeners();
+          return;
+        }
+      }
+      _sectionList.insert(_sectionList.length - 1, drawingBlock);
+
+      log('drawing saved and added');
+      Navigator.of(context).pop();
+      notifyListeners();
+      return;
+    } catch (err) {
+      log('erroe ${err.toString()}');
+    }
+  }
 
   // remove image or task section from notes
-  void removeImageOrTask({required int index}) {
+  void removeImageOrTask({required final int index}) {
     if (_sectionList.length != 2) {
       final beforeSection = _sectionList[index - 1];
       final afterSection = _sectionList[index + 1];
@@ -232,19 +302,19 @@ class NotesPro with ChangeNotifier {
 
   //save note ----> called add note inside
   Future<void> saveNote({
-    required BuildContext context,
-    required bool isForEditPage,
-    required String? noteId,
+    required final BuildContext context,
+    required final bool isForEditPage,
+    required final String? noteId,
   }) async {
     try {
-      bool isContentPresent = validateContent();
+      final bool isContentPresent = validateContent();
 
       if (!isContentPresent) {
         if (isForEditPage && noteId != null) {
           await deleteNote(notesId: noteId);
         }
 
-        Navigator.of(context).pop();
+        context.pop();
         return;
       } else {
         final List<SectionModel> sectionModelList = [];
@@ -297,7 +367,7 @@ class NotesPro with ChangeNotifier {
             : await updateNote(notesModel: notesModel);
       }
 
-      Navigator.of(context).pop();
+      context.pop();
       return;
     } catch (err) {
       throw Exception(err);
@@ -309,7 +379,7 @@ class NotesPro with ChangeNotifier {
     if (_titleController.text.trim().isNotEmpty) {
       return true;
     }
-    final result = _sectionList.any((e) {
+    final result = _sectionList.any((final e) {
       if (e is Imageblock) {
         return true;
       }
@@ -369,15 +439,15 @@ class NotesPro with ChangeNotifier {
   }
 
   //add note <---- called from save note inside
-  Future addNote({required NotesModel notesModel}) async {
+  Future addNote({required final NotesModel notesModel}) async {
     await notesLocalServiceInterface.saveNewNote(
       notesModel: notesModel,
-      drawingList: null,
+   
     );
     await loadAllNotes();
   }
 
-  editNoteInitialization({required String noteId}) async {
+  Future<void> editNoteInitialization({required final String noteId}) async {
     final restorePreviusNote = await notesLocalServiceInterface.enterEditNote(
       noteId: noteId,
     );
@@ -419,13 +489,13 @@ class NotesPro with ChangeNotifier {
      
   }
 
-  Future deleteNote({required String notesId}) async {
+  Future deleteNote({required final String notesId}) async {
     await notesLocalServiceInterface.deleteNote(notesId: notesId);
     loadAllNotes();
     notifyListeners();
   }
 
-  Future updateNote({required NotesModel notesModel}) async {
+  Future updateNote({required final NotesModel notesModel}) async {
     await notesLocalServiceInterface.updateNote(notesModel: notesModel);
     loadAllNotes();
     notifyListeners();

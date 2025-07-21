@@ -1,11 +1,14 @@
 import 'dart:developer';
+import 'dart:io';
+import 'package:go_router/go_router.dart';
+import 'package:noted_d/widgets/settings_options.dart';
 import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/core/textstyle.dart';
-import 'package:noted_d/pages/notes_home_page.dart';
 import 'package:noted_d/providers/settings_pro.dart' hide ListView;
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:sqflite/sqflite.dart';
 
@@ -28,24 +31,34 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
 final settingsProvider = provider.Provider.of<SettingsPro>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => NotesAppHome()),
-            );
+            context.pop();
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
-actions: [
+        actions: [
+          IconButton(
+            onPressed: () async {
+              final docsDirectory = await getApplicationDocumentsDirectory();
+              if (docsDirectory.existsSync()) {
+                for (var item in docsDirectory.listSync()) {
+                  if (item.path ==
+                      '/data/user/0/com.example.noted_d/app_flutter/flutter_assets') {
+                    continue;
+                  }
+                  final file = File(item.path);
+                  await file.delete();
+                }
+                log('appicaltion directory cleared');
+              }
+            },
+            icon: const Icon(Icons.delete_outline),
+          ),
           IconButton(
             onPressed: () async {
               final dbPath = await getDatabasesPath();
@@ -53,8 +66,9 @@ actions: [
               await deleteDatabase(path);
               log('deleted $path');
             },
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
           ),
+         
         ],
       ),
       body: Padding(
@@ -63,11 +77,11 @@ actions: [
           children: [
             Expanded(
               child: ListView(
-                physics: ScrollPhysics(parent: BouncingScrollPhysics()),
+                physics: const ScrollPhysics(parent: BouncingScrollPhysics()),
                 controller: scrollController,
                 children: [
                   ListTile(
-                    contentPadding: EdgeInsets.all(0),
+                    contentPadding: const EdgeInsets.all(0),
                     title: Text(
                       'Notes',
                       style: textStyleOS(
@@ -76,7 +90,7 @@ actions: [
                       ).copyWith(fontWeight: FontWeight.w500),
                     ),
                   ),
-                  Gap(30),
+                  const Gap(30),
                   Text(
                     'Cloud Services',
                     style: textStyleOS(
@@ -102,7 +116,7 @@ actions: [
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         provider.Consumer<SettingsPro>(
-                          builder: (context, value, child) {
+                          builder: (final context, final value, final child) {
                             final settingValue =
                                 value.settings['cloud-set'] ?? '';
                             return Text(
@@ -114,8 +128,11 @@ actions: [
                             );
                           },
                         ),
-                        Gap(4),
-                        Icon(HugeIcons.strokeRoundedArrowRight01, size: 15),
+                        const Gap(4),
+                        const Icon(
+                          HugeIcons.strokeRoundedArrowRight01,
+                          size: 15,
+                        ),
                       ],
                     ),
                   ),
@@ -145,7 +162,7 @@ actions: [
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         provider.Consumer<SettingsPro>(
-                          builder: (context, value, child) {
+                          builder: (final context, final value, final child) {
                             final settingValue =
                                 value.settings['font-size-set'] ?? '';
                             return Text(
@@ -157,8 +174,11 @@ actions: [
                             );
                           },
                         ),
-                        Gap(4),
-                        Icon(HugeIcons.strokeRoundedArrowRight01, size: 15),
+                        const Gap(4),
+                        const Icon(
+                          HugeIcons.strokeRoundedArrowRight01,
+                          size: 15,
+                        ),
                       ],
                     ),
                   ),
@@ -180,7 +200,7 @@ actions: [
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         provider.Consumer<SettingsPro>(
-                          builder: (context, value, child) {
+                          builder: (final context, final value, final child) {
                             final settingValue =
                                 value.settings['layout-set'] ?? '';
                             return Text(
@@ -192,8 +212,11 @@ actions: [
                             );
                           },
                         ),
-                        Gap(4),
-                        Icon(HugeIcons.strokeRoundedArrowRight01, size: 15),
+                        const Gap(4),
+                        const Icon(
+                          HugeIcons.strokeRoundedArrowRight01,
+                          size: 15,
+                        ),
                       ],
                     ),
                   ),
@@ -215,7 +238,7 @@ actions: [
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         provider.Consumer<SettingsPro>(
-                          builder: (context, value, child) {
+                          builder: (final context, final value, final child) {
                             var settingValue = value.settings['sort-set'] ?? '';
                             settingValue = settingValue == 'BMD'
                                 ? 'By modification date'
@@ -229,12 +252,15 @@ actions: [
                             );
                           },
                         ),
-                        Gap(4),
-                        Icon(HugeIcons.strokeRoundedArrowRight01, size: 15),
+                        const Gap(4),
+                        const Icon(
+                          HugeIcons.strokeRoundedArrowRight01,
+                          size: 15,
+                        ),
                       ],
                     ),
                   ),
-                  Gap(10),
+                  const Gap(10),
                 
                 ],
               ),
@@ -268,7 +294,7 @@ actions: [
                       ),
                     ),
                   ),
-                  Gap(20),
+                  const Gap(20),
                   InkWell(
                     borderRadius: BorderRadius.circular(18),
                     splashColor: Colors.deepOrange.withOpacity(0.1),
@@ -291,7 +317,7 @@ actions: [
                       ),
                     ),
                   ),
-                  Gap(30),
+                  const Gap(30),
                 ],
               ),
             ),
@@ -302,7 +328,10 @@ actions: [
   }
 
 
-showOptionSheet({required List<String> options, required String topic}) {
+void showOptionSheet({
+    required final List<String> options,
+    required final String topic,
+  }) {
     String selectedOptionValue = '';
     final settingsProvider = provider.Provider.of<SettingsPro>(
       context,
@@ -330,9 +359,9 @@ showOptionSheet({required List<String> options, required String topic}) {
       elevation: 50,
       backgroundColor: Colors.white,
       context: context,
-      builder: (context) {
+      builder: (final context) {
         return Container(
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(width: 5, color: Colors.grey.shade200),
@@ -343,7 +372,7 @@ showOptionSheet({required List<String> options, required String topic}) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Text(
                     topic,
                     style: textStyleOS(
@@ -355,7 +384,7 @@ showOptionSheet({required List<String> options, required String topic}) {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    icon: Icon(HugeIcons.strokeRoundedMultiplicationSign),
+                    icon: const Icon(HugeIcons.strokeRoundedMultiplicationSign),
                   ),
                 ],
               ),
@@ -372,80 +401,3 @@ showOptionSheet({required List<String> options, required String topic}) {
   }
 }
 
-class SettingsOptions extends StatefulWidget {
-  SettingsOptions({
-    super.key,
-    required this.settingOptions,
-    required this.selectedOption,
-    required this.settingkey,
-  });
-  final List<String> settingOptions;
-  String selectedOption;
-  final String settingkey;
-
-  @override
-  State<SettingsOptions> createState() => _SettingsOptionsState();
-}
-
-class _SettingsOptionsState extends State<SettingsOptions> {
-  @override
-  Widget build(BuildContext context) {
-    final settingsProvider = provider.Provider.of<SettingsPro>(context);
-    return Column(
-      children: [
-        for (var item in widget.settingOptions)
-          ListTile(
-            onTap: () {
-              if (item == widget.selectedOption) {
-                log('is from before');
-              } else {
-                if (widget.settingkey == 'cloud-set' ||
-                    widget.settingkey == 'font-size-set') {
-                  settingsProvider.changeSettings(
-                    settingKey: widget.settingkey,
-                    settingValue: item,
-                  );
-                } else if (widget.settingkey == 'layout-set') {
-                  if (item == 'Grid view') {
-                    settingsProvider.changeSettings(
-                      settingKey: widget.settingkey,
-                      settingValue: 'Grid',
-                    );
-                  } else {
-                    settingsProvider.changeSettings(
-                      settingKey: widget.settingkey,
-                      settingValue: 'List',
-                    );
-                  }
-                } else if (widget.settingkey == 'sort-set') {
-                  if (item == 'By modification date') {
-                    settingsProvider.changeSettings(
-                      settingKey: widget.settingkey,
-                      settingValue: 'BMD',
-                    );
-                  } else {
-                    settingsProvider.changeSettings(
-                      settingKey: widget.settingkey,
-                      settingValue: 'OF',
-                    );
-                  }
-                }
-                setState(() {
-                  widget.selectedOption = item;
-                });
-              }
-            },
-            title: Text(
-              item,
-              style: textStyleOS(
-                fontSize: 15,
-                fontColor: item == widget.selectedOption
-                    ? Colors.deepOrange
-                    : Colors.black,
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-}

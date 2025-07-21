@@ -28,6 +28,6 @@ class DrawingModel {
     required this.sectionNumber,
     required this.sketchList,
     this.noteId,
-    String? drawingId,
-  }) : drawingId = drawingId ?? Uuid().v4();
+    final String? drawingId,
+  }) : drawingId = drawingId ?? const Uuid().v4();
 }

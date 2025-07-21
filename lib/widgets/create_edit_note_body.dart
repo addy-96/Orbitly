@@ -1,0 +1,146 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:noted_d/core/textstyle.dart';
+import 'package:noted_d/providers/notes_pro.dart';
+import 'package:noted_d/widgets/task_inside_note.dart';
+import 'package:provider/provider.dart';
+
+class CreateEditNoteBody extends StatelessWidget {
+  const CreateEditNoteBody({super.key});
+
+  @override
+  Widget build(final BuildContext context) {
+    return Consumer<NotesPro>(
+      builder: (final context, final notesSectionProvider, final child) {
+        return Expanded(
+          child: ListView.builder(
+            itemCount: notesSectionProvider.sectionList.length,
+            itemBuilder: (final context, final index) {
+              final section = notesSectionProvider.sectionList[index];
+              if (section is TextBlock) {
+                return TextField(
+                  autofocus: true,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  minLines: null,
+                  style: textStyleOS(fontSize: 18, fontColor: Colors.black)
+                      .copyWith(
+                        wordSpacing: 5,
+                        fontWeight: FontWeight.w400,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: notesSectionProvider.sectionList.length == 1
+                        ? 'Start Your note...'
+                        : '',
+                    hintStyle: textStyleOS(
+                      fontSize: 20,
+                      fontColor: Colors.grey.shade400,
+                    ).copyWith(fontWeight: FontWeight.w300),
+
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 0,
+                    ),
+                    isDense: false,
+                  ),
+                  controller: section.textEditingController,
+                );
+              } else if (section is Imageblock) {
+                return Padding(
+                  padding: const EdgeInsetsGeometry.symmetric(
+                    vertical: 10,
+                    horizontal: 0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Material(
+                        color: Colors.transparent,
+                        elevation: 10,
+                        child: ClipRRect(
+                          borderRadius: BorderRadiusGeometry.circular(18),
+                          child: Stack(
+                            children: [
+                              Image.file(
+                                alignment: Alignment.center,
+                                File(section.imagePath),
+                                fit: BoxFit.contain,
+                                height: 300,
+                                scale: 0.2,
+                              ),
+                              Positioned(
+                                right: 0,
+                                top: 0,
+                                child: IconButton(
+                                  onPressed: () {
+                                    notesSectionProvider.removeImageOrTask(
+                                      index: index,
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    HugeIcons
+                                        .strokeRoundedMultiplicationSignCircle,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              } else if (section is TaskBlock) {
+                return TaskInsideNote(
+                  textController: section.textEditingController,
+                  index: index,
+                );
+              } else if (section is DrawingBlock) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Material(
+                      color: Colors.transparent,
+                      elevation: 10,
+                      child: ClipRRect(
+                        borderRadius: BorderRadiusGeometry.circular(18),
+                        child: Image.file(
+                          alignment: Alignment.center,
+                          File(section.drawingImagePath),
+                          fit: BoxFit.contain,
+                          height: 300,
+
+                          scale: 0.2,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              } else if (section is GestureBlock) {
+                return GestureDetector(
+                  onTap: () {
+                    notesSectionProvider.addTextsection();
+                  },
+                  child: Container(
+                    height: MediaQuery.of(context).size.height / 2,
+                    color: Colors.white,
+                    child: const Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Text('-----End----'),
+                    ),
+                  ),
+                );
+              }
+              return null;
+            },
+          ),
+        );
+      },
+    );
+  }
+}

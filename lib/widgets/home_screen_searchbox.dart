@@ -11,7 +11,7 @@ class HomeScreenSearchbox extends StatelessWidget {
   final bool isWithInputFIeld;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final searchBoxUiPro = Provider.of<SearchBoxPro>(context);
     if (isWithInputFIeld) {
       return Row(
@@ -33,7 +33,7 @@ class HomeScreenSearchbox extends StatelessWidget {
                     ),
                     child: TextField(
                       style: textStyleOS(fontSize: 18, fontColor: Colors.black),
-                      onChanged: (value) {
+                      onChanged: (final value) {
                         if (searchBoxUiPro.searchController.text
                             .trim()
                             .isEmpty) {
@@ -100,7 +100,7 @@ class HomeScreenSearchbox extends StatelessWidget {
                     size: MediaQuery.of(context).size.width / 25,
                     color: Colors.grey.shade400,
                   ),
-                  Gap(10),
+                  const Gap(10),
                   Text(
                     'Search notes',
                     style: textStyleOS(

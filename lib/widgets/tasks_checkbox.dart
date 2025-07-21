@@ -14,7 +14,7 @@ class TasksCheckbox extends StatefulWidget {
 
 class _TasksCheckboxState extends State<TasksCheckbox> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final taskProvider = Provider.of<TaskPro>(context);
     return IconButton(
       onPressed: () async {
@@ -26,10 +26,10 @@ class _TasksCheckboxState extends State<TasksCheckbox> {
         );
       },
       icon: Consumer<TaskPro>(
-        builder: (context, value, child) {
+        builder: (final context, final value, final child) {
           return value.taskList[widget.index].isComplete == 0
-              ? Icon(HugeIcons.strokeRoundedSquare)
-              : Icon(
+              ? const Icon(HugeIcons.strokeRoundedSquare)
+              : const Icon(
                   HugeIcons.strokeRoundedCheckmarkSquare02,
                   color: Colors.deepOrange,
                 );

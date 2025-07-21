@@ -4,7 +4,7 @@ import 'package:noted_d/core/constant.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 
-int? getTaskCompleteStatus({required String task}) {
+int? getTaskCompleteStatus({required final String task}) {
   if (task.length < 3) {
     return null;
   }
@@ -47,6 +47,6 @@ void displayTasktable() async {
   }
 }
 
-debugprint() => print(
+void debugprint() => print(
   '\n(----------------------------------debugPrint---------------------------------)\n',
 );

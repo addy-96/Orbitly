@@ -9,13 +9,13 @@ class NotesModel {
   List<SectionModel> sectionList;
 
   NotesModel({
-    String? notesId,
+    final String? notesId,
     required this.createdAt,
     required this.modifiedAt,
     required this.notesTitle,
     required this.notesContentHighLight,
     required this.sectionList,
-  }) : notesId = notesId ?? Uuid().v4();
+  }) : notesId = notesId ?? const Uuid().v4();
 }
 
 
@@ -45,11 +45,11 @@ class SectionModel {
   
 
   SectionModel({
-    String? sectionId,
+    final String? sectionId,
     required this.sectionNo,
     required this.sectionType,
     required this.sectionContnet,
-  }) : sectionId = sectionId ?? Uuid().v4();
+  }) : sectionId = sectionId ?? const Uuid().v4();
 }
 
 
