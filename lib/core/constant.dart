@@ -13,7 +13,7 @@ const taskTable = 'tasks';
 const drawingTable = 'drawings';
 
 //notes table columns -ntc
-const notesIdNTC = 'notesId';
+const notesIdNTC = 'notesId'; 
 const notesTitleNTC = 'notesTitle';
 const createdAtNTC = 'createdAt';
 const modifiedAtNTC = 'modifiedAt';
@@ -38,6 +38,7 @@ const sectionNoDTC = 'sectionNo';
 const sketchColorDTC = 'sketchColor';
 const sketchStrokeDTC = 'sketchStroke';
 const sketchPointsDTC = 'sketchPoint';
+const sketchNoDTC = 'sketchNo';
 
 
 

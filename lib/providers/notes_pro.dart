@@ -67,6 +67,9 @@ class NotesPro with ChangeNotifier {
 
   TextEditingController get titleController => _titleController;
 
+
+
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -81,9 +84,12 @@ class NotesPro with ChangeNotifier {
     super.dispose();
   }
 
+
+
+
+
+
   void reset() {
-
-
     log('reset called');
     _titleController.clear();
     for (var item in _sectionList) {
@@ -98,6 +104,18 @@ class NotesPro with ChangeNotifier {
       ..add(GestureBlock());
     notifyListeners();
   }
+
+
+
+
+
+
+
+
+
+
+
+
 
   // add text section to notes
   void addTextsection() {
@@ -136,6 +154,16 @@ class NotesPro with ChangeNotifier {
       return;
     }
   }
+
+
+
+
+
+
+
+
+
+
 
   //add image section to notes
   Future<void> addImageSection() async {
@@ -182,6 +210,12 @@ class NotesPro with ChangeNotifier {
     return;
   }
 
+
+
+
+
+
+
   //add task section to notes
   void addTaskSection(final BuildContext context) {
     if (_sectionList.length == 1) {
@@ -225,6 +259,15 @@ class NotesPro with ChangeNotifier {
     return;
   }
 
+
+
+
+
+
+
+
+
+
   //add drawing section to notes
   Future<void> addDrawingSection({
     required final DrawingBlock drawingBlock,
@@ -247,13 +290,14 @@ class NotesPro with ChangeNotifier {
         for (var block in _sectionList) {
           log('Block type: ${block.runtimeType}');
         }
-
-        Navigator.of(context).pop();
+        log('_sectionList.length');
+        log(_sectionList.length.toString());
+        context.pop();
         notifyListeners();
         return;
       }
-      final secondLastSection = sectionList[_sectionList.length - 2];
 
+      final secondLastSection = sectionList[_sectionList.length - 2];
       if (secondLastSection is TextBlock) {
         if (secondLastSection.textEditingController.text.trim().isEmpty) {
           sectionList[_sectionList.length - 2] = drawingBlock;
@@ -280,6 +324,15 @@ class NotesPro with ChangeNotifier {
     }
   }
 
+
+
+
+
+
+
+
+
+
   // remove image or task section from notes
   void removeImageOrTask({required final int index}) {
     if (_sectionList.length != 2) {
@@ -300,14 +353,25 @@ class NotesPro with ChangeNotifier {
     return;
   }
 
+
+
+
+
+
+
+
+
+
   //save note ----> called add note inside
   Future<void> saveNote({
     required final BuildContext context,
     required final bool isForEditPage,
     required final String? noteId,
+
   }) async {
     try {
       final bool isContentPresent = validateContent();
+      List<SketchModel> sketchlist = [];
 
       if (!isContentPresent) {
         if (isForEditPage && noteId != null) {
@@ -351,9 +415,21 @@ class NotesPro with ChangeNotifier {
               sectionContnet: '',
             );
             sectionModelList.add(sectionModel);
+          } else if (section is DrawingBlock) {
+            log('_a_-a_AD_a found ${section.sketchList.length}');
+            sketchlist = List<SketchModel>.from(section.sketchList);
+            log('__-_____--__-_-_drawing Section found ${sketchlist.length}');
+            final sectionModel = SectionModel(
+              sectionNo: i,
+              sectionType: 'drawing',
+              sectionContnet: section.drawingId,
+            );
+            sectionModelList.add(sectionModel);
           }
         }
 
+
+             
         final NotesModel notesModel = NotesModel(
           notesId: noteId,
           createdAt: DateTime.now(),
@@ -363,8 +439,8 @@ class NotesPro with ChangeNotifier {
           sectionList: sectionModelList,
         );
         !isForEditPage
-            ? await addNote(notesModel: notesModel)
-            : await updateNote(notesModel: notesModel);
+            ? await addNote(notesModel: notesModel, sketcList: sketchlist)
+            : await updateNote(notesModel: notesModel, sketcList: sketchlist);
       }
 
       context.pop();
@@ -373,6 +449,13 @@ class NotesPro with ChangeNotifier {
       throw Exception(err);
     }
   }
+
+
+
+
+
+
+
 
   // validate if note has content
   bool validateContent() {
@@ -393,11 +476,24 @@ class NotesPro with ChangeNotifier {
           return true;
         }
       }
+      if (e is DrawingBlock) {
+        return true;
+      }
       return false;
     });
 
     return result;
   }
+
+
+
+
+
+
+
+
+
+
 
   // get notehighlight that has to be entered in local database
   String getNoteContentHiglight() {
@@ -432,17 +528,38 @@ class NotesPro with ChangeNotifier {
     return highlight;
   }
 
+
+
+
+
+
+
+
+
   // load all notes at homscreen
   Future loadAllNotes() async {
     _notesList = await notesLocalServiceInterface.getAllNotes();
     notifyListeners();
   }
 
+
+
+
+
+
+
+
+
+
+
   //add note <---- called from save note inside
-  Future addNote({required final NotesModel notesModel}) async {
+  Future addNote({
+    required final NotesModel notesModel,
+    required final List<SketchModel> sketcList,
+  }) async {
     await notesLocalServiceInterface.saveNewNote(
       notesModel: notesModel,
-   
+      sketchList: sketcList
     );
     await loadAllNotes();
   }
@@ -489,14 +606,29 @@ class NotesPro with ChangeNotifier {
      
   }
 
+
+
+
+
   Future deleteNote({required final String notesId}) async {
     await notesLocalServiceInterface.deleteNote(notesId: notesId);
     loadAllNotes();
     notifyListeners();
   }
 
-  Future updateNote({required final NotesModel notesModel}) async {
-    await notesLocalServiceInterface.updateNote(notesModel: notesModel);
+
+
+
+
+
+  Future updateNote({
+    required final NotesModel notesModel,
+    required final List<SketchModel>? sketcList,
+  }) async {
+    await notesLocalServiceInterface.updateNote(
+      notesModel: notesModel,
+      sketchList: sketcList,
+    );
     loadAllNotes();
     notifyListeners();
   }

@@ -1,9 +1,14 @@
 import 'dart:developer';
+import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:noted_d/models/sketch_model.dart';
 import 'package:noted_d/providers/notes_pro.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class DrawingPro with ChangeNotifier {
  
@@ -15,6 +20,7 @@ class DrawingPro with ChangeNotifier {
   final List<SketchModel> _sketchList = [];
 
   final double _minStrokeWidth = 1;
+
   final double _maxStrokeWidth = 22;
 
   double _currentStrokeWidth = 4;
@@ -23,6 +29,7 @@ class DrawingPro with ChangeNotifier {
 
   List<SketchModel> _sketchBuffer = [];
 
+  final GlobalKey _drawingKey = GlobalKey();
   
 
   //getters
@@ -38,28 +45,84 @@ class DrawingPro with ChangeNotifier {
   List<Offset> get drawingPoints => _drawingPoints;
 
   List<SketchModel> get sketchList => _sketchList;
-  List<SketchModel> get sketchBuffer => _sketchBuffer;
 
-  void drawSketch({required final Offset points}) {
-    _drawingPoints.add(points);
-    notifyListeners();
+  List<SketchModel> get sketchBuffer => _sketchBuffer;
+  
+  GlobalKey get drawingAreaKey => _drawingKey;
+
+  Future captureDrawingAndAdd(final BuildContext context) async {
+    try {
+      final boundary =
+          _drawingKey.currentContext?.findRenderObject()
+              as RenderRepaintBoundary;
+
+      final image = await boundary.toImage(pixelRatio: 3);
+
+      final byteData = await image.toByteData(format: ImageByteFormat.png);
+
+      final docsDirectory = await getApplicationDocumentsDirectory();
+
+      final String drawingId = const Uuid().v4();
+
+      String? imagePath;
+
+      imagePath = '${docsDirectory.path}/$drawingId.png';
+
+      final File imageFile = File(imagePath);
+
+      await imageFile.writeAsBytes(byteData!.buffer.asInt8List());
+
+      log(imagePath);
+
+      await addDrawingToNotesSection(
+        imagePath: imagePath,
+        sketchList: _sketchList,
+        drawingId: drawingId,
+        context: context,
+      );
+    } catch (err) {
+      log(err.toString());
+    }
   }
 
+  ////////////////////////////
+  void drawSketch({required final Offset points}) {
+
+    _drawingPoints.add(points);
+
+    notifyListeners();
+
+  }
+
+
+
+
+////////////////////////////
   void addToSketch({required final SketchModel sketch}) {
+
     final coppiedPoints = List<Offset>.from(drawingPoints);
+
     _drawingPoints.clear();
+
     sketchList.add(
       SketchModel(
         points: coppiedPoints,
         sketchColor: sketch.sketchColor,
         strokeWidth: sketch.strokeWidth,
       ),
+
     );
 
     _sketchBuffer = List<SketchModel>.from(sketchList);
+
     notifyListeners();
   }
 
+
+
+
+
+////////////////////////////
   void undoSketch() {
     _sketchList.remove(_sketchList.last);
     log('sketch removed : ${sketchList.length}');
@@ -67,29 +130,55 @@ class DrawingPro with ChangeNotifier {
     notifyListeners();
   }
 
+
+////////////////////////////
   void redoSketch() {
     _sketchList.add(_sketchBuffer[_sketchList.length]);
     notifyListeners();
   }
 
+
+
+
+////////////////////////////
   void selectStrokeWidth({required final double stroke}) {
     _currentStrokeWidth = stroke;
     notifyListeners();
   }
 
+
+
+
+////////////////////////////
   void selectColor({required final Color selectedColor}) {
     _currentPaintColor = selectedColor;
     notifyListeners();
   }
 
+
+
+
+////////////////////////////
   void resetStroke() {
     _currentStrokeWidth = 4;
     notifyListeners();
   }
 
-  void resetCanvas() {}
 
-  Future saveDrawing({
+
+
+
+////////////////////////////
+  void resetCanvas() {
+    _sketchList.clear();
+    _sketchBuffer.clear();
+  }
+
+
+
+
+////////////////////////////
+  Future addDrawingToNotesSection({
     required final String imagePath,
     required final List<SketchModel> sketchList,
     required final String drawingId,
@@ -103,6 +192,7 @@ class DrawingPro with ChangeNotifier {
         drawingId: drawingId,
       ),
     );
+resetCanvas();
   }
-
+ 
 }

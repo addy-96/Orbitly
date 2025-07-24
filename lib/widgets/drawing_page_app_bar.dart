@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/providers/drawing_pro.dart';
 import 'package:provider/provider.dart';
 
-class DrawingPageAppBar extends StatelessWidget {
+class DrawingPageAppBar extends StatelessWidget implements PreferredSizeWidget {
   const DrawingPageAppBar({super.key});
 
   void onBackAction({
@@ -12,8 +14,15 @@ class DrawingPageAppBar extends StatelessWidget {
   }) {
     if (drawingPro.sketchList.isEmpty) {
       Navigator.of(context).pop();
+    } else {
+      log('show dialog');
     }
   }
+
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
 
   @override
   PreferredSizeWidget build(final BuildContext context) {
@@ -67,12 +76,11 @@ class DrawingPageAppBar extends StatelessWidget {
       actions: [
         IconButton(
           onPressed: () async {
-            //   await captureDrawingAndAdd(drawingProvider);
+            await drawingPro.captureDrawingAndAdd(context);
           },
           icon: const Icon(HugeIcons.strokeRoundedTick02, size: 30),
         ),
       ],
     );
-    ;
   }
 }

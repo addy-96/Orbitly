@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:go_router/go_router.dart';
+import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/widgets/settings_options.dart';
 import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
@@ -34,7 +35,9 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(final BuildContext context) {
 final settingsProvider = provider.Provider.of<SettingsPro>(context);
     return Scaffold(
+      backgroundColor: scaffoldBackgroudColor,
       appBar: AppBar(
+        forceMaterialTransparency: true,
         leading: IconButton(
           onPressed: () {
             context.pop();

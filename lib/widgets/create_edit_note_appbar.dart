@@ -9,6 +9,7 @@ PreferredSizeWidget createEditNoteAppBar({
   required final BuildContext context,
   required final String? noteId,
 }) {
+  //final DrawingPro drawingPro = Provider.of<DrawingPro>(context);
   return AppBar(
     surfaceTintColor: Colors.transparent,
     forceMaterialTransparency: true,
@@ -19,12 +20,14 @@ PreferredSizeWidget createEditNoteAppBar({
             context: context,
             isForEditPage: false,
             noteId: noteId,
+     
           );
         } else {
           await notesPro.saveNote(
             context: context,
             isForEditPage: true,
             noteId: noteId,
+       
           );
         }
       },
@@ -32,7 +35,11 @@ PreferredSizeWidget createEditNoteAppBar({
     ),
     actions: [
       IconButton(
-        onPressed: () {},
+        onPressed: () {
+          for (var item in notesPro.sectionList) {
+            if (item is DrawingBlock) {}
+          }
+        },
         icon: const Icon(HugeIcons.strokeRoundedShare01),
       ),
       IconButton(

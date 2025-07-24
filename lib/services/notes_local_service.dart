@@ -1,13 +1,14 @@
 import 'dart:developer';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/models/notes_model.dart';
+import 'package:noted_d/models/sketch_model.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
 abstract interface class NotesLocalServiceInterface {
   Future saveNewNote({
     required final NotesModel notesModel,
-
+    required final List<SketchModel>? sketchList,
   });
 
   Future<List<HomeNotesModel>> getAllNotes();
@@ -16,7 +17,10 @@ abstract interface class NotesLocalServiceInterface {
 
   Future deleteNote({required final String notesId});
 
-  Future updateNote({required final NotesModel notesModel});
+  Future updateNote({
+    required final NotesModel notesModel,
+    required final List<SketchModel>? sketchList,
+  });
 
   Future<List<HomeNotesModel>> getSearchedNotes({required final String searchQuery});
 
@@ -66,13 +70,14 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
        ''');
 
           await db.execute('''
-          CREATE TABLE IF NOT EXIST $drawingTable(
+          CREATE TABLE IF NOT EXISTS $drawingTable(
           $drawingIdDTC TEXT PRIMARY KEY NOT NULL,
           $notesIdDTC TEXT NOT NULL,
           $sectionNoDTC INT NOT NULL,
+          $sketchNoDTC INT NOT NULL,
           $sketchColorDTC TEXT NOT NULL,
           $sketchStrokeDTC TEXT NOT NULL, 
-          $sketchPointsDTC TEXT NOT NULL,
+          $sketchPointsDTC TEXT NOT NULL
          );
        ''');
 
@@ -90,6 +95,8 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
   @override
   Future saveNewNote({
     required final NotesModel notesModel,
+    required final List<SketchModel>? sketchList,
+
     
   }) async {
     try {
@@ -103,6 +110,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
       });
 
       for (var sec in notesModel.sectionList) {
+        
         await db.insert(sectionTable, {
           sectioonIdSTC: sec.sectionId,
           notesIdSTC: noteId,
@@ -110,28 +118,22 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
           typeSTC: sec.sectionType,
           contentSTC: sec.sectionContnet,
         });
-      }
 
-      // fetch section type  if section type is drawing store it in drawing table
-
-      final getDrawingId = await db.query(
-        sectionTable,
-        where: '$notesIdSTC = ?',
-        whereArgs: [noteId],
-      );
-
-      for (var i = 0; i < getDrawingId.length; i++) {
-        /*        if (getDrawingId[i][typeSTC] == 'drawing') {
+        if (sec.sectionType == 'drawing') {
+          log('called, ${sketchList != null ? sketchList.length : 'empty'}');
+          for (var i = 0; i < sketchList!.length; i++) {
             await db.insert(drawingTable, {
-            drawingIdDTC : getDrawingId[i][typeSTC],
-            sectionNoDTC : getDrawingId[i][]
-          }); 
-        } */
+              drawingIdDTC: sec.sectionContnet,
+              notesIdDTC: noteId,
+              sectionNoDTC: sec.sectionNo,
+              sketchNoDTC: i,
+              sketchColorDTC: sketchList[i].sketchColor,
+              sketchStrokeDTC: sketchList[i].strokeWidth,
+              sketchPointsDTC: sketchList[i].points.toString(),
+            });
+          }
+        }
       }
-
-  
-
-
       log('save new note called');
     } catch (err) {
       log(err.toString());
@@ -242,7 +244,10 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
   }
 
   @override
-  Future updateNote({required final NotesModel notesModel}) async {
+  Future updateNote({
+    required final NotesModel notesModel,
+    required final List<SketchModel>? sketchList,
+  }) async {
     try {
 
       log('update for noteId ${notesModel.notesId} requested');

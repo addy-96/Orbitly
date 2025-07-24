@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/pages/search_page.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
 import 'package:noted_d/providers/task_pro.dart';
@@ -21,9 +20,6 @@ class NotesAppHome extends StatefulWidget {
 }
 
 class _NotesAppHomeState extends State<NotesAppHome> {
-
- 
-
 
   @override
   Widget build(final BuildContext context) {

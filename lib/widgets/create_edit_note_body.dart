@@ -70,7 +70,7 @@ class CreateEditNoteBody extends StatelessWidget {
                                 File(section.imagePath),
                                 fit: BoxFit.contain,
                                 height: 300,
-                                scale: 0.2,
+                             
                               ),
                               Positioned(
                                 right: 0,
@@ -101,25 +101,29 @@ class CreateEditNoteBody extends StatelessWidget {
                   index: index,
                 );
               } else if (section is DrawingBlock) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Material(
-                      color: Colors.transparent,
-                      elevation: 10,
-                      child: ClipRRect(
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Material(
+                        color: Colors.white,
+                        elevation: 10,
                         borderRadius: BorderRadiusGeometry.circular(18),
-                        child: Image.file(
-                          alignment: Alignment.center,
-                          File(section.drawingImagePath),
-                          fit: BoxFit.contain,
-                          height: 300,
-
-                          scale: 0.2,
+                        child: ClipRRect(
+                          borderRadius: BorderRadiusGeometry.circular(18),
+                          child: Image.file(
+                            alignment: Alignment.center,
+                            File(section.drawingImagePath),
+                            fit: BoxFit.contain,
+                            height: 300,
+                            width: 300,
+                            scale: 0.2,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               } else if (section is GestureBlock) {
                 return GestureDetector(
@@ -136,7 +140,7 @@ class CreateEditNoteBody extends StatelessWidget {
                   ),
                 );
               }
-              return null;
+              return const SizedBox.shrink();
             },
           ),
         );

@@ -33,9 +33,7 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (final context) => DrawingPro(
-            notesPro: NotesPro(
-              notesLocalServiceInterface: NotesLocalServiceInterfaceImpl(),
-            ),
+            notesPro: Provider.of<NotesPro>(context, listen: false),
           ),
         ),
         ChangeNotifierProvider(
