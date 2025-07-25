@@ -322,7 +322,6 @@ class NotesPro with ChangeNotifier {
       } else {
         final List<SectionModel> sectionModelList = [];
         final String notesContentHighlight = getNoteContentHiglight();
-
         for (var i = 0; i <= _sectionList.length - 1; i++) {
           final section = _sectionList[i];
           if (section is TextBlock) {
@@ -355,6 +354,7 @@ class NotesPro with ChangeNotifier {
             );
             sectionModelList.add(sectionModel);
           } else if (section is DrawingBlock) {
+            log('found a drawing block');
             final sectionModel = SectionModel(
               sectionNo: i,
               sectionType: 'drawing',
@@ -375,8 +375,7 @@ class NotesPro with ChangeNotifier {
             ? await addNote(notesModel: notesModel)
             : await updateNote(notesModel: notesModel);
       }
-Future.delayed(const Duration(seconds: 1));
-
+      Future.delayed(const Duration(seconds: 1));
       context.pop();
       return;
     } catch (err) {
@@ -479,7 +478,8 @@ Future.delayed(const Duration(seconds: 1));
             ),
           ),
         );
-      } else if (secton.sectionType == 'image') {
+      } else if (secton.sectionType == 'image' ||
+          secton.sectionType == 'drawing') {
         _sectionList.add(Imageblock(imagePath: secton.sectionContnet));
       } else if (secton.sectionType == 'task') {
         final task = secton.sectionContnet.substring(

@@ -72,14 +72,13 @@ class DrawingPro with ChangeNotifier {
 
       await imageFile.writeAsBytes(byteData!.buffer.asInt8List());
 
-      log(imagePath);
-
       await addDrawingToNotesSection(
         imagePath: imagePath,
         sketchList: _sketchList,
         drawingId: drawingId,
         context: context,
       );
+
     } catch (err) {
       log(err.toString());
     }
@@ -192,7 +191,7 @@ class DrawingPro with ChangeNotifier {
         drawingId: drawingId,
       ),
     );
-resetCanvas();
+    resetCanvas();
   }
  
 }
