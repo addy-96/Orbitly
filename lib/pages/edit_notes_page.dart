@@ -17,7 +17,6 @@ class EditNotes extends StatefulWidget {
 }
 
 class _EditNotesState extends State<EditNotes> {
-
   late NotesPro notesPro;
 
   @override
@@ -37,7 +36,6 @@ class _EditNotesState extends State<EditNotes> {
   }
 
   bool _isInitialized = false;
-  
   bool _isFirstTime = true;
 
   @override
@@ -58,6 +56,7 @@ class _EditNotesState extends State<EditNotes> {
           return;
         },
         child: Scaffold(
+          backgroundColor: Colors.white,
           appBar: createEditNoteAppBar(
             isCreate: false,
             notesPro: notesPro,

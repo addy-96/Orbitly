@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/models/sketch_model.dart';
 import 'package:noted_d/providers/drawing_pro.dart';
 import 'package:noted_d/widgets/drawing_page_app_bar.dart';
@@ -20,6 +21,7 @@ class _DrawingPageState extends State<DrawingPage> {
     final drawingProvider = Provider.of<DrawingPro>(context, listen: true);
     return Scaffold(
       appBar: const DrawingPageAppBar(),
+      backgroundColor: scaffoldBackgroudColor,
       body: Column(
         children: [
           Expanded(
@@ -46,7 +48,7 @@ class _DrawingPageState extends State<DrawingPage> {
               child: RepaintBoundary(
                 key: drawingProvider.drawingAreaKey,
                 child: CustomPaint(
-                  size: const Size(double.infinity, 200),
+                  size: const Size(double.infinity, double.infinity),
                   painter: PaintingCanvas(drawingProvider),
                 ),
               ),

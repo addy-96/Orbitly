@@ -41,15 +41,17 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
           onTap: () {
             searchBoxUiProvider.toggelSearchBox();
           },
-          child: const HomeScreenSearchbox(isWithInputFIeld: false),
+          child: const HomeScreenSearchbox(isWithInputField: false),
         ),
         Consumer<NotesPro>(
           builder: (final context, final value, final child) {
             if (value.notesList.isEmpty) {
-              return const Expanded(
+              return  Expanded(
                 child: Center(
                   child: Text(
                     'Click on add icon below to start creating notes!',
+                    textAlign: TextAlign.center,
+                    style: textStyleOS(fontSize: 12, fontColor: Colors.grey.shade500),
                   ),
                 ),
               );

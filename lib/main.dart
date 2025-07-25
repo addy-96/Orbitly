@@ -16,7 +16,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (final context) => NavbarPro()),
+        ChangeNotifierProvider(create: (final context) => NavbarPro(),),
         ChangeNotifierProvider(
           create: (final context) => NotesPro(
             notesLocalServiceInterface: NotesLocalServiceInterfaceImpl(),

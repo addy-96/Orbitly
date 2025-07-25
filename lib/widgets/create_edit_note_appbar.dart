@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/providers/notes_pro.dart';
-import 'package:path_provider/path_provider.dart';
 
 PreferredSizeWidget createEditNoteAppBar({
   required final bool isCreate,
@@ -35,24 +34,21 @@ PreferredSizeWidget createEditNoteAppBar({
     ),
     actions: [
       IconButton(
-        onPressed: () {
-          for (var item in notesPro.sectionList) {
-            if (item is DrawingBlock) {}
-          }
+        onPressed: ()  async{
+
         },
         icon: const Icon(HugeIcons.strokeRoundedShare01),
       ),
       IconButton(
-        onPressed: () async {
-          final dir = await getApplicationDocumentsDirectory();
-          if (dir.existsSync()) {
-            for (var item in dir.listSync()) {}
-          }
+        onPressed: () {
+      
         },
         icon: const Icon(HugeIcons.strokeRoundedTShirt),
       ),
       IconButton(
-        onPressed: () {},
+        onPressed: () {
+          
+        },
         icon: const Icon(HugeIcons.strokeRoundedMenu08),
       ),
     ],

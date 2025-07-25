@@ -86,9 +86,7 @@ class DrawingPro with ChangeNotifier {
 
   ////////////////////////////
   void drawSketch({required final Offset points}) {
-
     _drawingPoints.add(points);
-
     notifyListeners();
 
   }
@@ -187,7 +185,6 @@ class DrawingPro with ChangeNotifier {
       context: context,
       drawingBlock: DrawingBlock(
         drawingImagePath: imagePath,
-        sketchList: sketchList,
         drawingId: drawingId,
       ),
     );

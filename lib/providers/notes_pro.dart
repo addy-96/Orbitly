@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:noted_d/core/snackbr.dart';
+import 'package:noted_d/core/snackbar.dart';
 import 'package:noted_d/core/util_functions.dart';
 import 'package:noted_d/models/notes_model.dart';
-import 'package:noted_d/models/sketch_model.dart';
 import 'package:noted_d/services/notes_local_service.dart';
+import 'package:path_provider/path_provider.dart';
 
 
 abstract class NoteBlocks {}
@@ -33,12 +33,11 @@ final class Imageblock extends NoteBlocks {
 
 final class DrawingBlock extends NoteBlocks {
   final String drawingImagePath;
-  final List<SketchModel> sketchList;
+
   final String drawingId;
 
   DrawingBlock({
     required this.drawingImagePath,
-    required this.sketchList,
     required this.drawingId,
   });
 }
@@ -238,7 +237,6 @@ class NotesPro with ChangeNotifier {
           0,
           DrawingBlock(
             drawingImagePath: drawingBlock.drawingImagePath,
-            sketchList: drawingBlock.sketchList,
             drawingId: drawingBlock.drawingId,
           ),
         );
@@ -274,7 +272,7 @@ class NotesPro with ChangeNotifier {
   }
 
 
-
+  
 
 
   // remove image or task section from notes
@@ -297,7 +295,33 @@ class NotesPro with ChangeNotifier {
     return;
   }
 
+  void removeDrawingSection({required final String drawingImagePath,required final int index}) async{
+        if (_sectionList.length != 2) {
+      final beforeSection = _sectionList[index - 1];
+      final afterSection = _sectionList[index + 1];
 
+      if (beforeSection is TextBlock && afterSection is TextBlock) {
+        _sectionList.removeAt(index);
+        beforeSection.textEditingController.text +=
+            afterSection.textEditingController.text;
+        _sectionList.remove(afterSection);
+        notifyListeners();
+        return;
+      }
+
+    }
+     _sectionList.removeAt(index);
+    notifyListeners();
+    
+       notesLocalServiceInterface.deleteDrawingImage(imagePath: drawingImagePath);
+    final dir = await getApplicationDocumentsDirectory();
+    if(dir.listSync().isNotEmpty){
+        for(var item in dir.listSync()){
+          log(item.path);
+        }
+      } 
+      return;
+  }
 
 
 
@@ -478,10 +502,13 @@ class NotesPro with ChangeNotifier {
             ),
           ),
         );
-      } else if (secton.sectionType == 'image' ||
-          secton.sectionType == 'drawing') {
+      } else if (secton.sectionType == 'image') {
         _sectionList.add(Imageblock(imagePath: secton.sectionContnet));
-      } else if (secton.sectionType == 'task') {
+      } else if (secton.sectionType == 'drawing') {
+        _sectionList.add(DrawingBlock(drawingId:  secton.sectionId,drawingImagePath    : secton.sectionContnet,));
+      }
+      
+       else if (secton.sectionType == 'task') {
         final task = secton.sectionContnet.substring(
           0,
           secton.sectionContnet.length - 3,

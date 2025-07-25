@@ -12,6 +12,7 @@ class CreatedEditNoteToolbar extends StatelessWidget {
     final NotesPro notesPro = Provider.of<NotesPro>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         IconButton(
           onPressed: () async {
@@ -31,7 +32,6 @@ class CreatedEditNoteToolbar extends StatelessWidget {
           },
           icon: const Icon(HugeIcons.strokeRoundedCheckmarkSquare01),
         ),
-
       ],
     );
   }

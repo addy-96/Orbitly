@@ -10,6 +10,7 @@ class PaintingCanvas extends CustomPainter {
 
   @override
   void paint(final Canvas canvas, final Size size) {
+    
     final Paint paint = Paint()
       ..color = provider.currentPaintColor
       ..style = PaintingStyle.fill
@@ -25,7 +26,6 @@ class PaintingCanvas extends CustomPainter {
           ..strokeWidth = item.strokeWidth,
       );
     }
-
     canvas.drawPoints(PointMode.polygon, provider.drawingPoints, paint);
   }
 

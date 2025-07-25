@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:noted_d/core/textstyle.dart';
 
 class FolderPage extends StatelessWidget {
@@ -23,7 +24,57 @@ class FolderPage extends StatelessWidget {
           children: [
             InkWell(
               borderRadius: BorderRadius.circular(8),
-              onTap: () {},
+              onTap: () {
+                showModalBottomSheet(
+                  
+  isScrollControlled: true,
+  context: context,
+  builder: (final BuildContext context) {
+
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom, 
+      ),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Gap(20),
+               Text('Enter folder name',style: textStyleOS(fontSize: 18,fontColor: Colors.black),),
+              const Gap(10),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Folder name',
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
+                  ),
+                ),
+              ),
+              const Gap(10),
+              Container(
+                height: MediaQuery.of(context).size.height / 14,
+                decoration: BoxDecoration(
+                  color: Colors.deepOrange,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Center(child: Text('Add Folder',style: textStyleOS(fontSize: 18, fontColor: Colors.white,).copyWith(fontWeight: FontWeight.bold,),),),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  },
+);
+
+              },
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),

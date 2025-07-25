@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:noted_d/providers/notes_pro.dart';
@@ -24,13 +25,9 @@ late NotesPro notesPro;
     super.didChangeDependencies();
     if (_isFirstTime) {
       _isFirstTime = false;
-
-      // Initialize `notesPro` here
       notesPro = Provider.of<NotesPro>(context, listen: false);
-
-      // Now safely delay reset until after build is done
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        notesPro.reset(); // This will now safely call notifyListeners()
+        notesPro.reset(); 
       });
     }
   }
@@ -53,6 +50,7 @@ late NotesPro notesPro;
         return;
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: createEditNoteAppBar(
           isCreate: true,
           notesPro: notesPro,
@@ -60,7 +58,7 @@ late NotesPro notesPro;
           noteId: null,
         ),
         body: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -77,5 +75,4 @@ late NotesPro notesPro;
       ),
     );
   }
-
 }

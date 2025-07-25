@@ -4,7 +4,7 @@ import 'package:noted_d/providers/task_pro.dart';
 import 'package:provider/provider.dart';
 
 class TasksCheckbox extends StatefulWidget {
-  TasksCheckbox({super.key, required this.index});
+   TasksCheckbox({super.key, required this.index});
 
   int index;
 
@@ -18,6 +18,9 @@ class _TasksCheckboxState extends State<TasksCheckbox> {
     final taskProvider = Provider.of<TaskPro>(context);
     return IconButton(
       onPressed: () async {
+        if(taskProvider.taskList[widget.index].textEditingController.text.trim().isEmpty){
+          return;
+        }
         int isComplete = taskProvider.taskList[widget.index].isComplete;
         isComplete = isComplete == 0 ? 1 : 0;
         await taskProvider.updateTaskStatus(
@@ -38,13 +41,3 @@ class _TasksCheckboxState extends State<TasksCheckbox> {
     );
   }
 }
-
-
-/*
-!widget.isComplete
-          ? Icon(HugeIcons.strokeRoundedSquare)
-          : Icon(
-              HugeIcons.strokeRoundedCheckmarkSquare02,
-              color: Colors.deepOrange,
-            ),
-*/ 

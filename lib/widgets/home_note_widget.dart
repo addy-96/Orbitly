@@ -1,10 +1,8 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/models/notes_model.dart';
 import 'package:noted_d/pages/edit_notes_page.dart';
-import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
 import 'package:provider/provider.dart';
 
@@ -40,16 +38,12 @@ class HomeNoteWidget extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final notesProvider = Provider.of<NotesPro>(context);
     final seachProvider = Provider.of<SearchBoxPro>(context);
-
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         borderRadius: BorderRadius.circular(19),
         onTap: () async {
-       
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (final context) => EditNotes(noteId: homeNotesModel.notesId),
@@ -59,13 +53,10 @@ class HomeNoteWidget extends StatelessWidget {
         },
         child: Hero(
           tag: homeNotesModel.notesId,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            height: double.minPositive,
-            decoration: BoxDecoration(
-              color: Colors.white,
+          child: Material(
+          elevation: 1,
               borderRadius: BorderRadius.circular(19),
-            ),
+          color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

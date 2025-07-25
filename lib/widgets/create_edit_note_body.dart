@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/core/textstyle.dart';
@@ -110,13 +109,45 @@ class CreateEditNoteBody extends StatelessWidget {
                         borderRadius: BorderRadiusGeometry.circular(18),
                         child: ClipRRect(
                           borderRadius: BorderRadiusGeometry.circular(18),
-                          child: Image.file(
-                            alignment: Alignment.center,
-                            File(section.drawingImagePath),
-                            fit: BoxFit.contain,
-                            height: 300,
-                            width: 300,
-                            scale: 0.2,
+                          child: Stack(
+                            children:[ Image.file(
+                              alignment: Alignment.center,
+                              File(section.drawingImagePath),
+                              fit: BoxFit.contain,
+                              height: 300,
+                              width: 300,
+                              scale: 0.2,
+                            ),Positioned(
+                                right: 0,
+                                top: 0,
+                                child: IconButton(
+                                  onPressed: () {
+                                   showDialog(context: context, builder: ( final context) 
+                                     => AlertDialog(
+                                      backgroundColor: Colors.white,
+                                      content:  Padding(
+                                        padding: const EdgeInsets.only(top: 20,left: 10,right: 10),
+                                        child: Text('The sketch will be permanently deleted are you sure?',softWrap: true ,style: textStyleOS(fontSize: 12, fontColor: Colors.black),),
+                                      ),
+                                      actions: [
+                                      
+                                      TextButton(onPressed: () {
+                                        notesSectionProvider.removeDrawingSection(drawingImagePath: section.drawingImagePath, index: index);
+                                        Navigator.of(context).pop();
+                                      }, child:  Text('Remove',style: textStyleOS(fontSize: 12, fontColor: Colors.black),),),
+                                       TextButton(onPressed: () {
+                                           Navigator.of(context).pop();
+                                      }, child:  Text('Cancel',style: textStyleOS(fontSize: 12, fontColor: Colors.deepOrange),),),
+                                     ],),
+                                   );
+                                  },
+                                  icon: const Icon(
+                                    HugeIcons
+                                        .strokeRoundedMultiplicationSignCircle,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ), ],
                           ),
                         ),
                       ),
@@ -129,12 +160,8 @@ class CreateEditNoteBody extends StatelessWidget {
                     notesSectionProvider.addTextsection();
                   },
                   child: Container(
-                    height: MediaQuery.of(context).size.height / 2,
-                    color: Colors.white,
-                    child: const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Text('-----End----'),
-                    ),
+                    height: MediaQuery.of(context).size.height,
+                    color: Colors.transparent,
                   ),
                 );
               }

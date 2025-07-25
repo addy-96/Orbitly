@@ -30,7 +30,10 @@ class _NotesAppHomeState extends State<NotesAppHome> {
       body: Column(
         children: [
           const Gap(10),
-          const HomeAppBarActions(),
+         const Padding(
+            padding:  EdgeInsets.only(top: 10),
+            child:  HomeAppBarActions(),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: 20, top: 30, right: 20),
@@ -41,9 +44,9 @@ class _NotesAppHomeState extends State<NotesAppHome> {
                           builder: (final context, final value, final child) {
                             if (value.isSearchBoxOpened) {
                               WidgetsBinding.instance.addPostFrameCallback((_) {
-                                context.go('/search');
+                                context.push('/search');
                               });
-                              return const SizedBox.shrink(); // return something small temporarily
+                              return const SizedBox.shrink(); 
                             } else {
                               return const HomeNotesBodySection();
                             }

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/models/notes_model.dart';
 import 'package:path/path.dart' as p;
@@ -21,8 +22,11 @@ abstract interface class NotesLocalServiceInterface {
 
   Future<List<HomeNotesModel>> getSearchedNotes({required final String searchQuery});
 
-  Future deleteDrawing({required final String drawingId});
+  Future deleteDrawingImage({required final String imagePath});
 }
+
+
+
 
 
 class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
@@ -103,7 +107,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
       });
 
       for (var sec in notesModel.sectionList) {
-        log('inside savenewnotes list: ${sec.sectionType} : saving........');
+        
         await db.insert(sectionTable, {
           sectioonIdSTC: sec.sectionId,
           notesIdSTC: noteId,
@@ -206,6 +210,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
       );
       log('enter edit note completed');
       return notesModel;
+
     } catch (err) {
       log(err.toString());
       throw Exception(err);
@@ -327,12 +332,14 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
   }
   
   @override
-  Future deleteDrawing({required final String drawingId}) async {
-    try {} catch (err) {}
+  Future deleteDrawingImage({required  final String imagePath})  async{      
+  final file = File(imagePath);
+  if (await file.exists()) {
+    await file.delete();
+  
+  } 
   }
  
-
-
 }
 
 

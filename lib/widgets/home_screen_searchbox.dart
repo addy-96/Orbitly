@@ -7,13 +7,13 @@ import 'package:noted_d/providers/search_box_pro.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreenSearchbox extends StatelessWidget {
-  const HomeScreenSearchbox({super.key, required this.isWithInputFIeld});
-  final bool isWithInputFIeld;
+  const HomeScreenSearchbox({super.key, required this.isWithInputField});
+  final bool isWithInputField;
 
   @override
   Widget build(final BuildContext context) {
     final searchBoxUiPro = Provider.of<SearchBoxPro>(context);
-    if (isWithInputFIeld) {
+    if (isWithInputField) {
       return Row(
         children: [
           Expanded(
@@ -83,10 +83,11 @@ class HomeScreenSearchbox extends StatelessWidget {
       return Hero(
         tag: 'search-box',
         child: Material(
+          elevation: 1,
           borderRadius: BorderRadius.circular(50),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.grey.shade300.withOpacity(0.7),
+              color: Colors.grey.shade300.withOpacity(0.4),
               borderRadius: BorderRadius.circular(50),
             ),
             child: Padding(

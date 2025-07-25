@@ -26,7 +26,6 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      // safe because it's async and context is available
       Provider.of<TaskPro>(context, listen: false).initializeTask();
     });
   }
@@ -55,8 +54,8 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
                   child: Text(
                     'Click on add button to add new task!',
                     style: textStyleOS(
-                      fontSize: 14,
-                      fontColor: Colors.grey.shade600,
+                      fontSize: 12,
+                      fontColor: Colors.grey.shade500,
                     ),
                   ),
                 );
@@ -138,7 +137,6 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
         taskId: task.taskId!,
         taskContent: text.trim(),
       );
-  
     },
     controller: task.textEditingController,
     style: textStyleOS(
