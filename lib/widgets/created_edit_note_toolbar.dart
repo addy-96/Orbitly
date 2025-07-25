@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:noted_d/core/snackbr.dart';
 import 'package:noted_d/providers/notes_pro.dart';
 import 'package:provider/provider.dart';
 
@@ -32,16 +31,7 @@ class CreatedEditNoteToolbar extends StatelessWidget {
           },
           icon: const Icon(HugeIcons.strokeRoundedCheckmarkSquare01),
         ),
-        IconButton(
-          onPressed: () {
-            cSnack(
-              message: 'Feature comming soon!',
-              backgroundColor: Colors.white,
-              context: context,
-            );
-          },
-          icon: const Icon(HugeIcons.strokeRoundedText),
-        ),
+
       ],
     );
   }

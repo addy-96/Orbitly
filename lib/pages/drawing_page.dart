@@ -13,9 +13,6 @@ class DrawingPage extends StatefulWidget {
   State<DrawingPage> createState() => _DrawingPageState();
 }
 
-
-
-
 class _DrawingPageState extends State<DrawingPage> {
 
   @override
@@ -28,13 +25,11 @@ class _DrawingPageState extends State<DrawingPage> {
           Expanded(
             child: Listener(
               onPointerDown: (final event) {
-                //log('onPointDown -----> dx : ${event.position.dx} , dy : ${event.position.dy}');
                 drawingProvider.drawSketch(
                   points: Offset(event.position.dx, event.position.dy),
                 );
               },
               onPointerMove: (final event) {
-                //log('onPointMove -----> dx : ${event.position.dx} , dy : ${event.position.dy}');
                 drawingProvider.drawSketch(
                   points: Offset(event.position.dx, event.position.dy),
                 );
@@ -64,13 +59,6 @@ class _DrawingPageState extends State<DrawingPage> {
   }
 
 }
-
-
-
-
-
-
-
 
 
 class ColorPalletOption extends StatelessWidget {

@@ -40,7 +40,6 @@ class CreateEditNoteBody extends StatelessWidget {
                       fontSize: 20,
                       fontColor: Colors.grey.shade400,
                     ).copyWith(fontWeight: FontWeight.w300),
-
                     contentPadding: const EdgeInsets.symmetric(
                       vertical: 10,
                       horizontal: 0,
@@ -70,7 +69,6 @@ class CreateEditNoteBody extends StatelessWidget {
                                 File(section.imagePath),
                                 fit: BoxFit.contain,
                                 height: 300,
-                             
                               ),
                               Positioned(
                                 right: 0,

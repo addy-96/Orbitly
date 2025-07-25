@@ -17,9 +17,7 @@ class EditNotes extends StatefulWidget {
 }
 
 class _EditNotesState extends State<EditNotes> {
-  
   late NotesPro notesPro;
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -36,20 +34,12 @@ class _EditNotesState extends State<EditNotes> {
     }
   }
 
- 
   bool _isInitialized = false;
   bool _isFirstTime = true;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-
-  @override
   Widget build(final BuildContext context) {
     final notesProvider = Provider.of<NotesPro>(context);
-
     return Hero(
       tag: widget.noteId,
       child: PopScope(

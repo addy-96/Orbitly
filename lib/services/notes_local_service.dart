@@ -8,7 +8,6 @@ import 'package:sqflite/sqflite.dart';
 abstract interface class NotesLocalServiceInterface {
   Future saveNewNote({
     required final NotesModel notesModel,
-    required final List<SketchModel>? sketchList,
   });
 
   Future<List<HomeNotesModel>> getAllNotes();
@@ -19,18 +18,17 @@ abstract interface class NotesLocalServiceInterface {
 
   Future updateNote({
     required final NotesModel notesModel,
-    required final List<SketchModel>? sketchList,
   });
 
   Future<List<HomeNotesModel>> getSearchedNotes({required final String searchQuery});
-
-
 }
+
+
+
+
 
 class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
   NotesLocalServiceInterfaceImpl();
-
-
 
   Future<Database> createDatabase() async {
     try {
@@ -69,7 +67,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
           );
        ''');
 
-          await db.execute('''
+     /*     await db.execute('''
           CREATE TABLE IF NOT EXISTS $drawingTable(
           $drawingIdDTC TEXT PRIMARY KEY NOT NULL,
           $notesIdDTC TEXT NOT NULL,
@@ -79,7 +77,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
           $sketchStrokeDTC TEXT NOT NULL, 
           $sketchPointsDTC TEXT NOT NULL
          );
-       ''');
+       '''); */
 
           log('notes database created!');
         },
@@ -95,9 +93,6 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
   @override
   Future saveNewNote({
     required final NotesModel notesModel,
-    required final List<SketchModel>? sketchList,
-
-    
   }) async {
     try {
       final db = await createDatabase();
@@ -119,7 +114,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
           contentSTC: sec.sectionContnet,
         });
 
-        if (sec.sectionType == 'drawing') {
+      /*  if (sec.sectionType == 'drawing') {
           log('called, ${sketchList != null ? sketchList.length : 'empty'}');
           for (var i = 0; i < sketchList!.length; i++) {
             await db.insert(drawingTable, {
@@ -132,7 +127,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
               sketchPointsDTC: sketchList[i].points.toString(),
             });
           }
-        }
+        } */
       }
       log('save new note called');
     } catch (err) {
@@ -211,7 +206,6 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
             getNotesDetail.first[notesContentHighLightNTC] as String,
         sectionList: sectionModelList,
       );
-
       log('enter edit note completed');
       return notesModel;
 
@@ -246,7 +240,6 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
   @override
   Future updateNote({
     required final NotesModel notesModel,
-    required final List<SketchModel>? sketchList,
   }) async {
     try {
 
@@ -335,7 +328,6 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
       throw Exception(err);
     }
   }
-  
  
 }
 

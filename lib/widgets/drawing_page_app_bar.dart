@@ -15,7 +15,7 @@ class DrawingPageAppBar extends StatelessWidget implements PreferredSizeWidget {
     if (drawingPro.sketchList.isEmpty) {
       Navigator.of(context).pop();
     } else {
-      log('show dialog');
+      log('show dialog to confirm dismis or ave drawing ');
     }
   }
 

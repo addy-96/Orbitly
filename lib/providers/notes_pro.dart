@@ -67,9 +67,6 @@ class NotesPro with ChangeNotifier {
 
   TextEditingController get titleController => _titleController;
 
-
-
-
   @override
   void dispose() {
     _titleController.dispose();
@@ -83,11 +80,6 @@ class NotesPro with ChangeNotifier {
     _sectionList.clear();
     super.dispose();
   }
-
-
-
-
-
 
   void reset() {
     log('reset called');
@@ -104,15 +96,6 @@ class NotesPro with ChangeNotifier {
       ..add(GestureBlock());
     notifyListeners();
   }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -154,16 +137,6 @@ class NotesPro with ChangeNotifier {
       return;
     }
   }
-
-
-
-
-
-
-
-
-
-
 
   //add image section to notes
   Future<void> addImageSection() async {
@@ -210,12 +183,6 @@ class NotesPro with ChangeNotifier {
     return;
   }
 
-
-
-
-
-
-
   //add task section to notes
   void addTaskSection(final BuildContext context) {
     if (_sectionList.length == 1) {
@@ -259,24 +226,13 @@ class NotesPro with ChangeNotifier {
     return;
   }
 
-
-
-
-
-
-
-
-
-
   //add drawing section to notes
   Future<void> addDrawingSection({
     required final DrawingBlock drawingBlock,
     required final BuildContext context,
   }) async {
     try {
-      log('add drawing section called..........');
       if (_sectionList.length == 1) {
-        log('length==1..........');
         log(drawingBlock.drawingImagePath);
         _sectionList.insert(
           0,
@@ -286,12 +242,6 @@ class NotesPro with ChangeNotifier {
             drawingId: drawingBlock.drawingId,
           ),
         );
-        log('After insert: sectionList has ${_sectionList.length} items');
-        for (var block in _sectionList) {
-          log('Block type: ${block.runtimeType}');
-        }
-        log('_sectionList.length');
-        log(_sectionList.length.toString());
         context.pop();
         notifyListeners();
         return;
@@ -315,19 +265,13 @@ class NotesPro with ChangeNotifier {
       }
       _sectionList.insert(_sectionList.length - 1, drawingBlock);
 
-      log('drawing saved and added');
       Navigator.of(context).pop();
       notifyListeners();
       return;
     } catch (err) {
-      log('erroe ${err.toString()}');
+      log('error ${err.toString()}');
     }
   }
-
-
-
-
-
 
 
 
@@ -358,10 +302,6 @@ class NotesPro with ChangeNotifier {
 
 
 
-
-
-
-
   //save note ----> called add note inside
   Future<void> saveNote({
     required final BuildContext context,
@@ -371,14 +311,13 @@ class NotesPro with ChangeNotifier {
   }) async {
     try {
       final bool isContentPresent = validateContent();
-      List<SketchModel> sketchlist = [];
-
       if (!isContentPresent) {
         if (isForEditPage && noteId != null) {
           await deleteNote(notesId: noteId);
         }
-
+        Future.delayed(const Duration(seconds: 1));
         context.pop();
+
         return;
       } else {
         final List<SectionModel> sectionModelList = [];
@@ -416,20 +355,14 @@ class NotesPro with ChangeNotifier {
             );
             sectionModelList.add(sectionModel);
           } else if (section is DrawingBlock) {
-            log('_a_-a_AD_a found ${section.sketchList.length}');
-            sketchlist = List<SketchModel>.from(section.sketchList);
-            log('__-_____--__-_-_drawing Section found ${sketchlist.length}');
             final sectionModel = SectionModel(
               sectionNo: i,
               sectionType: 'drawing',
-              sectionContnet: section.drawingId,
+              sectionContnet: section.drawingImagePath,  // here to store drawing id for futher feature
             );
             sectionModelList.add(sectionModel);
           }
-        }
-
-
-             
+        }      
         final NotesModel notesModel = NotesModel(
           notesId: noteId,
           createdAt: DateTime.now(),
@@ -439,9 +372,10 @@ class NotesPro with ChangeNotifier {
           sectionList: sectionModelList,
         );
         !isForEditPage
-            ? await addNote(notesModel: notesModel, sketcList: sketchlist)
-            : await updateNote(notesModel: notesModel, sketcList: sketchlist);
+            ? await addNote(notesModel: notesModel)
+            : await updateNote(notesModel: notesModel);
       }
+Future.delayed(const Duration(seconds: 1));
 
       context.pop();
       return;
@@ -449,13 +383,6 @@ class NotesPro with ChangeNotifier {
       throw Exception(err);
     }
   }
-
-
-
-
-
-
-
 
   // validate if note has content
   bool validateContent() {
@@ -484,16 +411,6 @@ class NotesPro with ChangeNotifier {
 
     return result;
   }
-
-
-
-
-
-
-
-
-
-
 
   // get notehighlight that has to be entered in local database
   String getNoteContentHiglight() {
@@ -528,38 +445,18 @@ class NotesPro with ChangeNotifier {
     return highlight;
   }
 
-
-
-
-
-
-
-
-
   // load all notes at homscreen
   Future loadAllNotes() async {
     _notesList = await notesLocalServiceInterface.getAllNotes();
     notifyListeners();
   }
 
-
-
-
-
-
-
-
-
-
-
   //add note <---- called from save note inside
   Future addNote({
     required final NotesModel notesModel,
-    required final List<SketchModel> sketcList,
   }) async {
     await notesLocalServiceInterface.saveNewNote(
       notesModel: notesModel,
-      sketchList: sketcList
     );
     await loadAllNotes();
   }
@@ -606,28 +503,17 @@ class NotesPro with ChangeNotifier {
      
   }
 
-
-
-
-
   Future deleteNote({required final String notesId}) async {
     await notesLocalServiceInterface.deleteNote(notesId: notesId);
     loadAllNotes();
     notifyListeners();
   }
 
-
-
-
-
-
   Future updateNote({
     required final NotesModel notesModel,
-    required final List<SketchModel>? sketcList,
   }) async {
     await notesLocalServiceInterface.updateNote(
       notesModel: notesModel,
-      sketchList: sketcList,
     );
     loadAllNotes();
     notifyListeners();
