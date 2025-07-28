@@ -30,8 +30,6 @@ class _TaskInsideNoteState extends State<TaskInsideNote> {
     });
   }
 
-
-
   @override
   Widget build(final BuildContext context) {
     final notesSectionProvider = Provider.of<NotesPro>(context);

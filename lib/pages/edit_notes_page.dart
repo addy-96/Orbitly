@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 class EditNotes extends StatefulWidget {
   const EditNotes({super.key, required this.noteId});
   final String noteId;
-  
+
   @override
   State<EditNotes> createState() => _EditNotesState();
 }
@@ -83,5 +83,3 @@ class _EditNotesState extends State<EditNotes> {
     );
   }
 }
-
-

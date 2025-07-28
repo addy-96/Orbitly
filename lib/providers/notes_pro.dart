@@ -1,14 +1,13 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:noted_d/core/exceptions.dart';
 import 'package:noted_d/core/snackbar.dart';
 import 'package:noted_d/core/util_functions.dart';
 import 'package:noted_d/models/notes_model.dart';
 import 'package:noted_d/services/notes_local_service.dart';
 import 'package:path_provider/path_provider.dart';
-
 
 abstract class NoteBlocks {}
 
@@ -36,27 +35,21 @@ final class DrawingBlock extends NoteBlocks {
 
   final String drawingId;
 
-  DrawingBlock({
-    required this.drawingImagePath,
-    required this.drawingId,
-  });
+  DrawingBlock({required this.drawingImagePath, required this.drawingId});
 }
 
 final class GestureBlock extends NoteBlocks {}
 
-
-
-
-// provider for notes home and edit notes 
+// provider for notes home and edit notes
 class NotesPro with ChangeNotifier {
   final NotesLocalServiceInterface notesLocalServiceInterface;
   NotesPro({required this.notesLocalServiceInterface});
 
-// for homepage
+  // for homepage
   List<HomeNotesModel> _notesList = [];
 
   List<HomeNotesModel> get notesList => _notesList;
- 
+
   // for note edit section
   final List<NoteBlocks> _sectionList = [GestureBlock()];
 
@@ -65,6 +58,15 @@ class NotesPro with ChangeNotifier {
   final TextEditingController _titleController = TextEditingController();
 
   TextEditingController get titleController => _titleController;
+
+  //for folders section
+  List<String> _folderList = [];
+
+  List<String> get folderList => _folderList;
+
+  String _selectedFolder = 'All';
+
+  String get selectedFolder => _selectedFolder;
 
   @override
   void dispose() {
@@ -95,9 +97,6 @@ class NotesPro with ChangeNotifier {
       ..add(GestureBlock());
     notifyListeners();
   }
-
-
-
 
   // add text section to notes
   void addTextsection() {
@@ -271,10 +270,6 @@ class NotesPro with ChangeNotifier {
     }
   }
 
-
-  
-
-
   // remove image or task section from notes
   void removeImageOrTask({required final int index}) {
     if (_sectionList.length != 2) {
@@ -295,8 +290,11 @@ class NotesPro with ChangeNotifier {
     return;
   }
 
-  void removeDrawingSection({required final String drawingImagePath,required final int index}) async{
-        if (_sectionList.length != 2) {
+  void removeDrawingSection({
+    required final String drawingImagePath,
+    required final int index,
+  }) async {
+    if (_sectionList.length != 2) {
       final beforeSection = _sectionList[index - 1];
       final afterSection = _sectionList[index + 1];
 
@@ -308,30 +306,25 @@ class NotesPro with ChangeNotifier {
         notifyListeners();
         return;
       }
-
     }
-     _sectionList.removeAt(index);
+    _sectionList.removeAt(index);
     notifyListeners();
-    
-       notesLocalServiceInterface.deleteDrawingImage(imagePath: drawingImagePath);
+
+    notesLocalServiceInterface.deleteDrawingImage(imagePath: drawingImagePath);
     final dir = await getApplicationDocumentsDirectory();
-    if(dir.listSync().isNotEmpty){
-        for(var item in dir.listSync()){
-          log(item.path);
-        }
-      } 
-      return;
+    if (dir.listSync().isNotEmpty) {
+      for (var item in dir.listSync()) {
+        log(item.path);
+      }
+    }
+    return;
   }
-
-
-
 
   //save note ----> called add note inside
   Future<void> saveNote({
     required final BuildContext context,
     required final bool isForEditPage,
     required final String? noteId,
-
   }) async {
     try {
       final bool isContentPresent = validateContent();
@@ -382,11 +375,12 @@ class NotesPro with ChangeNotifier {
             final sectionModel = SectionModel(
               sectionNo: i,
               sectionType: 'drawing',
-              sectionContnet: section.drawingImagePath,  // here to store drawing id for futher feature
+              sectionContnet: section
+                  .drawingImagePath, // here to store drawing id for futher feature
             );
             sectionModelList.add(sectionModel);
           }
-        }      
+        }
         final NotesModel notesModel = NotesModel(
           notesId: noteId,
           createdAt: DateTime.now(),
@@ -470,16 +464,17 @@ class NotesPro with ChangeNotifier {
 
   // load all notes at homscreen
   Future loadAllNotes() async {
-    _notesList = await notesLocalServiceInterface.getAllNotes();
+    _notesList = await notesLocalServiceInterface.getAllNotes(
+      selectedFolder: _selectedFolder,
+    );
     notifyListeners();
   }
 
   //add note <---- called from save note inside
-  Future addNote({
-    required final NotesModel notesModel,
-  }) async {
+  Future addNote({required final NotesModel notesModel}) async {
     await notesLocalServiceInterface.saveNewNote(
       notesModel: notesModel,
+      selectedFolder: _selectedFolder,
     );
     await loadAllNotes();
   }
@@ -505,10 +500,13 @@ class NotesPro with ChangeNotifier {
       } else if (secton.sectionType == 'image') {
         _sectionList.add(Imageblock(imagePath: secton.sectionContnet));
       } else if (secton.sectionType == 'drawing') {
-        _sectionList.add(DrawingBlock(drawingId:  secton.sectionId,drawingImagePath    : secton.sectionContnet,));
-      }
-      
-       else if (secton.sectionType == 'task') {
+        _sectionList.add(
+          DrawingBlock(
+            drawingId: secton.sectionId,
+            drawingImagePath: secton.sectionContnet,
+          ),
+        );
+      } else if (secton.sectionType == 'task') {
         final task = secton.sectionContnet.substring(
           0,
           secton.sectionContnet.length - 3,
@@ -527,7 +525,6 @@ class NotesPro with ChangeNotifier {
 
     notifyListeners();
     return;
-     
   }
 
   Future deleteNote({required final String notesId}) async {
@@ -536,17 +533,41 @@ class NotesPro with ChangeNotifier {
     notifyListeners();
   }
 
-  Future updateNote({
-    required final NotesModel notesModel,
-  }) async {
-    await notesLocalServiceInterface.updateNote(
-      notesModel: notesModel,
-    );
+  Future updateNote({required final NotesModel notesModel}) async {
+    await notesLocalServiceInterface.updateNote(notesModel: notesModel);
     loadAllNotes();
     notifyListeners();
   }
+
+  Future loadAllFolders() async {
+    _folderList = await notesLocalServiceInterface.getAllFolders();
+    notifyListeners();
+  }
+
+  Future addaFolder({required final String foldername}) async {
+    notesLocalServiceInterface.createAFolder(folderName: foldername);
+    loadAllFolders();
+  }
+
+  void selectFolder({required final String selectedFolderName}) {
+    if (folderList.contains(selectedFolderName)) {
+      _selectedFolder = selectedFolderName;
+      loadAllNotes();
+    } else if (selectedFolderName == 'All') {
+      _selectedFolder = 'All';
+      loadAllNotes();
+    }
+    log('selected folder is $selectedFolderName');
+    notifyListeners();
+  }
+
+  void addNoteToFolder({
+    required final String noteId,
+    required final String foldername,
+  }) async {
+    await notesLocalServiceInterface.addNoteToFolder(
+      foldername: foldername,
+      noteId: noteId,
+    );
+  }
 }
-
-
-
-

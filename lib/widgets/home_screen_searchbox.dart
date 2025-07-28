@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -111,12 +110,10 @@ class HomeScreenSearchbox extends StatelessWidget {
                   ),
                 ],
               ),
-          ),
+            ),
           ),
         ),
       );
     }
   }
 }
-
-

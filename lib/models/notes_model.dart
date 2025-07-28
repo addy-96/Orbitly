@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 class NotesModel {
-  final String notesId; 
+  final String notesId;
   final DateTime createdAt;
   final String? notesTitle;
   final DateTime modifiedAt;
@@ -18,31 +18,11 @@ class NotesModel {
   }) : notesId = notesId ?? const Uuid().v4();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class SectionModel {
   final String sectionId;
   final int sectionNo;
   final String sectionType;
   final String sectionContnet;
-  
 
   SectionModel({
     final String? sectionId,
@@ -51,7 +31,6 @@ class SectionModel {
     required this.sectionContnet,
   }) : sectionId = sectionId ?? const Uuid().v4();
 }
-
 
 class HomeNotesModel {
   final String notesId;

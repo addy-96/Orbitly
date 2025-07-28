@@ -3,17 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:noted_d/providers/notes_pro.dart';
 import 'package:provider/provider.dart';
 
-
-
-
-//sqflite tables 
+//sqflite tables
 const notesTable = 'notes';
 const sectionTable = 'sections';
 const taskTable = 'tasks';
 const drawingTable = 'drawings';
+const folderTable = 'folders';
 
 //notes table columns -ntc
-const notesIdNTC = 'notesId'; 
+const notesIdNTC = 'notesId';
 const notesTitleNTC = 'notesTitle';
 const createdAtNTC = 'createdAt';
 const modifiedAtNTC = 'modifiedAt';
@@ -39,8 +37,6 @@ const sketchColorDTC = 'sketchColor';
 const sketchStrokeDTC = 'sketchStroke';
 const sketchPointsDTC = 'sketchPoint';
 const sketchNoDTC = 'sketchNo';
-
-
 
 //
 
@@ -83,12 +79,9 @@ final List<Color> colorPallets = [
   const Color(0xFFFF8A65), // Coral
 ];
 
-
-
 DateTime getDateTime() {
   return DateTime.now();
 }
-
 
 void displaySectionLis(final BuildContext context) {
   final notesPro = Provider.of<NotesPro>(context, listen: false);

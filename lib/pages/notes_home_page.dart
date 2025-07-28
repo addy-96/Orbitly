@@ -20,7 +20,6 @@ class NotesAppHome extends StatefulWidget {
 }
 
 class _NotesAppHomeState extends State<NotesAppHome> {
-
   @override
   Widget build(final BuildContext context) {
     final navIndexPro = Provider.of<NavbarPro>(context);
@@ -30,9 +29,9 @@ class _NotesAppHomeState extends State<NotesAppHome> {
       body: Column(
         children: [
           const Gap(10),
-         const Padding(
-            padding:  EdgeInsets.only(top: 10),
-            child:  HomeAppBarActions(),
+          const Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: HomeAppBarActions(),
           ),
           Expanded(
             child: Padding(
@@ -46,7 +45,7 @@ class _NotesAppHomeState extends State<NotesAppHome> {
                               WidgetsBinding.instance.addPostFrameCallback((_) {
                                 context.push('/search');
                               });
-                              return const SizedBox.shrink(); 
+                              return const SizedBox.shrink();
                             } else {
                               return const HomeNotesBodySection();
                             }

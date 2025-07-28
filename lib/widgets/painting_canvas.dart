@@ -10,7 +10,6 @@ class PaintingCanvas extends CustomPainter {
 
   @override
   void paint(final Canvas canvas, final Size size) {
-    
     final Paint paint = Paint()
       ..color = provider.currentPaintColor
       ..style = PaintingStyle.fill

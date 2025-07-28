@@ -19,10 +19,8 @@ class DrawingPageAppBar extends StatelessWidget implements PreferredSizeWidget {
     }
   }
 
-
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-
 
   @override
   PreferredSizeWidget build(final BuildContext context) {

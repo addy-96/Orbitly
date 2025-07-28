@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 
-TextStyle textStyleOS({required final double fontSize, required final Color fontColor}) {
+TextStyle textStyleOS({
+  required final double fontSize,
+  required final Color fontColor,
+}) {
   return TextStyle(
     fontSize: fontSize,
     color: fontColor,
@@ -11,7 +14,10 @@ TextStyle textStyleOS({required final double fontSize, required final Color font
 }
 
 //OpenSansCondensed
-TextStyle textStyleOSC({required final double fontSize, required final Color fontColor}) {
+TextStyle textStyleOSC({
+  required final double fontSize,
+  required final Color fontColor,
+}) {
   return TextStyle(
     fontSize: fontSize,
     color: fontColor,
@@ -20,7 +26,10 @@ TextStyle textStyleOSC({required final double fontSize, required final Color fon
 }
 
 //OpenSans
-TextStyle textStyleOSSC({required final double fontSize, required final Color fontColor}) {
+TextStyle textStyleOSSC({
+  required final double fontSize,
+  required final Color fontColor,
+}) {
   return TextStyle(
     fontSize: fontSize,
     color: fontColor,

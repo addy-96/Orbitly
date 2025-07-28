@@ -9,7 +9,7 @@ void cSnack({
   ScaffoldMessenger.of(context).hideCurrentSnackBar;
   ScaffoldMessenger.of(context).showSnackBar(
     snackBarAnimationStyle: const AnimationStyle(
-      curve: Curves.bounceInOut, 
+      curve: Curves.bounceInOut,
       duration: Duration(milliseconds: 1500),
     ),
     SnackBar(

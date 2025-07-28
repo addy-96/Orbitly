@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:noted_d/providers/notes_pro.dart';
@@ -17,17 +16,16 @@ class CreateNotesPage extends StatefulWidget {
 }
 
 class _CreateNotesPageState extends State<CreateNotesPage> {
+  late NotesPro notesPro;
 
-late NotesPro notesPro;
-
-@override
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_isFirstTime) {
       _isFirstTime = false;
       notesPro = Provider.of<NotesPro>(context, listen: false);
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        notesPro.reset(); 
+        notesPro.reset();
       });
     }
   }
@@ -68,7 +66,7 @@ late NotesPro notesPro;
               CreateEditNoteTimeSec(),
               Gap(10),
               CreateEditNoteBody(),
-              CreatedEditNoteToolbar()
+              CreatedEditNoteToolbar(),
             ],
           ),
         ),

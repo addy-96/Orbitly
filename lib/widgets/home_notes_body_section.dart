@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
+import 'package:noted_d/widgets/home_folder_list.dart';
 import 'package:noted_d/widgets/home_note_widget.dart';
 import 'package:noted_d/widgets/home_screen_searchbox.dart';
 import 'package:provider/provider.dart';
@@ -43,15 +44,20 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
           },
           child: const HomeScreenSearchbox(isWithInputField: false),
         ),
+        const Gap(5),
+        const HomeFolderList(),
         Consumer<NotesPro>(
           builder: (final context, final value, final child) {
             if (value.notesList.isEmpty) {
-              return  Expanded(
+              return Expanded(
                 child: Center(
                   child: Text(
                     'Click on add icon below to start creating notes!',
                     textAlign: TextAlign.center,
-                    style: textStyleOS(fontSize: 12, fontColor: Colors.grey.shade500),
+                    style: textStyleOS(
+                      fontSize: 12,
+                      fontColor: Colors.grey.shade500,
+                    ),
                   ),
                 ),
               );
@@ -61,9 +67,10 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
                   children: [
                     GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                      ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
                       shrinkWrap: true,
                       itemCount: value.notesList.length,
                       itemBuilder: (final context, final index) {

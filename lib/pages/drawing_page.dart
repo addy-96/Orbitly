@@ -15,7 +15,6 @@ class DrawingPage extends StatefulWidget {
 }
 
 class _DrawingPageState extends State<DrawingPage> {
-
   @override
   Widget build(final BuildContext context) {
     final drawingProvider = Provider.of<DrawingPro>(context, listen: true);
@@ -59,9 +58,7 @@ class _DrawingPageState extends State<DrawingPage> {
       ),
     );
   }
-
 }
-
 
 class ColorPalletOption extends StatelessWidget {
   const ColorPalletOption({super.key, required this.color});
@@ -96,37 +93,3 @@ class ColorPalletOption extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

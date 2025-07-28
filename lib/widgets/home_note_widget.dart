@@ -46,17 +46,17 @@ class HomeNoteWidget extends StatelessWidget {
         onTap: () async {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (final context) => EditNotes(noteId: homeNotesModel.notesId),
+              builder: (final context) =>
+                  EditNotes(noteId: homeNotesModel.notesId),
             ),
-          ); 
-
+          );
         },
         child: Hero(
           tag: homeNotesModel.notesId,
           child: Material(
-          elevation: 1,
-              borderRadius: BorderRadius.circular(19),
-          color: Colors.white,
+            elevation: 2,
+            borderRadius: BorderRadius.circular(19),
+            color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -75,25 +75,27 @@ class HomeNoteWidget extends StatelessWidget {
                     ? Center(
                         child: !isSearchedResult
                             ? Text(
-                          maxLines: 4,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          homeNotesModel.notesContentHighlight,
-                          style: textStyleOS(
-                            fontSize: 15,
-                            fontColor: Colors.grey.shade500,
-                          ).copyWith(fontWeight: FontWeight.w400),
+                                maxLines: 4,
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                                homeNotesModel.notesContentHighlight,
+                                style: textStyleOS(
+                                  fontSize: 15,
+                                  fontColor: Colors.grey.shade500,
+                                ).copyWith(fontWeight: FontWeight.w400),
                               )
                             : Consumer(
-                                builder: (final context, final value, final child) {
-                                  return RichText(
-                                    text: TextSpan(
-                                      text: '',
-                                      children: highlightWords(seachProvider),
-                                    ),
-                                  );
-                                },
-                     
+                                builder:
+                                    (final context, final value, final child) {
+                                      return RichText(
+                                        text: TextSpan(
+                                          text: '',
+                                          children: highlightWords(
+                                            seachProvider,
+                                          ),
+                                        ),
+                                      );
+                                    },
                               ),
                       )
                     : const SizedBox.shrink(),

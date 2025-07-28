@@ -11,12 +11,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class DrawingPro with ChangeNotifier {
- 
   DrawingPro({required this.notesPro});
   final NotesPro notesPro;
 
   final List<Offset> _drawingPoints = [];
- 
+
   final List<SketchModel> _sketchList = [];
 
   final double _minStrokeWidth = 1;
@@ -30,7 +29,6 @@ class DrawingPro with ChangeNotifier {
   List<SketchModel> _sketchBuffer = [];
 
   final GlobalKey _drawingKey = GlobalKey();
-  
 
   //getters
 
@@ -47,7 +45,7 @@ class DrawingPro with ChangeNotifier {
   List<SketchModel> get sketchList => _sketchList;
 
   List<SketchModel> get sketchBuffer => _sketchBuffer;
-  
+
   GlobalKey get drawingAreaKey => _drawingKey;
 
   Future captureDrawingAndAdd(final BuildContext context) async {
@@ -78,7 +76,6 @@ class DrawingPro with ChangeNotifier {
         drawingId: drawingId,
         context: context,
       );
-
     } catch (err) {
       log(err.toString());
     }
@@ -88,15 +85,10 @@ class DrawingPro with ChangeNotifier {
   void drawSketch({required final Offset points}) {
     _drawingPoints.add(points);
     notifyListeners();
-
   }
 
-
-
-
-////////////////////////////
+  ////////////////////////////
   void addToSketch({required final SketchModel sketch}) {
-
     final coppiedPoints = List<Offset>.from(drawingPoints);
 
     _drawingPoints.clear();
@@ -107,7 +99,6 @@ class DrawingPro with ChangeNotifier {
         sketchColor: sketch.sketchColor,
         strokeWidth: sketch.strokeWidth,
       ),
-
     );
 
     _sketchBuffer = List<SketchModel>.from(sketchList);
@@ -115,11 +106,7 @@ class DrawingPro with ChangeNotifier {
     notifyListeners();
   }
 
-
-
-
-
-////////////////////////////
+  ////////////////////////////
   void undoSketch() {
     _sketchList.remove(_sketchList.last);
     log('sketch removed : ${sketchList.length}');
@@ -127,54 +114,37 @@ class DrawingPro with ChangeNotifier {
     notifyListeners();
   }
 
-
-////////////////////////////
+  ////////////////////////////
   void redoSketch() {
     _sketchList.add(_sketchBuffer[_sketchList.length]);
     notifyListeners();
   }
 
-
-
-
-////////////////////////////
+  ////////////////////////////
   void selectStrokeWidth({required final double stroke}) {
     _currentStrokeWidth = stroke;
     notifyListeners();
   }
 
-
-
-
-////////////////////////////
+  ////////////////////////////
   void selectColor({required final Color selectedColor}) {
     _currentPaintColor = selectedColor;
     notifyListeners();
   }
 
-
-
-
-////////////////////////////
+  ////////////////////////////
   void resetStroke() {
     _currentStrokeWidth = 4;
     notifyListeners();
   }
 
-
-
-
-
-////////////////////////////
+  ////////////////////////////
   void resetCanvas() {
     _sketchList.clear();
     _sketchBuffer.clear();
   }
 
-
-
-
-////////////////////////////
+  ////////////////////////////
   Future addDrawingToNotesSection({
     required final String imagePath,
     required final List<SketchModel> sketchList,
@@ -190,5 +160,4 @@ class DrawingPro with ChangeNotifier {
     );
     resetCanvas();
   }
- 
 }

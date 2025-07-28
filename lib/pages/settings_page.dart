@@ -13,7 +13,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:sqflite/sqflite.dart';
 
-
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
@@ -24,7 +23,6 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   final ScrollController scrollController = ScrollController();
 
-
   @override
   void dispose() {
     scrollController.dispose();
@@ -33,7 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(final BuildContext context) {
-final settingsProvider = provider.Provider.of<SettingsPro>(context);
+    final settingsProvider = provider.Provider.of<SettingsPro>(context);
     return Scaffold(
       backgroundColor: scaffoldBackgroudColor,
       appBar: AppBar(
@@ -71,7 +69,6 @@ final settingsProvider = provider.Provider.of<SettingsPro>(context);
             },
             icon: const Icon(Icons.delete),
           ),
-         
         ],
       ),
       body: Padding(
@@ -264,7 +261,6 @@ final settingsProvider = provider.Provider.of<SettingsPro>(context);
                     ),
                   ),
                   const Gap(10),
-                
                 ],
               ),
             ),
@@ -330,8 +326,7 @@ final settingsProvider = provider.Provider.of<SettingsPro>(context);
     );
   }
 
-
-void showOptionSheet({
+  void showOptionSheet({
     required final List<String> options,
     required final String topic,
   }) {
@@ -403,4 +398,3 @@ void showOptionSheet({
     );
   }
 }
-

@@ -14,7 +14,7 @@ class HomeAppBarActions extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-               context.push('/folder');
+              context.push('/folder');
             },
             icon: const Icon(HugeIcons.strokeRoundedFolder01),
           ),

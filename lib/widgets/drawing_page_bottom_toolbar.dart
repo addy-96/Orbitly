@@ -83,7 +83,7 @@ class DrawingPageBottomToolbar extends StatelessWidget {
                             ),
                           ],
                         ),
-    
+
                         const Gap(20),
                       ],
                     ),
@@ -147,8 +147,7 @@ class DrawingPageBottomToolbar extends StatelessWidget {
                           ),
                           const SizedBox(height: 16),
                           SizedBox(
-                            height:
-                                60, // Fixed height for horizontal ListView
+                            height: 60, // Fixed height for horizontal ListView
                             child: Stack(
                               children: [
                                 Padding(
@@ -175,8 +174,7 @@ class DrawingPageBottomToolbar extends StatelessWidget {
                                                     width: 10,
                                                     height: 4,
                                                     decoration: BoxDecoration(
-                                                      color:
-                                                          Colors.deepOrange,
+                                                      color: Colors.deepOrange,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                             14,

@@ -7,7 +7,10 @@ import 'package:sqflite/sqflite.dart';
 abstract interface class TasksLocalServiceInterface {
   Future<List<TaskModel>> loadAllTasks();
 
-  Future updateTaskCheckBox({required final int isComplete, required final String taskId});
+  Future updateTaskCheckBox({
+    required final int isComplete,
+    required final String taskId,
+  });
 
   Future updateTaskTable({required final List<TaskModel> currentTaskList});
 }
@@ -42,7 +45,7 @@ final class TasksLocalServiceInterfaceImpl
       final db = await createDatabase();
 
       final getTasks = await db.query(taskTable);
-log(getTasks.toString());
+      log(getTasks.toString());
       for (var task in getTasks) {
         final TaskModel taskModel = TaskModel(
           taskId: task[taskIdTTC] as String,
@@ -60,7 +63,9 @@ log(getTasks.toString());
   }
 
   @override
-  Future updateTaskTable({required final List<TaskModel> currentTaskList}) async {
+  Future updateTaskTable({
+    required final List<TaskModel> currentTaskList,
+  }) async {
     try {
       final db = await createDatabase();
       final currentDatabaseTasks = await db.query(taskTable);

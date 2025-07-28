@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:noted_d/core/constant.dart';
@@ -44,21 +43,31 @@ class SearchPage extends StatelessWidget {
                       builder: (final context, final value, final child) {
                         final listOfSearchedNotes = searchBoxPro.searchNotes;
                         if (searchBoxPro.searchController.text.trim().isEmpty) {
-                          return  Center(
-                            child: Text('Search to find notes!', 
-                             textAlign: TextAlign.center,
-                    style: textStyleOS(fontSize: 12, fontColor: Colors.grey.shade500),
-                             ),
+                          return Center(
+                            child: Text(
+                              'Search to find notes!',
+                              textAlign: TextAlign.center,
+                              style: textStyleOS(
+                                fontSize: 12,
+                                fontColor: Colors.grey.shade500,
+                              ),
+                            ),
                           );
                         }
                         if (searchBoxPro.searchController.text
                                 .trim()
                                 .isNotEmpty &&
                             listOfSearchedNotes.isEmpty) {
-                          return  Center(child: Text('No note found!', 
-                           textAlign: TextAlign.center,
-                    style: textStyleOS(fontSize: 12, fontColor: Colors.grey.shade500),
-                          ));
+                          return Center(
+                            child: Text(
+                              'No note found!',
+                              textAlign: TextAlign.center,
+                              style: textStyleOS(
+                                fontSize: 12,
+                                fontColor: Colors.grey.shade500,
+                              ),
+                            ),
+                          );
                         } else {
                           return GridView.builder(
                             gridDelegate:

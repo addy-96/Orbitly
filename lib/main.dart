@@ -16,7 +16,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (final context) => NavbarPro(),),
+        ChangeNotifierProvider(create: (final context) => NavbarPro()),
         ChangeNotifierProvider(
           create: (final context) => NotesPro(
             notesLocalServiceInterface: NotesLocalServiceInterfaceImpl(),
@@ -41,12 +41,11 @@ void main() {
             tasksLocalServiceInterface: TasksLocalServiceInterfaceImpl(),
           ),
         ),
-      ],      
+      ],
       child: const MyApp(),
     ),
   );
 }
-
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});

@@ -13,7 +13,6 @@ class SketchModel {
   });
 }
 
-
 class DrawingModel {
   final String drawingId;
   final String? noteId;
