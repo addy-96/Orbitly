@@ -36,6 +36,11 @@ abstract interface class NotesLocalServiceInterface {
     required final String foldername,
     required final String noteId,
   });
+
+  Future<void> removeFromFolder({
+    required final String foldername,
+    required final String noteId,
+  });
 }
 
 class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
@@ -58,7 +63,8 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
           $notesTitleNTC TEXT,
           $createdAtNTC TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
           $modifiedAtNTC TEXT NOT NULL,
-          $notesContentHighLightNTC TEXT
+          $notesContentHighLightNTC TEXT,
+          $noteBackgroundNTC TEXT NOT NULL
           );
       ''');
 
@@ -110,6 +116,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
         notesTitleNTC: notesModel.notesTitle,
         modifiedAtNTC: notesModel.modifiedAt.toIso8601String(),
         notesContentHighLightNTC: notesModel.notesContentHighLight,
+        noteBackgroundNTC: notesModel.notesBackground
       });
 
       for (var sec in notesModel.sectionList) {
@@ -227,6 +234,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
         notesContentHighLight:
             getNotesDetail.first[notesContentHighLightNTC] as String,
         sectionList: sectionModelList,
+        notesBackground: getNotesDetail.first[noteBackgroundNTC] as String,
       );
       log('enter edit note completed');
       return notesModel;
@@ -403,4 +411,20 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
       log(err.toString());
     }
   }
+  
+  @override
+  Future<void> removeFromFolder({
+    required final String foldername,
+    required final String noteId,
+  }) async {
+    try {
+      final db = await createDatabase();
+      await db.delete(foldername, where: 'noteId = ?', whereArgs: [noteId]);
+    } catch (err) {
+      log(err.toString());
+      throw Exception(err.toString());
+    }
+  }
+
+
 }

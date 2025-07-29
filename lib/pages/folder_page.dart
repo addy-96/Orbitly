@@ -41,7 +41,9 @@ class _FolderPageState extends State<FolderPage> {
   Widget build(final BuildContext context) {
     final notesProvider = Provider.of<NotesPro>(context);
     return Scaffold(
+      backgroundColor: scaffoldBackgroudColor,
       appBar: AppBar(
+        forceMaterialTransparency: true,
         centerTitle: true,
         title: InkWell(
           onTap: () async {

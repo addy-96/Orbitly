@@ -70,6 +70,10 @@ flutter:
 
   assets:
     - assets/
+    - assets/avatar/av0.png
+    - assets/avatar/av1.png
+    - assets/avatar/av2.png
+
 
   fonts:
     - family: OpenSans

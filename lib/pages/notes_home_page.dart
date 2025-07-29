@@ -22,17 +22,17 @@ class NotesAppHome extends StatefulWidget {
 class _NotesAppHomeState extends State<NotesAppHome> {
   @override
   Widget build(final BuildContext context) {
-    final navIndexPro = Provider.of<NavbarPro>(context);
-    final taskPro = Provider.of<TaskPro>(context);
+
+    final navIndexProvider = Provider.of<NavbarPro>(context);
+
+    final taskProvider = Provider.of<TaskPro>(context);
+
     return Scaffold(
       backgroundColor: scaffoldBackgroudColor,
       body: Column(
         children: [
           const Gap(10),
-          const Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: HomeAppBarActions(),
-          ),
+          HomeAppBarActions(),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: 20, top: 30, right: 20),
@@ -58,11 +58,11 @@ class _NotesAppHomeState extends State<NotesAppHome> {
           ),
         ],
       ),
-      bottomNavigationBar: bottomNavbar(navIndexPro: navIndexPro),
+      bottomNavigationBar: bottomNavbar(navIndexPro: navIndexProvider),
       floatingActionButton: homefloatingActionButton(
         context: context,
-        navIndexPro: navIndexPro,
-        taskPro: taskPro,
+        navIndexPro: navIndexProvider,
+        taskPro: taskProvider,
       ),
     );
   }

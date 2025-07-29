@@ -11,43 +11,81 @@ import 'package:path_provider/path_provider.dart';
 abstract class NoteBlocks {}
 
 final class TextBlock extends NoteBlocks {
+
   final TextEditingController textEditingController;
 
   TextBlock({required this.textEditingController});
+
 }
 
 final class TaskBlock extends NoteBlocks {
+
   final int isComplete;
+
   final TextEditingController textEditingController;
 
   TaskBlock({required this.textEditingController, required this.isComplete});
+
 }
 
 final class Imageblock extends NoteBlocks {
+
   final String imagePath;
 
   Imageblock({required this.imagePath});
+
 }
 
 final class DrawingBlock extends NoteBlocks {
+
   final String drawingImagePath;
 
   final String drawingId;
 
   DrawingBlock({required this.drawingImagePath, required this.drawingId});
+
 }
 
 final class GestureBlock extends NoteBlocks {}
 
+
+
+
+
+
+
+
+
+
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
 // provider for notes home and edit notes
 class NotesPro with ChangeNotifier {
+
   final NotesLocalServiceInterface notesLocalServiceInterface;
+
   NotesPro({required this.notesLocalServiceInterface});
+
+
 
   // for homepage
   List<HomeNotesModel> _notesList = [];
 
   List<HomeNotesModel> get notesList => _notesList;
+
+
 
   // for note edit section
   final List<NoteBlocks> _sectionList = [GestureBlock()];
@@ -58,6 +96,8 @@ class NotesPro with ChangeNotifier {
 
   TextEditingController get titleController => _titleController;
 
+
+
   //for folders section
   List<String> _folderList = [];
 
@@ -66,6 +106,18 @@ class NotesPro with ChangeNotifier {
   String _selectedFolder = 'All';
 
   String get selectedFolder => _selectedFolder;
+
+
+
+  //for background avatar
+  bool _showBackgroundAvatarMenu = false;
+
+  bool get showBackgroundAvatarMenu => _showBackgroundAvatarMenu;
+
+  String _currentNoteBackground = 'default';
+
+  String get currentNoteBackground => _currentNoteBackground;
+
 
   @override
   void dispose() {
@@ -80,6 +132,7 @@ class NotesPro with ChangeNotifier {
     _sectionList.clear();
     super.dispose();
   }
+
 
   void reset() {
     log('reset called');
@@ -96,6 +149,7 @@ class NotesPro with ChangeNotifier {
       ..add(GestureBlock());
     notifyListeners();
   }
+
 
   // add text section to notes
   void addTextsection() {
@@ -134,6 +188,7 @@ class NotesPro with ChangeNotifier {
       return;
     }
   }
+
 
   //add image section to notes
   Future<void> addImageSection() async {
@@ -180,6 +235,7 @@ class NotesPro with ChangeNotifier {
     return;
   }
 
+
   //add task section to notes
   void addTaskSection(final BuildContext context) {
     if (_sectionList.length == 1) {
@@ -222,6 +278,7 @@ class NotesPro with ChangeNotifier {
     notifyListeners();
     return;
   }
+
 
   //add drawing section to notes
   Future<void> addDrawingSection({
@@ -269,6 +326,7 @@ class NotesPro with ChangeNotifier {
     }
   }
 
+
   // remove image or task section from notes
   void removeImageOrTask({required final int index}) {
     if (_sectionList.length != 2) {
@@ -288,6 +346,7 @@ class NotesPro with ChangeNotifier {
     notifyListeners();
     return;
   }
+
 
   void removeDrawingSection({
     required final String drawingImagePath,
@@ -318,6 +377,7 @@ class NotesPro with ChangeNotifier {
     }
     return;
   }
+
 
   //save note ----> called add note inside
   Future<void> saveNote({
@@ -387,6 +447,7 @@ class NotesPro with ChangeNotifier {
           notesTitle: _titleController.text,
           notesContentHighLight: notesContentHighlight,
           sectionList: sectionModelList,
+          notesBackground: _currentNoteBackground
         );
         !isForEditPage
             ? await addNote(notesModel: notesModel)
@@ -399,6 +460,7 @@ class NotesPro with ChangeNotifier {
       throw Exception(err);
     }
   }
+
 
   // validate if note has content
   bool validateContent() {
@@ -427,6 +489,7 @@ class NotesPro with ChangeNotifier {
 
     return result;
   }
+
 
   // get notehighlight that has to be entered in local database
   String getNoteContentHiglight() {
@@ -461,6 +524,7 @@ class NotesPro with ChangeNotifier {
     return highlight;
   }
 
+
   // load all notes at homscreen
   Future loadAllNotes() async {
     _notesList = await notesLocalServiceInterface.getAllNotes(
@@ -468,6 +532,7 @@ class NotesPro with ChangeNotifier {
     );
     notifyListeners();
   }
+
 
   //add note <---- called from save note inside
   Future addNote({required final NotesModel notesModel}) async {
@@ -477,6 +542,8 @@ class NotesPro with ChangeNotifier {
     );
     await loadAllNotes();
   }
+
+
 
   Future<void> editNoteInitialization({required final String noteId}) async {
     final restorePreviusNote = await notesLocalServiceInterface.enterEditNote(
@@ -526,11 +593,14 @@ class NotesPro with ChangeNotifier {
     return;
   }
 
+
   Future deleteNote({required final String notesId}) async {
     await notesLocalServiceInterface.deleteNote(notesId: notesId);
     loadAllNotes();
     notifyListeners();
   }
+
+
 
   Future updateNote({required final NotesModel notesModel}) async {
     await notesLocalServiceInterface.updateNote(notesModel: notesModel);
@@ -538,15 +608,24 @@ class NotesPro with ChangeNotifier {
     notifyListeners();
   }
 
+
+
   Future loadAllFolders() async {
     _folderList = await notesLocalServiceInterface.getAllFolders();
     notifyListeners();
   }
 
+
+
+
+
+
+
   Future addaFolder({required final String foldername}) async {
     notesLocalServiceInterface.createAFolder(folderName: foldername);
     loadAllFolders();
   }
+
 
   void selectFolder({required final String selectedFolderName}) {
     if (folderList.contains(selectedFolderName)) {
@@ -560,6 +639,12 @@ class NotesPro with ChangeNotifier {
     notifyListeners();
   }
 
+
+
+
+
+
+
   Future<void> addNoteToFolder({
     required final String noteId,
     required final String foldername,
@@ -569,4 +654,24 @@ class NotesPro with ChangeNotifier {
       noteId: noteId,
     );
   }
+
+
+  Future<void> removeFromFolder({required final String noteId}) async {
+    await notesLocalServiceInterface.removeFromFolder(
+      foldername: selectedFolder,
+      noteId: noteId,
+    );
+    _selectedFolder = 'All';
+  }
+
+  void toggleAvatarBackgroundMenu() async {
+    _showBackgroundAvatarMenu = !_showBackgroundAvatarMenu;
+    notifyListeners();
+  }
+
+  void setNoteBackground({required final String path}) async {
+    _currentNoteBackground = path;
+    notifyListeners();
+  }
+
 }

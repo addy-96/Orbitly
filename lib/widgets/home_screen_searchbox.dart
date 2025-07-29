@@ -1,17 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
+import 'package:noted_d/providers/settings_pro.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreenSearchbox extends StatelessWidget {
   const HomeScreenSearchbox({super.key, required this.isWithInputField});
   final bool isWithInputField;
 
+
+  void _onChanged(final SearchBoxPro searchBoxProvider) {
+    final searchValue = searchBoxProvider.searchController.text.trim();
+    if (searchValue.isEmpty) {
+      return;
+    }
+    searchBoxProvider.clearSearchedNotes();
+    searchBoxProvider.onSearch(
+      searchedString: searchBoxProvider.searchController.text.trim(),
+    );
+  }
+
+  void _onCancel(final SearchBoxPro searchBoxProvider) {
+    searchBoxProvider.searchController.clear();
+    searchBoxProvider.clearSearchedNotes();
+    searchBoxProvider.toggelSearchBox();
+  }
+
   @override
   Widget build(final BuildContext context) {
-    final searchBoxUiPro = Provider.of<SearchBoxPro>(context);
+    final searchBoxProvider = Provider.of<SearchBoxPro>(context);
+    final settingsProvider = Provider.of<SettingsPro>(context);
+    final fontSize = settingsProvider.getFontSize();
     if (isWithInputField) {
       return Row(
         children: [
@@ -22,38 +44,31 @@ class HomeScreenSearchbox extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
+                    color: grey,
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 18,
-                      vertical: 0,
                     ),
                     child: TextField(
-                      style: textStyleOS(fontSize: 18, fontColor: Colors.black),
+                      style: textStyleOS(
+                        fontSize: fontSize * 1.2,
+                        fontColor: Colors.black,
+                      ),
                       onChanged: (final value) {
-                        if (searchBoxUiPro.searchController.text
-                            .trim()
-                            .isEmpty) {
-                          return;
-                        }
-                        searchBoxUiPro.clearSearchedNotes();
-                        searchBoxUiPro.onSearch(
-                          searchedString: searchBoxUiPro.searchController.text
-                              .trim(),
-                        );
+                        _onChanged(searchBoxProvider);
                       },
                       autofocus: true,
-                      controller: searchBoxUiPro.searchController,
+                      controller: searchBoxProvider.searchController,
                       keyboardType: TextInputType.text,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintText: 'Search notes',
                         border: InputBorder.none,
                         hintStyle: textStyleOS(
-                          fontSize: 14,
-                          fontColor: Colors.grey.shade400,
+                          fontSize: fontSize,
+                          fontColor: grey,
                         ).copyWith(fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -62,52 +77,58 @@ class HomeScreenSearchbox extends StatelessWidget {
               ),
             ),
           ),
+
           TextButton(
             onPressed: () {
-              searchBoxUiPro.searchController.clear();
-              searchBoxUiPro.clearSearchedNotes();
-              searchBoxUiPro.toggelSearchBox();
+              _onCancel(searchBoxProvider);
             },
             child: Text(
               'Cancel',
               style: textStyleOS(
-                fontSize: 15,
-                fontColor: Colors.deepOrange,
+                fontSize: fontSize * 1.1,
+                fontColor: themeOrange,
               ).copyWith(fontWeight: FontWeight.w600),
             ),
           ),
+
         ],
       );
     } else {
       return Hero(
         tag: 'search-box',
+
         child: Material(
-          elevation: 1,
+          elevation: 2,
           borderRadius: BorderRadius.circular(50),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.grey.shade300.withOpacity(0.4),
+              color: grey.withOpacity(0.4),
               borderRadius: BorderRadius.circular(50),
             ),
+
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+
                   Icon(
                     HugeIcons.strokeRoundedSearch01,
                     size: MediaQuery.of(context).size.width / 25,
-                    color: Colors.grey.shade400,
+                    color: grey,
                   ),
+
                   const Gap(10),
+
                   Text(
                     'Search notes',
                     style: textStyleOS(
-                      fontSize: 14,
-                      fontColor: Colors.grey.shade400,
+                      fontSize: fontSize,
+                      fontColor: grey,
                     ).copyWith(fontWeight: FontWeight.w500),
                   ),
+
                 ],
               ),
             ),

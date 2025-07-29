@@ -16,6 +16,7 @@ const notesTitleNTC = 'notesTitle';
 const createdAtNTC = 'createdAt';
 const modifiedAtNTC = 'modifiedAt';
 const notesContentHighLightNTC = 'notesContentHighLight';
+const noteBackgroundNTC = 'noteBackground';
 
 //sections table columns -stc
 const sectioonIdSTC = 'sectionId';

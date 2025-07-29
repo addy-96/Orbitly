@@ -34,12 +34,12 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
 
   @override
   Widget build(final BuildContext context) {
-    final notesSectionProvider = Provider.of<NotesPro>(context);
+    final notesProvider = Provider.of<NotesPro>(context);
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (final didPop, final result) async {
         if (!didPop) {
-          await notesSectionProvider.saveNote(
+          await notesProvider.saveNote(
             context: context,
             isForEditPage: false,
             noteId: null,
@@ -47,29 +47,46 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
         }
         return;
       },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: createEditNoteAppBar(
-          isCreate: true,
-          notesPro: notesPro,
-          context: context,
-          noteId: null,
-        ),
-        body: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Gap(10),
-              CreatEditNoteTitleBar(),
-              Gap(10),
-              CreateEditNoteTimeSec(),
-              Gap(10),
-              CreateEditNoteBody(),
-              CreatedEditNoteToolbar(),
-            ],
+      child: Stack(
+        children: [
+          notesProvider.currentNoteBackground == 'default'
+              ? const SizedBox.shrink()
+              : Opacity(
+                  opacity: 0.2,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.asset(
+                      notesProvider.currentNoteBackground,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: createEditNoteAppBar(
+              isCreate: true,
+              notesPro: notesProvider,
+              context: context,
+              noteId: null,
+            ),
+            body: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gap(10),
+                  CreatEditNoteTitleBar(),
+                  Gap(10),
+                  CreateEditNoteTimeSec(),
+                  Gap(10),
+                  CreateEditNoteBody(),
+                  CreatedEditNoteToolbar(),
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

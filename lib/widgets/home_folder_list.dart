@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/notes_pro.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,7 @@ class _HomeFolderListState extends State<HomeFolderList> {
     final notesProvider = Provider.of<NotesPro>(context);
     final selectedFolder = notesProvider.selectedFolder;
     return SizedBox(
-      height: MediaQuery.of(context).size.height / 18,
+      height: MediaQuery.of(context).size.height / 20,
       child: Row(
         children: [
           InkWell(
@@ -45,7 +46,7 @@ class _HomeFolderListState extends State<HomeFolderList> {
                           fontSize: 18,
                           fontColor: selectedFolder == 'All'
                               ? Colors.deepOrange
-                              : Colors.black,
+                              : Colors.grey.shade400,
                         ).copyWith(
                           fontWeight: selectedFolder == 'All'
                               ? FontWeight.bold
@@ -86,7 +87,7 @@ class _HomeFolderListState extends State<HomeFolderList> {
                                   fontSize: 18,
                                   fontColor: selectedFolder == folder
                                       ? Colors.deepOrange
-                                      : Colors.black,
+                                      : Colors.grey.shade400,
                                 ).copyWith(
                                   fontWeight: selectedFolder == folder
                                       ? FontWeight.bold
@@ -101,6 +102,14 @@ class _HomeFolderListState extends State<HomeFolderList> {
               },
             ),
           ),
+          Padding(
+            padding: const EdgeInsetsGeometry.only(top: 10, bottom: 10),
+            child: VerticalDivider(color: Colors.grey.shade400),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(HugeIcons.strokeRoundedGridView),
+          )
         ],
       ),
     );

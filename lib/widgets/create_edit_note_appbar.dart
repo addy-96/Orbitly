@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -44,7 +43,9 @@ PreferredSizeWidget createEditNoteAppBar({
         icon: const Icon(HugeIcons.strokeRoundedShare01),
       ),
       IconButton(
-        onPressed: () {},
+        onPressed: () {
+          notesPro.toggleAvatarBackgroundMenu();
+        },
         icon: const Icon(HugeIcons.strokeRoundedTShirt),
       ),
       noteId != null
@@ -55,7 +56,11 @@ PreferredSizeWidget createEditNoteAppBar({
               itemBuilder: (final context) {
                 return [
                   PopupMenuItem(
-                    onTap: () {},
+                    onTap: () async {
+                      await notesPro.deleteNote(notesId: noteId);
+                      Future.delayed(const Duration(seconds: 1));
+                      context.pop();
+                    },
                     child: Text(
                       'Delete',
                       style: textStyleOS(fontSize: 15, fontColor: Colors.black),
@@ -162,6 +167,19 @@ PreferredSizeWidget createEditNoteAppBar({
                       style: textStyleOS(fontSize: 15, fontColor: Colors.black),
                     ),
                   ),
+                  if (notesPro.selectedFolder != 'All')
+                    PopupMenuItem(
+                      onTap: () async {
+                        await notesPro.removeFromFolder(noteId: noteId);
+                      },
+                      child: Text(
+                        'Remove from ${notesPro.selectedFolder}',
+                        style: textStyleOS(
+                          fontSize: 15,
+                          fontColor: Colors.black,
+                        ),
+                      ),
+                    )
                 ];
               },
             )

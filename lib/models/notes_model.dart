@@ -7,6 +7,7 @@ class NotesModel {
   final DateTime modifiedAt;
   final String? notesContentHighLight;
   List<SectionModel> sectionList;
+  final String notesBackground;
 
   NotesModel({
     final String? notesId,
@@ -15,6 +16,7 @@ class NotesModel {
     required this.notesTitle,
     required this.notesContentHighLight,
     required this.sectionList,
+    required this.notesBackground,
   }) : notesId = notesId ?? const Uuid().v4();
 }
 
