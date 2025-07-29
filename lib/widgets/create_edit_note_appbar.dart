@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/core/constant.dart';
+import 'package:noted_d/core/exceptions.dart';
+import 'package:noted_d/core/snackbar.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/widgets/folder_container_folder_page.dart';
@@ -13,7 +17,6 @@ PreferredSizeWidget createEditNoteAppBar({
   required final BuildContext context,
   required final String? noteId,
 }) {
-  //final DrawingPro drawingPro = Provider.of<DrawingPro>(context);
   return AppBar(
     surfaceTintColor: Colors.transparent,
     forceMaterialTransparency: true,
@@ -62,7 +65,7 @@ PreferredSizeWidget createEditNoteAppBar({
                     onTap: () {
                       showDialog(
                         context: context,
-                        builder: (context) => Dialog(
+                        builder: (final context) => Dialog(
                           backgroundColor: scaffoldBackgroudColor,
                           child: SizedBox(
                             height: MediaQuery.of(context).size.height / 2,
@@ -81,19 +84,37 @@ PreferredSizeWidget createEditNoteAppBar({
                                       Expanded(
                                         child: ListView.builder(
                                           itemCount: notesPro.folderList.length,
-                                          itemBuilder:
-                                              (final context, final index) {
-                                                return InkWell(
-                                                  borderRadius:
-                                                      BorderRadius.circular(14),
-                                                  onTap: () {},
-                                                  child:
-                                                      FolderContainerFolderPage(
+                                          itemBuilder: (final context, final index) {
+                                            return InkWell(
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                              onTap: () async {
+                                                try {
+                                                  await notesPro
+                                                      .addNoteToFolder(
+                                                        noteId: noteId,
                                                         foldername: notesPro
                                                             .folderList[index],
-                                                      ),
-                                                );
+                                                      );
+                                                  context.pop();
+                                                } on NoteAlreadyExistinFolderException catch (
+                                                  err
+                                                ) {
+                                                  log('reached');
+                                                  cSnack(
+                                                    message: err.message,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    context: context,
+                                                  );
+                                                }
                                               },
+                                              child: FolderContainerFolderPage(
+                                                foldername:
+                                                    notesPro.folderList[index],
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ),
                                       InkWell(

@@ -166,7 +166,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
           final getNotesResult = await db.query(
             notesTable,
             where: '$notesIdNTC = ? ',
-            whereArgs: [item],
+            whereArgs: [item['noteId']],
           );
 
           final note = getNotesResult.first;
@@ -245,6 +245,9 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
         where: '$notesIdNTC = ?',
         whereArgs: [notesId],
       );
+
+      // here we have to also delete the foole from the folder
+
       await db.delete(
         sectionTable,
         where: '$notesIdSTC = ?',
@@ -372,10 +375,10 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
     final db = await createDatabase();
     await db.insert(folderTable, {'foldername': folderName});
     await db.execute('''
-  CREATE TABLE IF NOT EXISTS $folderName(
-  noteId TEXT NOT NULL
-  );
-  ''');
+    CREATE TABLE IF NOT EXISTS $folderName(
+    noteId TEXT NOT NULL
+    );
+   ''');
     final getFolders = await db.query(folderTable);
     log(getFolders.toString());
   }
@@ -389,9 +392,9 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
       final db = await createDatabase();
       final notes = await db.query(foldername);
       for (var item in notes) {
-        if (item[noteId] == noteId) {
+        if (item['noteId'] == noteId) {
           throw NoteAlreadyExistinFolderException(
-            message: 'Folder already exist!',
+            message: 'Note already exist in $foldername!',
           );
         }
       }

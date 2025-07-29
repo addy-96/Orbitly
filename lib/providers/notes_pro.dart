@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:noted_d/core/exceptions.dart';
 import 'package:noted_d/core/snackbar.dart';
 import 'package:noted_d/core/util_functions.dart';
 import 'package:noted_d/models/notes_model.dart';
@@ -561,7 +560,7 @@ class NotesPro with ChangeNotifier {
     notifyListeners();
   }
 
-  void addNoteToFolder({
+  Future<void> addNoteToFolder({
     required final String noteId,
     required final String foldername,
   }) async {
