@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
@@ -28,17 +29,21 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
 
   @override
   Widget build(final BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final searchBoxProvider = Provider.of<SearchBoxPro>(context);
     final settingsProvider = Provider.of<SettingsPro>(context);
     return Column(
       children: [
-        Text(
-          'Notes',
-          style: textStyleOS(
-            fontSize: settingsProvider.getFontSize() * 3,
-            fontColor: Colors.black,
-          ).copyWith(fontWeight: FontWeight.w300),
+        InkWell(
+          onTap: () async {
+            queryallTable();
+          },
+          child: Text(
+            'Notes',
+            style: textStyleOS(
+              fontSize: settingsProvider.getFontSize() * 3,
+              fontColor: Colors.black,
+            ).copyWith(fontWeight: FontWeight.w300),
+          ),
         ),
         const Gap(10),
         InkWell(

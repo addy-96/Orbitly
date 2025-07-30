@@ -79,12 +79,12 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
       ''');
 
           await db.execute('''
-          CREATE TABLE IF NOT EXISTS $taskTable (
-          $taskIdTTC TEXT PRIMARY KEY NOT NULL,
-          $taskContentTTC TEXT NOT NULL,
-          $completeStatusTTC INT NOT NULL
-          );
-       ''');
+        CREATE TABLE IF NOT EXISTS $taskTable (
+        $taskIdTTC TEXT PRIMARY KEY NOT NULL,
+        $taskContentTTC TEXT NOT NULL,
+        $completeStatusTTC INT NOT NULL
+      );
+    ''');
 
           await db.execute('''
         CREATE TABLE IF NOT EXISTS $folderTable(
@@ -145,7 +145,10 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
   Future<List<HomeNotesModel>> getAllNotes({
     required final String selectedFolder,
   }) async {
-    try {
+    try { 
+
+
+      
       final db = await createDatabase();
       if (selectedFolder == 'All') {
         final getNotesResult = await db.query(notesTable);
@@ -166,9 +169,13 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
 
         log('get all notes completed');
         return notesList;
+    
+    
       } else {
+        log('reached here');
         final notesInfolder = await db.query(selectedFolder);
         final List<HomeNotesModel> notesList = [];
+        
         for (var item in notesInfolder) {
           final getNotesResult = await db.query(
             notesTable,
@@ -188,8 +195,9 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
           notesList.add(homeNotesModel);
         }
         log('get $selectedFolder notes completed');
-        return notesList;
-      }
+        return notesList; 
+
+      } 
     } catch (err) {
       log(err.toString());
       throw Exception(err);
@@ -383,7 +391,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
     final db = await createDatabase();
     await db.insert(folderTable, {'foldername': folderName});
     await db.execute('''
-    CREATE TABLE IF NOT EXISTS $folderName(
+    CREATE TABLE IF NOT EXISTS "$folderName"(
     noteId TEXT NOT NULL
     );
    ''');

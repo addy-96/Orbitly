@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:noted_d/core/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract interface class SettingsLocalService {
@@ -20,11 +21,12 @@ final class SettingsLocalServiceImpl implements SettingsLocalService {
       final sharedPref = await SharedPreferences.getInstance();
       final ifSettingIntialized = await checkIfSettingsExist();
       if (!ifSettingIntialized) {
-        await sharedPref.setString('cloud-set', 'Setup');
-        await sharedPref.setString('font-size-set', 'Medium');
-        await sharedPref.setString('sort-set', 'BMD');
-        await sharedPref.setString('layout-set', 'Grid');
+        await sharedPref.setString(cloudSetKey, cloudSetKey);
+        await sharedPref.setString(fontSizeSetKey, fontSzieMediumSetVal);
+        await sharedPref.setString(sortSetKey, sortBMDSetVal);
+        await sharedPref.setString(layoutSetKey, layoutGridSetVal);
       }
+      log('settings initializeed in the app');
     } catch (err) {
       log(err.toString());
       throw Exception(err);
@@ -34,7 +36,7 @@ final class SettingsLocalServiceImpl implements SettingsLocalService {
   Future<bool> checkIfSettingsExist() async {
     try {
       final sharedPref = await SharedPreferences.getInstance();
-      final res = sharedPref.getString('cloud-set');
+      final res = sharedPref.getString(cloudSetKey);
       if (res == null) {
         return false;
       }
@@ -80,9 +82,9 @@ final class SettingsLocalServiceImpl implements SettingsLocalService {
     try {
       log('reset settings called');
       final sharedPref = await SharedPreferences.getInstance();
-      await sharedPref.setString('font-size-set', 'Medium');
-      await sharedPref.setString('sort-set', 'BMD');
-      await sharedPref.setString('layout-set', 'Grid');
+      await sharedPref.setString(fontSizeSetKey, fontSzieMediumSetVal);
+      await sharedPref.setString(sortSetKey, sortBMDSetVal);
+      await sharedPref.setString(layoutSetKey, layoutGridSetVal);
     } catch (err) {
       log(err.toString());
       throw Exception(err);

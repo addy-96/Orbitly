@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/models/task_model.dart';
@@ -17,6 +18,8 @@ abstract interface class TasksLocalServiceInterface {
 
 final class TasksLocalServiceInterfaceImpl
     implements TasksLocalServiceInterface {
+
+      
   Future<Database> createDatabase() async {
     try {
       final dbPath = await getDatabasesPath();
@@ -26,9 +29,7 @@ final class TasksLocalServiceInterfaceImpl
       final database = await openDatabase(
         path,
         version: 1,
-        onCreate: (final db, final version) async {
-          log('task database created!');
-        },
+
       );
       return database;
     } catch (err) {
@@ -45,11 +46,13 @@ final class TasksLocalServiceInterfaceImpl
       final db = await createDatabase();
 
       final getTasks = await db.query(taskTable);
-      log(getTasks.toString());
+
       for (var task in getTasks) {
         final TaskModel taskModel = TaskModel(
           taskId: task[taskIdTTC] as String,
-          taskName: task[taskContentTTC] as String,
+          taskController: TextEditingController(
+            text: task[taskContentTTC] as String,
+          ),
           isComplete: task[completeStatusTTC] as int,
         );
         taskModelList.add(taskModel);
@@ -67,9 +70,10 @@ final class TasksLocalServiceInterfaceImpl
     required final List<TaskModel> currentTaskList,
   }) async {
     try {
+      log('reached to update taskTable ${currentTaskList.length.toString()}');
       final db = await createDatabase();
       final currentDatabaseTasks = await db.query(taskTable);
-
+      
       for (var item in currentDatabaseTasks) {
         await db.delete(
           taskTable,
@@ -78,9 +82,10 @@ final class TasksLocalServiceInterfaceImpl
         );
       }
       for (var item in currentTaskList) {
+
         await db.insert(taskTable, {
           taskIdTTC: item.taskId,
-          taskContentTTC: item.taskName,
+          taskContentTTC: item.taskController.text.trim(),
           completeStatusTTC: item.isComplete,
         });
       }

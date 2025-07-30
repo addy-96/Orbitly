@@ -1,7 +1,8 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:noted_d/providers/notes_pro.dart';
-import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart' as p;
 
 //sqflite tables
 const notesTable = 'notes';
@@ -84,6 +85,59 @@ DateTime getDateTime() {
   return DateTime.now();
 }
 
+//App Color Pallets
+var grey = Colors.grey.shade300;
+var darkkgrey = Colors.grey.shade500;
+const themeOrange = Colors.deepOrange;
+
+//settings Constants
+const cloudSetKey = 'cloud-set';
+const cloudSetupSetVal = 'Setup';
+const cloudResetSetVal = 'Reset';
+
+const fontSizeSetKey = 'font-size-set';
+const fontSzieSmallSetVal = 'Small';
+const fontSzieMediumSetVal = 'Medium';
+const fontSzieLargeSetVal = 'Large';
+
+const sortSetKey = 'sort-set';
+const sortBMDSetVal = 'BMD';
+const sortOFSetVal = 'OF';
+
+const layoutSetKey = 'layout-set';
+const layoutGridSetVal = 'Grid';
+const layoutListSetVal = 'List';
+
+void queryTable({required final String tablename}) async {
+  final path = await getDatabasesPath();
+  final dbPath = p.join(path, 'notes.db');
+  final db = await openDatabase(dbPath);
+
+  final res = await db.query(tablename);
+  log(res.toString());
+}
+
+void queryallTable() async {
+  final path = await getDatabasesPath();
+  final dbPath = p.join(path, 'notes.db');
+  final db = await openDatabase(dbPath);
+
+  final List<Map<String, dynamic>> tables = await db.rawQuery(
+    "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
+  );
+
+  // Print table names
+  for (var table in tables) {
+    print('Table: ${table['name']}');
+  }
+}
+
+
+
+
+
+
+/*
 void displaySectionLis(final BuildContext context) {
   final notesPro = Provider.of<NotesPro>(context, listen: false);
   log('-------------------------display section---------------------------');
@@ -102,3 +156,5 @@ void displaySectionLis(final BuildContext context) {
   }
   log('-------------------------display section---------------------------');
 }
+*/
+

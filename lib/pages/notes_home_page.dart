@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
+import 'package:noted_d/providers/settings_pro.dart';
 import 'package:noted_d/providers/task_pro.dart';
 import 'package:noted_d/widgets/home_app_bar_actions.dart';
 import 'package:noted_d/widgets/home_bottom_nav_bar.dart';
@@ -27,12 +28,14 @@ class _NotesAppHomeState extends State<NotesAppHome> {
 
     final taskProvider = Provider.of<TaskPro>(context);
 
+    final settingsProvider = Provider.of<SettingsPro>(context);
+ 
     return Scaffold(
       backgroundColor: scaffoldBackgroudColor,
       body: Column(
         children: [
           const Gap(10),
-          HomeAppBarActions(),
+          const HomeAppBarActions(),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: 20, top: 30, right: 20),
@@ -58,11 +61,15 @@ class _NotesAppHomeState extends State<NotesAppHome> {
           ),
         ],
       ),
-      bottomNavigationBar: bottomNavbar(navIndexPro: navIndexProvider),
       floatingActionButton: homefloatingActionButton(
         context: context,
         navIndexPro: navIndexProvider,
         taskPro: taskProvider,
+      ),
+      bottomNavigationBar: bottomNavbar(
+        navIndexPro: navIndexProvider,
+        taskPro: taskProvider,
+        settingsprovider: settingsProvider,
       ),
     );
   }

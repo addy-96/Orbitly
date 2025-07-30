@@ -18,7 +18,7 @@ class _TasksCheckboxState extends State<TasksCheckbox> {
     final taskProvider = Provider.of<TaskPro>(context);
     return IconButton(
       onPressed: () async {
-        if (taskProvider.taskList[widget.index].textEditingController.text
+        if (taskProvider.taskList[widget.index].taskController.text
             .trim()
             .isEmpty) {
           return;

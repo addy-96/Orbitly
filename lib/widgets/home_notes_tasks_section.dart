@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/models/task_model.dart';
+import 'package:noted_d/providers/settings_pro.dart';
 import 'package:noted_d/providers/task_pro.dart';
 import 'package:noted_d/widgets/tasks_checkbox.dart';
 import 'package:provider/provider.dart';
@@ -30,18 +32,18 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
     });
   }
 
-  void getDivederIndent(final int length) {}
+  
 
   @override
   Widget build(final BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final settingsProvider = Provider.of<SettingsPro>(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
           'Tasks',
           style: textStyleOS(
-            fontSize: screenWidth / 12,
+            fontSize: settingsProvider.getFontSize() * 3,
             fontColor: Colors.black,
           ),
         ),
@@ -54,8 +56,8 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
                   child: Text(
                     'Click on add button to add new task!',
                     style: textStyleOS(
-                      fontSize: 12,
-                      fontColor: Colors.grey.shade500,
+                      fontSize: settingsProvider.getFontSize(),
+                      fontColor: darkkgrey,
                     ),
                   ),
                 );
@@ -76,15 +78,17 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
                             child: taskProvider.taskList[index].isComplete == 0
                                 ? taskTextArea(
                                     taskProvider: taskProvider,
-                                    task: task,
+                                    taskmodel: task,
                                     index: index,
+                                    settingsProvider: settingsProvider
                                   )
                                 : Stack(
                                     children: [
                                       taskTextArea(
                                         taskProvider: taskProvider,
-                                        task: task,
+                                        taskmodel: task,
                                         index: index,
+                                        settingsProvider: settingsProvider
                                       ),
                                       Positioned.fill(
                                         child: Container(
@@ -99,13 +103,13 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
                                               height: 1,
                                               width:
                                                   task
-                                                      .textEditingController
+                                                      .taskController
                                                       .text
                                                       .trim()
                                                       .length *
                                                   10,
                                               decoration: BoxDecoration(
-                                                color: Colors.grey.shade500,
+                                                color: darkkgrey,
                                               ),
                                             ),
                                           ),
@@ -129,23 +133,26 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
 
   Widget taskTextArea({
     required final TaskPro taskProvider,
-    required final DisplayTaskModel task,
+    required final TaskModel taskmodel,
     required final int index,
+    required final SettingsPro settingsProvider,
   }) => TextField(
     onChanged: (final text) {
+      
       taskProvider.onEditTaskField(
-        taskId: task.taskId!,
+        taskId: taskmodel.taskId!,
         taskContent: text.trim(),
       );
+
     },
-    controller: task.textEditingController,
+    controller: taskmodel.taskController,
     style: textStyleOS(
-      fontSize: 18,
-      fontColor: task.isComplete == 1 ? Colors.grey.shade500 : Colors.black,
-    ).copyWith(fontStyle: task.isComplete == 1 ? FontStyle.italic : null),
+      fontSize: settingsProvider.getFontSize(),
+      fontColor: taskmodel.isComplete == 1 ? darkkgrey : Colors.black,
+    ).copyWith(fontStyle: taskmodel.isComplete == 1 ? FontStyle.italic : null),
     decoration: InputDecoration(
       focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(width: 1, color: Colors.grey.shade500),
+        borderSide: BorderSide(width: 1, color: darkkgrey),
       ),
       border: InputBorder.none,
     ),

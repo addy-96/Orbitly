@@ -1,33 +1,34 @@
 import 'dart:developer';
 import 'package:flutter/widgets.dart';
+import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/services/settings_local_service.dart';
 
 class SettingsPro with ChangeNotifier {
   final SettingsLocalService settingsLocalService;
   SettingsPro({required this.settingsLocalService});
   final Map<String, String> _settings = {
-    'cloud-set': '',
-    'font-size-set': '',
-    'sort-set': '',
-    'layout-set': '',
+    cloudSetKey: '',
+    fontSizeSetKey: '',
+    sortSetKey: '',
+    layoutSetKey: '',
   };
 
   Map<String, String> get settings => _settings;
 
   void initializeSettings() async {
-    log('initalization called');
+    log('settings provider initalization called');
     await settingsLocalService.initalizeSettings();
-    _settings['cloud-set'] = await settingsLocalService.getSetting(
-      settingKey: 'cloud-set',
+    _settings[cloudSetKey] = await settingsLocalService.getSetting(
+      settingKey: cloudSetKey,
     );
-    _settings['font-size-set'] = await settingsLocalService.getSetting(
-      settingKey: 'font-size-set',
+    _settings[fontSizeSetKey] = await settingsLocalService.getSetting(
+      settingKey: fontSizeSetKey,
     );
-    _settings['sort-set'] = await settingsLocalService.getSetting(
-      settingKey: 'sort-set',
+    _settings[sortSetKey] = await settingsLocalService.getSetting(
+      settingKey: sortSetKey,
     );
-    _settings['layout-set'] = await settingsLocalService.getSetting(
-      settingKey: 'layout-set',
+    _settings[layoutSetKey] = await settingsLocalService.getSetting(
+      settingKey: layoutSetKey,
     );
     log(_settings.toString());
     notifyListeners();
@@ -46,12 +47,14 @@ class SettingsPro with ChangeNotifier {
   }
 
   double getFontSize() {
-    return _settings['font-size-set'] == 'Small'
+    return _settings[fontSizeSetKey] == 'Small'
         ? 10
-        : _settings['font-size-set'] == 'Medium'
+        : _settings[fontSizeSetKey] == 'Medium'
         ? 14
         : 18;
   }
+
+  
 
   Future<void> resetSettings() async {
     await settingsLocalService.resetSettings();

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:hugeicons/hugeicons.dart';
+import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/notes_pro.dart';
+import 'package:noted_d/providers/settings_pro.dart';
+import 'package:noted_d/widgets/home_grid_setting_icon.dart';
 import 'package:provider/provider.dart';
 
 class HomeFolderList extends StatefulWidget {
@@ -13,6 +15,7 @@ class HomeFolderList extends StatefulWidget {
 }
 
 class _HomeFolderListState extends State<HomeFolderList> {
+
   @override
   void initState() {
     final notesProvider = Provider.of<NotesPro>(context, listen: false);
@@ -20,10 +23,14 @@ class _HomeFolderListState extends State<HomeFolderList> {
     super.initState();
   }
 
+  final all = 'All';
+
   @override
   Widget build(final BuildContext context) {
     final notesProvider = Provider.of<NotesPro>(context);
+    final settingsProvider = Provider.of<SettingsPro>(context);
     final selectedFolder = notesProvider.selectedFolder;
+    final BorderRadius borderRadius = BorderRadius.circular(14);
     return SizedBox(
       height: MediaQuery.of(context).size.height / 20,
       child: Row(
@@ -31,24 +38,23 @@ class _HomeFolderListState extends State<HomeFolderList> {
           InkWell(
             borderRadius: BorderRadius.circular(14),
             onTap: () {
-              notesProvider.selectFolder(selectedFolderName: 'All');
+              notesProvider.selectFolder(selectedFolderName: all);
             },
             child: Material(
-              elevation: selectedFolder == 'All' ? 3 : 1,
-              borderRadius: BorderRadius.circular(14),
+              elevation: selectedFolder == all ? 3 : 0,
+              borderRadius: borderRadius,
+              color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'All',
+                    all,
                     style:
                         textStyleOS(
-                          fontSize: 18,
-                          fontColor: selectedFolder == 'All'
-                              ? Colors.deepOrange
-                              : Colors.grey.shade400,
+                          fontSize: settingsProvider.getFontSize() * 1.3,
+                          fontColor: selectedFolder == all ? themeOrange : grey,
                         ).copyWith(
-                          fontWeight: selectedFolder == 'All'
+                          fontWeight: selectedFolder == all
                               ? FontWeight.bold
                               : FontWeight.normal,
                         ),
@@ -75,7 +81,7 @@ class _HomeFolderListState extends State<HomeFolderList> {
                       notesProvider.selectFolder(selectedFolderName: folder);
                     },
                     child: Material(
-                      elevation: selectedFolder == folder ? 3 : 1,
+                      elevation: selectedFolder == folder ? 3 : 0,
                       borderRadius: BorderRadius.circular(14),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -84,10 +90,11 @@ class _HomeFolderListState extends State<HomeFolderList> {
                             folder,
                             style:
                                 textStyleOS(
-                                  fontSize: 18,
+                                  fontSize:
+                                      settingsProvider.getFontSize() * 1.3,
                                   fontColor: selectedFolder == folder
-                                      ? Colors.deepOrange
-                                      : Colors.grey.shade400,
+                                      ? themeOrange
+                                      : grey,
                                 ).copyWith(
                                   fontWeight: selectedFolder == folder
                                       ? FontWeight.bold
@@ -106,10 +113,7 @@ class _HomeFolderListState extends State<HomeFolderList> {
             padding: const EdgeInsetsGeometry.only(top: 10, bottom: 10),
             child: VerticalDivider(color: Colors.grey.shade400),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(HugeIcons.strokeRoundedGridView),
-          )
+          const HomeGridSettingIcon(),
         ],
       ),
     );

@@ -1,32 +1,41 @@
+
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
+import 'package:noted_d/providers/settings_pro.dart';
+import 'package:noted_d/providers/task_pro.dart';
 
 Widget bottomNavbar({
   required final NavbarPro navIndexPro,
+  required final TaskPro taskPro,
+  required final SettingsPro settingsprovider,
 }) => BottomNavigationBar(
   backgroundColor: scaffoldBackgroudColor,
   currentIndex: navIndexPro.index,
   onTap: (final value) async {
-    navIndexPro.changeIndex(value);
     if (navIndexPro.index == 1 && value == 0) {
-      //to save current tasks
+
+      await taskPro.saveCurrentTasks();
     }
+    navIndexPro.changeIndex(value);
   },
   unselectedLabelStyle: textStyleOS(
-    fontSize: 8,
+    fontSize: settingsprovider.getFontSize() * 0.7,
     fontColor: Colors.grey.shade900,
   ),
-  selectedIconTheme: const IconThemeData(size: 22, color: Colors.deepOrange),
+  selectedIconTheme: const IconThemeData(size: 22, color: themeOrange),
   unselectedIconTheme: IconThemeData(size: 18, color: Colors.grey.shade900),
-  selectedItemColor: Colors.deepOrange,
+  selectedItemColor: themeOrange,
   unselectedItemColor: Colors.grey.shade700,
-  unselectedFontSize: 11,
+  unselectedFontSize: settingsprovider.getFontSize() * 0.90,
 
-  selectedFontSize: 12,
-  selectedLabelStyle: textStyleOS(fontSize: 12, fontColor: Colors.deepOrange),
+  selectedFontSize: settingsprovider.getFontSize(),
+  selectedLabelStyle: textStyleOS(
+    fontSize: settingsprovider.getFontSize(),
+    fontColor: themeOrange,
+  ),
   items: const [
     BottomNavigationBarItem(
       label: 'Notes',

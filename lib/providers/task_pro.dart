@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:noted_d/models/task_model.dart';
@@ -9,19 +8,30 @@ class TaskPro with ChangeNotifier {
   TaskPro({required this.tasksLocalServiceInterface});
 
   final TasksLocalServiceInterface tasksLocalServiceInterface;
-  List<DisplayTaskModel> _tasksList = [];
+  List<TaskModel> _tasksList = [];
 
-  List<DisplayTaskModel> get taskList => _tasksList;
+  List<TaskModel> get taskList => _tasksList;
+
+  @override
+  void dispose() {
+    for (var task in _tasksList) {
+      task.taskController.dispose();
+    }
+    super.dispose();
+  }
 
   void onAddTask() async {
     if (_tasksList.isEmpty) {
-      _tasksList.add(DisplayTaskModel(taskName: '', isComplete: 0));
+      _tasksList.add(
+        TaskModel(isComplete: 0, taskController: TextEditingController()),
+      );
       notifyListeners();
     }
     if (_tasksList.isNotEmpty) {
-      if (_tasksList.last.textEditingController.text.trim().isNotEmpty) {
-        _tasksList.add(DisplayTaskModel(taskName: '', isComplete: 0));
-
+      if (_tasksList.last.taskController.text.trim().isNotEmpty) {
+        _tasksList.add(
+          TaskModel(isComplete: 0, taskController: TextEditingController()),
+        );
         notifyListeners();
       }
     }
@@ -45,32 +55,22 @@ class TaskPro with ChangeNotifier {
   void initializeTask() async {
     log('initialize task called');
     final getalltasks = await tasksLocalServiceInterface.loadAllTasks();
-    final List<DisplayTaskModel> storedTaskList = [];
-    for (var item in getalltasks) {
-      storedTaskList.add(
-        DisplayTaskModel(
-          taskId: item.taskId,
-          taskName: item.taskName,
-          isComplete: item.isComplete,
-        ),
-      );
-      _tasksList = storedTaskList;
-      log(_tasksList.length.toString());
-      notifyListeners();
+    if (getalltasks.isEmpty) {
+      return;
     }
+    _tasksList = getalltasks;
+    notifyListeners();
   }
 
   Future saveCurrentTasks() async {
+    if (_tasksList.isEmpty) {
+      return;
+    }
+    
     await tasksLocalServiceInterface.updateTaskTable(
       currentTaskList: _tasksList,
     );
-    disposeControllers();
-  }
-
-  void disposeControllers() {
-    for (var item in taskList) {
-      item.textEditingController.dispose();
-    }
+ 
   }
 
   Future updateTaskStatus({
@@ -81,9 +81,9 @@ class TaskPro with ChangeNotifier {
       isComplete: iscomplete,
       taskId: taskid,
     );
-    for (var item in _tasksList) {
-      if (item.taskId == taskid) {
-        item.isComplete = iscomplete;
+    for (var tasks in _tasksList) {
+      if (tasks.taskId == taskid) {
+        tasks.isComplete = iscomplete;
         notifyListeners();
         break;
       }

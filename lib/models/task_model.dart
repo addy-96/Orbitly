@@ -4,21 +4,12 @@ import 'package:uuid/uuid.dart';
 class TaskModel {
   TaskModel({
     final String? taskId,
-    required this.taskName,
+    required this.taskController,
     required this.isComplete,
   }) : taskId = taskId ?? const Uuid().v4();
 
-  String? taskId;
+  final String? taskId;
   int isComplete;
-  String taskName;
+  final TextEditingController taskController;
 }
 
-class DisplayTaskModel extends TaskModel {
-  DisplayTaskModel({
-    super.taskId,
-    required super.taskName,
-    required super.isComplete,
-  }) : textEditingController = TextEditingController(text: taskName);
-
-  final TextEditingController textEditingController;
-}

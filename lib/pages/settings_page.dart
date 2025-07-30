@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:go_router/go_router.dart';
 import 'package:noted_d/core/constant.dart';
+import 'package:noted_d/widgets/settings_bottom_options.dart';
 import 'package:noted_d/widgets/settings_options.dart';
 import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
@@ -202,7 +203,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         provider.Consumer<SettingsPro>(
                           builder: (final context, final value, final child) {
                             final settingValue =
-                                value.settings['layout-set'] ?? '';
+                                value.settings[layoutSetKey] ?? '';
                             return Text(
                               '$settingValue view',
                               style: textStyleOS(
@@ -239,8 +240,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       children: [
                         provider.Consumer<SettingsPro>(
                           builder: (final context, final value, final child) {
-                            var settingValue = value.settings['sort-set'] ?? '';
-                            settingValue = settingValue == 'BMD'
+                            var settingValue =
+                                value.settings[sortBMDSetVal] ?? '';
+                            settingValue = settingValue == sortBMDSetVal
                                 ? 'By modification date'
                                 : 'Oldest first';
                             return Text(
@@ -264,62 +266,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
             ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  InkWell(
-                    borderRadius: BorderRadius.circular(18),
-                    splashColor: Colors.deepOrange.withOpacity(0.1),
-                    onTap: () async {
-                      await settingsProvider.resetSettings();
-                    },
-                    child: Container(
-                      height: MediaQuery.of(context).size.height / 19,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(width: 2, color: Colors.deepOrange),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Reset Settings',
-                          style: textStyleOS(
-                            fontSize: 18,
-                            fontColor: Colors.deepOrange,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Gap(20),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(18),
-                    splashColor: Colors.deepOrange.withOpacity(0.1),
-                    onTap: () {},
-                    child: Container(
-                      height: MediaQuery.of(context).size.height / 19,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(width: 2, color: Colors.deepOrange),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Delete all notes!',
-                          style: textStyleOS(
-                            fontSize: 18,
-                            fontColor: Colors.deepOrange,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Gap(30),
-                ],
-              ),
-            ),
+            const SettingsBottomOptions(),
           ],
         ),
       ),
