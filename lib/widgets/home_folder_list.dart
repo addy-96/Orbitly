@@ -15,7 +15,6 @@ class HomeFolderList extends StatefulWidget {
 }
 
 class _HomeFolderListState extends State<HomeFolderList> {
-
   @override
   void initState() {
     final notesProvider = Provider.of<NotesPro>(context, listen: false);
@@ -32,7 +31,7 @@ class _HomeFolderListState extends State<HomeFolderList> {
     final selectedFolder = notesProvider.selectedFolder;
     final BorderRadius borderRadius = BorderRadius.circular(14);
     return SizedBox(
-      height: MediaQuery.of(context).size.height / 20,
+      height: MediaQuery.of(context).size.height / 18,
       child: Row(
         children: [
           InkWell(
@@ -51,7 +50,7 @@ class _HomeFolderListState extends State<HomeFolderList> {
                     all,
                     style:
                         textStyleOS(
-                          fontSize: settingsProvider.getFontSize() * 1.3,
+                          fontSize: settingsProvider.getFontSize() * 1.2,
                           fontColor: selectedFolder == all ? themeOrange : grey,
                         ).copyWith(
                           fontWeight: selectedFolder == all

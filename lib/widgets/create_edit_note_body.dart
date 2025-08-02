@@ -20,6 +20,7 @@ class CreateEditNoteBody extends StatelessWidget {
               final section = notesSectionProvider.sectionList[index];
               if (section is TextBlock) {
                 return TextField(
+                  controller: section.textEditingController,
                   autofocus: true,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
@@ -45,7 +46,6 @@ class CreateEditNoteBody extends StatelessWidget {
                     ),
                     isDense: false,
                   ),
-                  controller: section.textEditingController,
                 );
               } else if (section is Imageblock) {
                 return Padding(

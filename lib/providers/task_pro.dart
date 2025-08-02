@@ -23,17 +23,30 @@ class TaskPro with ChangeNotifier {
   void onAddTask() async {
     if (_tasksList.isEmpty) {
       _tasksList.add(
-        TaskModel(isComplete: 0, taskController: TextEditingController()),
+        TaskModel(
+          isComplete: 0,
+          taskController: TextEditingController(),
+          createdAt: DateTime.now(),
+          completedAt: null,
+        ),
       );
       notifyListeners();
     }
     if (_tasksList.isNotEmpty) {
       if (_tasksList.last.taskController.text.trim().isNotEmpty) {
         _tasksList.add(
-          TaskModel(isComplete: 0, taskController: TextEditingController()),
+          TaskModel(
+            isComplete: 0,
+            taskController: TextEditingController(),
+            createdAt: DateTime.now(),
+            completedAt: null,
+          ),
         );
         notifyListeners();
       }
+    }
+    if (taskList.isNotEmpty) {
+      log(taskList.length.toString());
     }
     return;
   }
@@ -52,7 +65,7 @@ class TaskPro with ChangeNotifier {
     }
   }
 
-  void initializeTask() async {
+  Future<void> initializeTask() async {
     log('initialize task called');
     final getalltasks = await tasksLocalServiceInterface.loadAllTasks();
     if (getalltasks.isEmpty) {
@@ -66,27 +79,21 @@ class TaskPro with ChangeNotifier {
     if (_tasksList.isEmpty) {
       return;
     }
-    
     await tasksLocalServiceInterface.updateTaskTable(
       currentTaskList: _tasksList,
     );
- 
   }
 
   Future updateTaskStatus({
     required final String taskid,
     required final int iscomplete,
   }) async {
-    await tasksLocalServiceInterface.updateTaskCheckBox(
-      isComplete: iscomplete,
-      taskId: taskid,
-    );
-    for (var tasks in _tasksList) {
-      if (tasks.taskId == taskid) {
-        tasks.isComplete = iscomplete;
-        notifyListeners();
-        break;
+    for (var item in _tasksList) {
+      if (item.taskId == taskid) {
+        item.isComplete = iscomplete;
+        item.completedAt = iscomplete == 1 ? DateTime.now() : null;
       }
     }
+    notifyListeners();
   }
 }

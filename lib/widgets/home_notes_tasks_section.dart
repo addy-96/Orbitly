@@ -32,7 +32,17 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
     });
   }
 
-  
+  String? getTakSubtitle(final TaskModel task) {
+    if (task.isComplete == 1 &&
+        task.taskController.text.trim().isNotEmpty &&
+        task.completedAt != null) {
+      return 'Completed at: ${task.completedAt!.hour} : ${task.completedAt!.minute}, ${task.completedAt!.day} ${months[task.completedAt!.month]} ${task.completedAt!.year}';
+    } else if ((task.taskController.text.trim().isNotEmpty) &&
+        task.isComplete == 0) {
+      return 'Created at: ${task.createdAt.hour} : ${task.createdAt.minute}, ${task.createdAt.day} ${months[task.createdAt.month]} ${task.createdAt.year}';
+    }
+    return '';
+  }
 
   @override
   Widget build(final BuildContext context) {
@@ -68,55 +78,70 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
                     final task = taskProvider.taskList[index];
                     return Padding(
                       padding: const EdgeInsets.symmetric(
-                        vertical: 1.0,
-                        horizontal: 2,
+                        vertical: 0.0,
+                        horizontal: 5,
                       ),
-                      child: Row(
+                      child: Column(
                         children: [
-                          TasksCheckbox(index: index),
-                          Expanded(
-                            child: taskProvider.taskList[index].isComplete == 0
-                                ? taskTextArea(
-                                    taskProvider: taskProvider,
-                                    taskmodel: task,
-                                    index: index,
-                                    settingsProvider: settingsProvider
-                                  )
-                                : Stack(
-                                    children: [
-                                      taskTextArea(
+                          Row(
+                            children: [
+                              TasksCheckbox(index: index),
+                              Expanded(
+                                child:
+                                    taskProvider.taskList[index].isComplete == 0
+                                    ? taskTextArea(
                                         taskProvider: taskProvider,
                                         taskmodel: task,
                                         index: index,
-                                        settingsProvider: settingsProvider
-                                      ),
-                                      Positioned.fill(
-                                        child: Container(
-                                          height: 1,
-                                          width: 100,
-                                          decoration: const BoxDecoration(
-                                            color: Colors.transparent,
+                                        settingsProvider: settingsProvider,
+                                      )
+                                    : Stack(
+                                        children: [
+                                          taskTextArea(
+                                            taskProvider: taskProvider,
+                                            taskmodel: task,
+                                            index: index,
+                                            settingsProvider: settingsProvider,
                                           ),
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
+                                          Positioned.fill(
                                             child: Container(
                                               height: 1,
-                                              width:
-                                                  task
-                                                      .taskController
-                                                      .text
-                                                      .trim()
-                                                      .length *
-                                                  10,
-                                              decoration: BoxDecoration(
-                                                color: darkkgrey,
+                                              width: 100,
+                                              decoration: const BoxDecoration(
+                                                color: Colors.transparent,
+                                              ),
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Container(
+                                                  height: 1,
+                                                  width:
+                                                      task.taskController.text
+                                                          .trim()
+                                                          .length *
+                                                      10,
+                                                  decoration: BoxDecoration(
+                                                    color: darkkgrey,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                getTakSubtitle(task) ?? "",
+                                style: textStyleOS(
+                                  fontSize: 18,
+                                  fontColor: Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -138,12 +163,10 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
     required final SettingsPro settingsProvider,
   }) => TextField(
     onChanged: (final text) {
-      
       taskProvider.onEditTaskField(
         taskId: taskmodel.taskId!,
         taskContent: text.trim(),
       );
-
     },
     controller: taskmodel.taskController,
     style: textStyleOS(

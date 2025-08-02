@@ -23,53 +23,65 @@ class NotesAppHome extends StatefulWidget {
 class _NotesAppHomeState extends State<NotesAppHome> {
   @override
   Widget build(final BuildContext context) {
-
     final navIndexProvider = Provider.of<NavbarPro>(context);
 
     final taskProvider = Provider.of<TaskPro>(context);
 
     final settingsProvider = Provider.of<SettingsPro>(context);
- 
-    return Scaffold(
-      backgroundColor: scaffoldBackgroudColor,
-      body: Column(
-        children: [
-          const Gap(10),
-          const HomeAppBarActions(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, top: 30, right: 20),
-              child: Consumer<NavbarPro>(
-                builder: (final context, final value, final child) {
-                  return value.index == 0
-                      ? Consumer<SearchBoxPro>(
-                          builder: (final context, final value, final child) {
-                            if (value.isSearchBoxOpened) {
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                context.push('/search');
-                              });
-                              return const SizedBox.shrink();
-                            } else {
-                              return const HomeNotesBodySection();
-                            }
-                          },
-                        )
-                      : const HomeNotesTasksSection();
-                },
+
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (final didPop, final result) async {
+        if (!didPop) {
+          if (navIndexProvider.index == 1) {
+            await taskProvider.saveCurrentTasks();
+          }
+          Navigator.of(context).pop();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: scaffoldBackgroudColor,
+        body: Column(
+          children: [
+            const Gap(10),
+            const HomeAppBarActions(),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, top: 30, right: 20),
+                child: Consumer<NavbarPro>(
+                  builder: (final context, final value, final child) {
+                    return value.index == 0
+                        ? Consumer<SearchBoxPro>(
+                            builder: (final context, final value, final child) {
+                              if (value.isSearchBoxOpened) {
+                                WidgetsBinding.instance.addPostFrameCallback((
+                                  _,
+                                ) {
+                                  context.push('/search');
+                                });
+                                return const SizedBox.shrink();
+                              } else {
+                                return const HomeNotesBodySection();
+                              }
+                            },
+                          )
+                        : const HomeNotesTasksSection();
+                  },
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: homefloatingActionButton(
-        context: context,
-        navIndexPro: navIndexProvider,
-        taskPro: taskProvider,
-      ),
-      bottomNavigationBar: bottomNavbar(
-        navIndexPro: navIndexProvider,
-        taskPro: taskProvider,
-        settingsprovider: settingsProvider,
+          ],
+        ),
+        bottomNavigationBar: bottomNavbar(
+          navIndexPro: navIndexProvider,
+          taskPro: taskProvider,
+          settingsprovider: settingsProvider,
+        ),
+        floatingActionButton: homefloatingActionButton(
+          context: context,
+          navIndexPro: navIndexProvider,
+          taskPro: taskProvider,
+        ),
       ),
     );
   }

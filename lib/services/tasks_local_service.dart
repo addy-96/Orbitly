@@ -18,19 +18,13 @@ abstract interface class TasksLocalServiceInterface {
 
 final class TasksLocalServiceInterfaceImpl
     implements TasksLocalServiceInterface {
-
-      
   Future<Database> createDatabase() async {
     try {
       final dbPath = await getDatabasesPath();
 
       final path = p.join(dbPath, 'notes.db');
-
-      final database = await openDatabase(
-        path,
-        version: 1,
-
-      );
+      //task table is created in noteslocal service.
+      final database = await openDatabase(path, version: 1);
       return database;
     } catch (err) {
       log(err.toString());
@@ -54,6 +48,10 @@ final class TasksLocalServiceInterfaceImpl
             text: task[taskContentTTC] as String,
           ),
           isComplete: task[completeStatusTTC] as int,
+          completedAt: task[completedAtTTC] == null
+              ? null
+              : DateTime.parse(task[completedAtTTC] as String),
+          createdAt: DateTime.parse(task[createdAtTTC] as String),
         );
         taskModelList.add(taskModel);
       }
@@ -73,7 +71,7 @@ final class TasksLocalServiceInterfaceImpl
       log('reached to update taskTable ${currentTaskList.length.toString()}');
       final db = await createDatabase();
       final currentDatabaseTasks = await db.query(taskTable);
-      
+
       for (var item in currentDatabaseTasks) {
         await db.delete(
           taskTable,
@@ -82,11 +80,11 @@ final class TasksLocalServiceInterfaceImpl
         );
       }
       for (var item in currentTaskList) {
-
         await db.insert(taskTable, {
           taskIdTTC: item.taskId,
           taskContentTTC: item.taskController.text.trim(),
           completeStatusTTC: item.isComplete,
+          createdAtTTC: item.createdAt.toIso8601String(),
         });
       }
     } catch (err) {
@@ -108,6 +106,18 @@ final class TasksLocalServiceInterfaceImpl
         where: '$taskIdTTC = ?',
         whereArgs: [taskId],
       );
+      final String? completedAt = isComplete == 1
+          ? DateTime.now().toIso8601String()
+          : null;
+
+      await db.update(
+        taskTable,
+        {completedAtTTC: completedAt},
+        where: '$taskIdTTC = ?',
+        whereArgs: [taskId],
+      );
+      final res = await db.query(taskTable);
+      log(res.toString());
     } catch (err) {
       log(err.toString());
       throw Exception(err.toString());

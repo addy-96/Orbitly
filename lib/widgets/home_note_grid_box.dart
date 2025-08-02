@@ -1,0 +1,82 @@
+import 'dart:developer';
+import 'package:flutter/material.dart';
+import 'package:noted_d/core/textstyle.dart';
+import 'package:noted_d/models/notes_model.dart';
+import 'package:noted_d/pages/edit_notes_page.dart';
+import 'package:noted_d/providers/search_box_pro.dart';
+import 'package:noted_d/providers/settings_pro.dart';
+import 'package:provider/provider.dart';
+
+class HomeNoteGridBox extends StatelessWidget {
+  const HomeNoteGridBox({
+    super.key,
+    required this.homeNotesModel,
+    required this.isSearchedResult,
+  });
+  final HomeNotesModel homeNotesModel;
+  final bool isSearchedResult;
+
+  @override
+  Widget build(final BuildContext context) {
+    final settingProvider = Provider.of<SettingsPro>(context);
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(19),
+        onTap: () async {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (final context) =>
+                  EditNotes(noteId: homeNotesModel.notesId),
+            ),
+          );
+        },
+        child: Hero(
+          tag: homeNotesModel.notesId,
+          child: Material(
+            elevation: 2,
+            borderRadius: BorderRadius.circular(19),
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  homeNotesModel.notesTitle != null
+                      ? Center(
+                          child: Text(
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            homeNotesModel.notesTitle!,
+                            style: textStyleOS(
+                              fontSize: settingProvider.getFontSize() * 1.2,
+                              fontColor: Colors.black,
+                            ).copyWith(fontWeight: FontWeight.w600),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                  homeNotesModel.notesContentHighlight.isNotEmpty
+                      ? Center(
+                          child: !isSearchedResult
+                              ? Text(
+                                  maxLines: 4,
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  homeNotesModel.notesContentHighlight,
+                                  style: textStyleOS(
+                                    fontSize: settingProvider.getFontSize(),
+                                    fontColor: Colors.grey.shade500,
+                                  ).copyWith(fontWeight: FontWeight.w400),
+                                )
+                              : const SizedBox.shrink(),
+                        )
+                      : const SizedBox.shrink(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -82,7 +82,9 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
         CREATE TABLE IF NOT EXISTS $taskTable (
         $taskIdTTC TEXT PRIMARY KEY NOT NULL,
         $taskContentTTC TEXT NOT NULL,
-        $completeStatusTTC INT NOT NULL
+        $completeStatusTTC INT NOT NULL,
+        $createdAtTTC TEXT NOT NULL,
+        $completedAtTTC TEXT
       );
     ''');
 
@@ -90,7 +92,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
         CREATE TABLE IF NOT EXISTS $folderTable(
         foldername TEXT NOT NULL
           );
-       ''');
+        ''');
 
           log('notes database created!');
         },
@@ -116,7 +118,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
         notesTitleNTC: notesModel.notesTitle,
         modifiedAtNTC: notesModel.modifiedAt.toIso8601String(),
         notesContentHighLightNTC: notesModel.notesContentHighLight,
-        noteBackgroundNTC: notesModel.notesBackground
+        noteBackgroundNTC: notesModel.notesBackground,
       });
 
       for (var sec in notesModel.sectionList) {
@@ -145,10 +147,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
   Future<List<HomeNotesModel>> getAllNotes({
     required final String selectedFolder,
   }) async {
-    try { 
-
-
-      
+    try {
       final db = await createDatabase();
       if (selectedFolder == 'All') {
         final getNotesResult = await db.query(notesTable);
@@ -169,13 +168,11 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
 
         log('get all notes completed');
         return notesList;
-    
-    
       } else {
         log('reached here');
         final notesInfolder = await db.query(selectedFolder);
         final List<HomeNotesModel> notesList = [];
-        
+
         for (var item in notesInfolder) {
           final getNotesResult = await db.query(
             notesTable,
@@ -195,9 +192,8 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
           notesList.add(homeNotesModel);
         }
         log('get $selectedFolder notes completed');
-        return notesList; 
-
-      } 
+        return notesList;
+      }
     } catch (err) {
       log(err.toString());
       throw Exception(err);
@@ -419,7 +415,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
       log(err.toString());
     }
   }
-  
+
   @override
   Future<void> removeFromFolder({
     required final String foldername,
@@ -433,6 +429,4 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
       throw Exception(err.toString());
     }
   }
-
-
 }

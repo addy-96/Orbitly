@@ -8,6 +8,7 @@ import 'package:noted_d/core/exceptions.dart';
 import 'package:noted_d/core/snackbar.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/notes_pro.dart';
+import 'package:noted_d/providers/settings_pro.dart';
 import 'package:noted_d/widgets/folder_container_folder_page.dart';
 
 PreferredSizeWidget createEditNoteAppBar({
@@ -15,9 +16,13 @@ PreferredSizeWidget createEditNoteAppBar({
   required final NotesPro notesPro,
   required final BuildContext context,
   required final String? noteId,
+  required final SettingsPro settingPro,
 }) {
+  final folderList = notesPro.folderList;
   return AppBar(
-    surfaceTintColor: Colors.transparent,
+    surfaceTintColor: notesPro.currentNoteBackground == 'default'
+        ? scaffoldBackgroudColor
+        : Colors.transparent,
     forceMaterialTransparency: true,
     leading: IconButton(
       onPressed: () async {
@@ -39,10 +44,6 @@ PreferredSizeWidget createEditNoteAppBar({
     ),
     actions: [
       IconButton(
-        onPressed: () async {},
-        icon: const Icon(HugeIcons.strokeRoundedShare01),
-      ),
-      IconButton(
         onPressed: () {
           notesPro.toggleAvatarBackgroundMenu();
         },
@@ -63,7 +64,10 @@ PreferredSizeWidget createEditNoteAppBar({
                     },
                     child: Text(
                       'Delete',
-                      style: textStyleOS(fontSize: 15, fontColor: Colors.black),
+                      style: textStyleOS(
+                        fontSize: settingPro.getFontSize(),
+                        fontColor: Colors.black,
+                      ).copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
                   PopupMenuItem(
@@ -73,7 +77,9 @@ PreferredSizeWidget createEditNoteAppBar({
                         builder: (final context) => Dialog(
                           backgroundColor: scaffoldBackgroudColor,
                           child: SizedBox(
-                            height: MediaQuery.of(context).size.height / 2,
+                            height: folderList.isEmpty
+                                ? MediaQuery.of(context).size.height / 3
+                                : MediaQuery.of(context).size.height / 2,
                             child: Center(
                               child: Scrollbar(
                                 child: Padding(
@@ -82,46 +88,114 @@ PreferredSizeWidget createEditNoteAppBar({
                                     vertical: 2,
                                   ),
                                   child: Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
                                       const Gap(20),
-                                      const Text('Folders'),
+                                      Text(
+                                        'Folders',
+                                        style: textStyleOS(
+                                          fontSize:
+                                              settingPro.getFontSize() * 1.3,
+                                          fontColor: Colors.black,
+                                        ).copyWith(fontWeight: FontWeight.bold),
+                                      ),
                                       const Gap(20),
                                       Expanded(
-                                        child: ListView.builder(
-                                          itemCount: notesPro.folderList.length,
-                                          itemBuilder: (final context, final index) {
-                                            return InkWell(
-                                              borderRadius:
-                                                  BorderRadius.circular(14),
-                                              onTap: () async {
-                                                try {
-                                                  await notesPro
-                                                      .addNoteToFolder(
-                                                        noteId: noteId,
-                                                        foldername: notesPro
-                                                            .folderList[index],
-                                                      );
-                                                  context.pop();
-                                                } on NoteAlreadyExistinFolderException catch (
-                                                  err
-                                                ) {
-                                                  log('reached');
-                                                  cSnack(
-                                                    message: err.message,
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    context: context,
+                                        child: folderList.isEmpty
+                                            ? Center(
+                                                child: Text(
+                                                  'No folder found!',
+                                                  style: textStyleOS(
+                                                    fontSize:
+                                                        settingPro
+                                                            .getFontSize() *
+                                                        0.9,
+                                                    fontColor: darkkgrey,
+                                                  ),
+                                                ),
+                                              )
+                                            : ListView.builder(
+                                                itemCount: folderList.length,
+                                                itemBuilder: (final context, final index) {
+                                                  return InkWell(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          14,
+                                                        ),
+                                                    onTap: () async {
+                                                      try {
+                                                        await notesPro
+                                                            .addNoteToFolder(
+                                                              noteId: noteId,
+                                                              foldername: notesPro
+                                                                  .folderList[index],
+                                                            );
+                                                        context.pop();
+                                                        cSnack(
+                                                          message:
+                                                              'Added to ${notesPro.notesList[index]}',
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          context: context,
+                                                        );
+                                                      } on NoteAlreadyExistinFolderException catch (
+                                                        err
+                                                      ) {
+                                                        cSnack(
+                                                          message: err.message,
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          context: context,
+                                                        );
+                                                      }
+                                                    },
+                                                    child:
+                                                        FolderContainerFolderPage(
+                                                          foldername: notesPro
+                                                              .folderList[index],
+                                                        ),
                                                   );
-                                                }
-                                              },
-                                              child: FolderContainerFolderPage(
-                                                foldername:
-                                                    notesPro.folderList[index],
+                                                },
                                               ),
-                                            );
-                                          },
-                                        ),
                                       ),
+                                      folderList.isEmpty
+                                          ? InkWell(
+                                              onTap: () {
+                                                context.pop();
+                                                context.push('/folder');
+                                              },
+                                              child: Container(
+                                                height:
+                                                    MediaQuery.of(
+                                                      context,
+                                                    ).size.height /
+                                                    18,
+                                                decoration: BoxDecoration(
+                                                  color: themeOrange,
+                                                  borderRadius:
+                                                      BorderRadius.circular(14),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    'Add a folder',
+                                                    style:
+                                                        textStyleOS(
+                                                          fontSize:
+                                                              settingPro
+                                                                  .getFontSize() *
+                                                              1.2,
+                                                          fontColor:
+                                                              Colors.white,
+                                                        ).copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          : const SizedBox.shrink(),
+                                      const Gap(10),
                                       InkWell(
                                         onTap: () {
                                           context.pop();
@@ -133,7 +207,7 @@ PreferredSizeWidget createEditNoteAppBar({
                                               ).size.height /
                                               18,
                                           decoration: BoxDecoration(
-                                            color: Colors.deepOrange,
+                                            color: themeOrange,
                                             borderRadius: BorderRadius.circular(
                                               14,
                                             ),
@@ -143,7 +217,10 @@ PreferredSizeWidget createEditNoteAppBar({
                                               'Cancel',
                                               style:
                                                   textStyleOS(
-                                                    fontSize: 18,
+                                                    fontSize:
+                                                        settingPro
+                                                            .getFontSize() *
+                                                        1.2,
                                                     fontColor: Colors.white,
                                                   ).copyWith(
                                                     fontWeight: FontWeight.bold,
@@ -164,7 +241,10 @@ PreferredSizeWidget createEditNoteAppBar({
                     },
                     child: Text(
                       'Add to folder',
-                      style: textStyleOS(fontSize: 15, fontColor: Colors.black),
+                      style: textStyleOS(
+                        fontSize: settingPro.getFontSize(),
+                        fontColor: Colors.black,
+                      ).copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
                   if (notesPro.selectedFolder != 'All')
@@ -175,11 +255,11 @@ PreferredSizeWidget createEditNoteAppBar({
                       child: Text(
                         'Remove from ${notesPro.selectedFolder}',
                         style: textStyleOS(
-                          fontSize: 15,
+                          fontSize: settingPro.getFontSize(),
                           fontColor: Colors.black,
-                        ),
+                        ).copyWith(fontWeight: FontWeight.bold),
                       ),
-                    )
+                    ),
                 ];
               },
             )

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/notes_pro.dart';
+import 'package:noted_d/providers/settings_pro.dart';
 import 'package:provider/provider.dart';
 
-class CreatEditNoteTitleBar extends StatelessWidget {
-  const CreatEditNoteTitleBar({super.key});
+class CreateEditNoteTitleBar extends StatelessWidget {
+  const CreateEditNoteTitleBar({super.key});
 
   @override
   Widget build(final BuildContext context) {
     final notesPro = Provider.of<NotesPro>(context);
+    final settingPro = Provider.of<SettingsPro>(context);
     return TextField(
       controller: notesPro.titleController,
       style: textStyleOS(
@@ -18,7 +20,7 @@ class CreatEditNoteTitleBar extends StatelessWidget {
       decoration: InputDecoration(
         hintText: 'Title',
         hintStyle: textStyleOS(
-          fontSize: 25,
+          fontSize: settingPro.getFontSize() * 1.8,
           fontColor: Colors.grey.shade400,
         ).copyWith(fontWeight: FontWeight.w700),
         border: InputBorder.none,

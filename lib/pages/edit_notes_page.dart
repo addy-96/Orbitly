@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:noted_d/providers/notes_pro.dart';
-import 'package:noted_d/widgets/creat_edit_note_title_bar.dart';
+import 'package:noted_d/providers/settings_pro.dart';
+import 'package:noted_d/widgets/create_edit_note_title_bar.dart';
 import 'package:noted_d/widgets/create_edit_note_appbar.dart';
 import 'package:noted_d/widgets/create_edit_note_body.dart';
 import 'package:noted_d/widgets/create_edit_note_time_sec.dart';
@@ -41,6 +42,7 @@ class _EditNotesState extends State<EditNotes> {
   @override
   Widget build(final BuildContext context) {
     final notesProvider = Provider.of<NotesPro>(context);
+    final settingsProvider = Provider.of<SettingsPro>(context);
     return Hero(
       tag: widget.noteId,
       child: PopScope(
@@ -62,6 +64,7 @@ class _EditNotesState extends State<EditNotes> {
             notesPro: notesPro,
             context: context,
             noteId: widget.noteId,
+            settingPro: settingsProvider,
           ),
           body: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
@@ -69,9 +72,9 @@ class _EditNotesState extends State<EditNotes> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Gap(10),
-                CreatEditNoteTitleBar(),
+                CreateEditNoteTitleBar(),
                 Gap(10),
-                CreateEditNoteTimeSec(),
+                CreateEditNoteTimeSec(isEditPage: true),
                 Gap(10),
                 CreateEditNoteBody(),
                 CreatedEditNoteToolbar(),

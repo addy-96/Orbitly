@@ -6,7 +6,7 @@ import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
 import 'package:noted_d/providers/settings_pro.dart';
 import 'package:noted_d/widgets/home_folder_list.dart';
-import 'package:noted_d/widgets/home_note_widget.dart';
+import 'package:noted_d/widgets/home_note_grid_box.dart';
 import 'package:noted_d/widgets/home_screen_searchbox.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +18,6 @@ class HomeNotesBodySection extends StatefulWidget {
 }
 
 class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
-
   @override
   void initState() {
     super.initState();
@@ -47,6 +46,7 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
         ),
         const Gap(10),
         InkWell(
+          borderRadius: BorderRadius.circular(50),
           onTap: () {
             searchBoxProvider.toggelSearchBox();
           },
@@ -63,7 +63,7 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
                     'Click on add icon below to start creating notes!',
                     textAlign: TextAlign.center,
                     style: textStyleOS(
-                      fontSize: 12,
+                      fontSize: settingsProvider.getFontSize(),
                       fontColor: Colors.grey.shade500,
                     ),
                   ),
@@ -71,25 +71,34 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
               );
             } else {
               return Expanded(
-                child: ListView(
-                  children: [
-                    GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
+                child: settingsProvider.settings[layoutSetKey] == 'Grid'
+                    ? ListView(
+                        children: [
+                          GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                ),
+                            shrinkWrap: true,
+                            itemCount: value.notesList.length,
+                            itemBuilder: (final context, final index) {
+                              return HomeNoteGridBox(
+                                homeNotesModel: value.notesList[index],
+                                isSearchedResult: false,
+                              );
+                            },
                           ),
-                      shrinkWrap: true,
-                      itemCount: value.notesList.length,
-                      itemBuilder: (final context, final index) {
-                        return HomeNoteWidget(
-                          homeNotesModel: value.notesList[index],
-                          isSearchedResult: false,
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                        ],
+                      )
+                    : ListView.builder(
+                        itemCount: value.notesList.length,
+                        itemBuilder: (final context, final index) =>
+                            HomeNoteGridBox(
+                              homeNotesModel: value.notesList[index],
+                              isSearchedResult: false,
+                            ),
+                      ),
               );
             }
           },

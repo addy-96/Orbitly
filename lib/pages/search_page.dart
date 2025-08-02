@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
-import 'package:noted_d/widgets/home_note_widget.dart';
+import 'package:noted_d/widgets/home_note_grid_box.dart';
 import 'package:noted_d/widgets/home_screen_searchbox.dart';
 import 'package:provider/provider.dart';
 
@@ -76,7 +76,7 @@ class SearchPage extends StatelessWidget {
                                 ),
                             itemCount: listOfSearchedNotes.length,
                             itemBuilder: (final context, final index) {
-                              return HomeNoteWidget(
+                              return HomeNoteGridBox(
                                 homeNotesModel: listOfSearchedNotes[index],
                                 isSearchedResult: true,
                               );

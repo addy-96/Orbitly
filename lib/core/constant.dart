@@ -30,6 +30,8 @@ const contentSTC = 'content';
 const taskIdTTC = 'taskId';
 const taskContentTTC = 'taskContent';
 const completeStatusTTC = 'completeStatus';
+const createdAtTTC = 'createdAt';
+const completedAtTTC = 'completedAt';
 
 //drawing table column dtc
 const drawingIdDTC = 'drawingId';
@@ -80,10 +82,6 @@ final List<Color> colorPallets = [
   const Color(0xFFE0E0E0), // Light Grey
   const Color(0xFFFF8A65), // Coral
 ];
-
-DateTime getDateTime() {
-  return DateTime.now();
-}
 
 //App Color Pallets
 var grey = Colors.grey.shade300;
