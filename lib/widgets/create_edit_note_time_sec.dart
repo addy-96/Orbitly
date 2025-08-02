@@ -19,7 +19,7 @@ class CreateEditNoteTimeSec extends StatelessWidget {
         ? '0${dateTime.minute}'
         : '${dateTime.minute}';
     final period = dateTime.hour >= 12 ? 'PM' : 'AM';
-    final monthName = months[dateTime.month]!.substring(0, 3) + ',';
+    final monthName = '${months[dateTime.month]!.substring(0, 3)},';
     return '${dateTime.day} $monthName $hour:$minute  $period';
   }
 

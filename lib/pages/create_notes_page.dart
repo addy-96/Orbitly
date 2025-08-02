@@ -37,6 +37,7 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
   Widget build(final BuildContext context) {
     final notesProvider = Provider.of<NotesPro>(context);
     final settingsProvider = Provider.of<SettingsPro>(context);
+    final background = notesProvider.currentNoteBackground;
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (final didPop, final result) async {
@@ -51,10 +52,10 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
       },
       child: Stack(
         children: [
-          notesProvider.currentNoteBackground == 'default'
+          background == 'default'
               ? const SizedBox.shrink()
               : Opacity(
-                  opacity: 0.2,
+                  opacity: 0.5,
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
@@ -65,7 +66,9 @@ class _CreateNotesPageState extends State<CreateNotesPage> {
                   ),
                 ),
           Scaffold(
-            backgroundColor: Colors.transparent,
+            backgroundColor: background == 'default'
+                ? Colors.white
+                : Colors.transparent,
             appBar: createEditNoteAppBar(
               isCreate: true,
               notesPro: notesProvider,
