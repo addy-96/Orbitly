@@ -88,6 +88,10 @@ class NotesPro with ChangeNotifier {
 
   DateTime? get editedAt => _editedAt;
 
+  Color _noteThemeColor = Colors.black;
+
+  Color get noteThemeColor => _noteThemeColor;
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -611,6 +615,7 @@ class NotesPro with ChangeNotifier {
 
   void setNoteBackground({required final String path}) async {
     _currentNoteBackground = path;
+    _noteThemeColor = path == 'default' ? Colors.black : Colors.white;
     notifyListeners();
   }
 }

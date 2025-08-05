@@ -9,7 +9,7 @@ class CreateEditNoteTimeSec extends StatelessWidget {
   const CreateEditNoteTimeSec({super.key, required this.isEditPage});
   final bool isEditPage;
 
-  String formatDateTime(DateTime dateTime) {
+  String formatDateTime(final DateTime dateTime) {
     final hour = dateTime.hour > 12
         ? dateTime.hour - 12
         : dateTime.hour == 0

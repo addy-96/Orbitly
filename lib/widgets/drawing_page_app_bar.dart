@@ -2,7 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:noted_d/core/constant.dart';
+import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/drawing_pro.dart';
+import 'package:noted_d/providers/settings_pro.dart';
 import 'package:provider/provider.dart';
 
 class DrawingPageAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -11,11 +14,60 @@ class DrawingPageAppBar extends StatelessWidget implements PreferredSizeWidget {
   void onBackAction({
     required final DrawingPro drawingPro,
     required final BuildContext context,
+    required final SettingsPro settingsPro,
   }) {
     if (drawingPro.sketchList.isEmpty) {
       Navigator.of(context).pop();
     } else {
-      log('show dialog to confirm dismis or save drawings');
+      showDialog(
+        context: context,
+        builder: (final context) {
+          return AlertDialog(
+            title: Text(
+              'Discard Changes?',
+              style: textStyleOS(
+                fontSize: settingsPro.getFontSize() * 1.5,
+                fontColor: Colors.black,
+              ).copyWith(fontWeight: FontWeight.bold),
+            ),
+            content: Text(
+              'You have unsaved changes. Are you sure you want to discard them?',
+              style: textStyleOS(
+                fontSize: settingsPro.getFontSize() * 1.5,
+                fontColor: Colors.black,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'Cancel',
+                  style: textStyleOS(
+                    fontSize: settingsPro.getFontSize() * 0.8,
+                    fontColor: themeOrange,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  drawingPro.resetCanvas();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'Discard',
+                  style: textStyleOS(
+                    fontSize: settingsPro.getFontSize() * 0.8,
+                    fontColor: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -25,11 +77,17 @@ class DrawingPageAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   PreferredSizeWidget build(final BuildContext context) {
     final drawingPro = Provider.of<DrawingPro>(context);
+    final settingsPro = Provider.of<SettingsPro>(context);
     return AppBar(
-      backgroundColor: Colors.deepOrange,
+      backgroundColor: scaffoldBackgroudColor,
+      forceMaterialTransparency: true,
       leading: IconButton(
         onPressed: () {
-          onBackAction(drawingPro: drawingPro, context: context);
+          onBackAction(
+            drawingPro: drawingPro,
+            context: context,
+            settingsPro: settingsPro,
+          );
         },
         icon: const Icon(HugeIcons.strokeRoundedMultiplicationSign, size: 30),
       ),

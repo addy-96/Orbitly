@@ -1,9 +1,7 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/models/notes_model.dart';
 import 'package:noted_d/pages/edit_notes_page.dart';
-import 'package:noted_d/providers/search_box_pro.dart';
 import 'package:noted_d/providers/settings_pro.dart';
 import 'package:provider/provider.dart';
 

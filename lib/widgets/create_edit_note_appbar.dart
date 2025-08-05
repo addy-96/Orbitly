@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -40,19 +39,25 @@ PreferredSizeWidget createEditNoteAppBar({
           );
         }
       },
-      icon: const Icon(HugeIcons.strokeRoundedArrowLeft02),
+      icon: Icon(
+        HugeIcons.strokeRoundedArrowLeft02,
+        color: notesPro.noteThemeColor,
+      ),
     ),
     actions: [
       IconButton(
         onPressed: () {
           notesPro.toggleAvatarBackgroundMenu();
         },
-        icon: const Icon(HugeIcons.strokeRoundedTShirt),
+        icon: Icon(
+          HugeIcons.strokeRoundedTShirt,
+          color: notesPro.noteThemeColor,
+        ),
       ),
       noteId != null
           ? PopupMenuButton(
               icon: const Icon(HugeIcons.strokeRoundedMenu01),
-              color: Colors.white,
+              color: notesPro.noteThemeColor,
               borderRadius: BorderRadius.circular(14),
               itemBuilder: (final context) {
                 return [

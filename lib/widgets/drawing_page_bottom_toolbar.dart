@@ -5,6 +5,7 @@ import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/pages/drawing_page.dart';
 import 'package:noted_d/providers/drawing_pro.dart';
+import 'package:noted_d/providers/settings_pro.dart';
 import 'package:provider/provider.dart';
 
 class DrawingPageBottomToolbar extends StatelessWidget {
@@ -13,6 +14,7 @@ class DrawingPageBottomToolbar extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final drawingPro = Provider.of<DrawingPro>(context);
+    final settingPro = Provider.of<SettingsPro>(context);
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: drawingPro.sketchList.isEmpty
@@ -40,14 +42,14 @@ class DrawingPageBottomToolbar extends StatelessWidget {
                         Text(
                           'Set Stroke',
                           style: textStyleOS(
-                            fontSize: 18,
+                            fontSize: settingPro.getFontSize() * 1.5,
                             fontColor: Colors.black,
                           ).copyWith(fontWeight: FontWeight.bold),
                         ),
                         Text(
                           drawPro.currentStrokeWidth.toStringAsPrecision(2),
                           style: textStyleOS(
-                            fontSize: 15,
+                            fontSize: settingPro.getFontSize() * 1.5,
                             fontColor: Colors.black,
                           ).copyWith(fontWeight: FontWeight.w600),
                         ),
@@ -59,8 +61,8 @@ class DrawingPageBottomToolbar extends StatelessWidget {
                                 value: drawPro.currentStrokeWidth,
                                 min: drawPro.minStrokeWidth,
                                 max: drawPro.maxStrokeWidth,
-                                activeColor: Colors.deepOrange,
-                                thumbColor: Colors.deepOrange,
+                                activeColor: themeOrange,
+                                thumbColor: themeOrange,
                                 onChanged: (final value) {
                                   drawPro.selectStrokeWidth(stroke: value);
                                 },
@@ -70,7 +72,17 @@ class DrawingPageBottomToolbar extends StatelessWidget {
                               onPressed: () {
                                 drawPro.resetStroke();
                               },
-                              child: const Text('Reset'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: themeOrange,
+                              ),
+                              child: Text(
+                                'Reset',
+                                style: textStyleOS(
+                                  fontSize: settingPro.getFontSize(),
+                                  fontColor: themeOrange,
+                                ),
+                              ),
                             ),
                             const Gap(10),
                             ElevatedButton(
@@ -141,7 +153,7 @@ class DrawingPageBottomToolbar extends StatelessWidget {
                           Text(
                             'Select Paint color',
                             style: textStyleOS(
-                              fontSize: 18,
+                              fontSize: settingPro.getFontSize() * 1.5,
                               fontColor: Colors.black,
                             ).copyWith(fontWeight: FontWeight.bold),
                           ),
@@ -174,7 +186,7 @@ class DrawingPageBottomToolbar extends StatelessWidget {
                                                     width: 10,
                                                     height: 4,
                                                     decoration: BoxDecoration(
-                                                      color: Colors.deepOrange,
+                                                      color: themeOrange,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                             14,

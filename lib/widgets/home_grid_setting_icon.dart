@@ -16,7 +16,6 @@ class HomeGridSettingIcon extends StatelessWidget {
           ? 0.5
           : 0,
       curve: Curves.linear,
-
       child: IconButton(
         key: ValueKey(settingProvider.settings[layoutSetKey]),
         onPressed: () async {

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -40,37 +38,70 @@ class NotesBackgroundImageOption extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 3,
+              itemCount: 4,
               itemBuilder: (final context, final index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(14),
-                    onTap: () {
-                      notesPro.setNoteBackground(
-                        path: 'assets/avatar/av$index.png',
-                      );
-                    },
-                    child: Material(
-                      borderRadius: BorderRadius.circular(18),
-                      elevation: 5,
-                      child: Container(
-                        height: 30,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadiusGeometry.circular(14),
-                          child: Image.asset(
-                            'assets/avatar/av$index.png',
-                            fit: BoxFit.cover,
+                if (index == 0 && notesPro.currentNoteBackground != 'default') {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(14),
+                      onTap: () {
+                        notesPro.setNoteBackground(path: 'default');
+                        notesPro.toggleAvatarBackgroundMenu();
+                      },
+                      child: Material(
+                        borderRadius: BorderRadius.circular(18),
+                        elevation: 5,
+                        child: Container(
+                          height: 30,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: scaffoldBackgroudColor,
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              HugeIcons.strokeRoundedMultiplicationSign,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                );
+                  );
+                } else if (index == 0) {
+                  return const SizedBox.shrink();
+                } else {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(14),
+                      onTap: () {
+                        notesPro.setNoteBackground(
+                          path: 'assets/avatar/av$index.png',
+                        );
+                        notesPro.toggleAvatarBackgroundMenu();
+                      },
+                      child: Material(
+                        borderRadius: BorderRadius.circular(18),
+                        elevation: 5,
+                        child: Container(
+                          height: 30,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(14),
+                            child: Image.asset(
+                              'assets/avatar/av$index.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
               },
             ),
           ),

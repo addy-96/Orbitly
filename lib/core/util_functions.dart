@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/providers/notes_pro.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 
