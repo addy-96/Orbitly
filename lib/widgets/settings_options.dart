@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/settings_pro.dart';
 import 'package:provider/provider.dart';
@@ -68,9 +69,9 @@ class _SettingsOptionsState extends State<SettingsOptions> {
             title: Text(
               item,
               style: textStyleOS(
-                fontSize: 15,
+                fontSize: settingsProvider.getFontSize() * 1.2,
                 fontColor: item == widget.selectedOption
-                    ? Colors.deepOrange
+                    ? themeOrange
                     : Colors.black,
               ),
             ),

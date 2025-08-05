@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/models/notes_model.dart';
 import 'package:noted_d/pages/edit_notes_page.dart';
@@ -22,12 +25,7 @@ class HomeNoteGridBox extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(19),
         onTap: () async {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (final context) =>
-                  EditNotes(noteId: homeNotesModel.notesId),
-            ),
-          );
+          context.push('/edit_notes/${homeNotesModel.notesId}');
         },
         child: Hero(
           tag: homeNotesModel.notesId,

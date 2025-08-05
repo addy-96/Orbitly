@@ -15,25 +15,34 @@ class CreatedEditNoteToolbar extends StatelessWidget {
         ? const NotesBackgroundImageOption()
         : Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               IconButton(
                 onPressed: () async {
                   await notesPro.addImageSection();
                 },
-                icon: const Icon(HugeIcons.strokeRoundedImageAdd01),
+                icon: Icon(
+                  HugeIcons.strokeRoundedImageAdd01,
+                  color: notesPro.noteThemeColor,
+                ),
               ),
               IconButton(
                 onPressed: () {
                   context.push('/drawing');
                 },
-                icon: const Icon(HugeIcons.strokeRoundedCurvyUpDownDirection),
+                icon: Icon(
+                  HugeIcons.strokeRoundedCurvyUpDownDirection,
+                  color: notesPro.noteThemeColor,
+                ),
               ),
               IconButton(
                 onPressed: () {
                   notesPro.addTaskSection(context);
                 },
-                icon: const Icon(HugeIcons.strokeRoundedCheckmarkSquare01),
+                icon: Icon(
+                  HugeIcons.strokeRoundedCheckmarkSquare01,
+                  color: notesPro.noteThemeColor,
+                ),
               ),
             ],
           );

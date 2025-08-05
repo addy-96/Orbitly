@@ -308,7 +308,10 @@ class _SettingsPageState extends State<SettingsPage> {
         return Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
             border: Border.all(width: 5, color: Colors.grey.shade200),
           ),
           height: options.length * 100,
@@ -321,7 +324,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   Text(
                     topic,
                     style: textStyleOS(
-                      fontSize: 20,
+                      fontSize: settingsProvider.getFontSize() + 8,
                       fontColor: Colors.black,
                     ).copyWith(fontWeight: FontWeight.bold),
                   ),

@@ -295,6 +295,7 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
           modifiedAtNTC: notesModel.modifiedAt.toIso8601String(),
           notesTitleNTC: notesModel.notesTitle,
           notesContentHighLightNTC: notesModel.notesContentHighLight,
+          noteBackgroundNTC: notesModel.notesBackground,
         },
         where: '$notesIdNTC = ?',
         whereArgs: [notesModel.notesId],

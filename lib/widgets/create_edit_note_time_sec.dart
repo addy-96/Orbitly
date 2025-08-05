@@ -37,7 +37,9 @@ class CreateEditNoteTimeSec extends StatelessWidget {
             'Created: ${formatDateTime(createdAt)}\nLast Edited: ${formatDateTime(editedAt)}',
             style: textStyleOS(
               fontSize: settingspro.getFontSize(),
-              fontColor: Colors.grey.shade400,
+              fontColor: notesPro.currentNoteBackground == 'default'
+                  ? Colors.grey.shade400
+                  : Colors.white,
             ).copyWith(fontWeight: FontWeight.w400),
           ),
         ],
@@ -48,7 +50,9 @@ class CreateEditNoteTimeSec extends StatelessWidget {
         formatDateTime(now),
         style: textStyleOS(
           fontSize: settingspro.getFontSize(),
-          fontColor: Colors.grey.shade400,
+          fontColor: notesPro.currentNoteBackground == 'default'
+              ? Colors.grey.shade400
+              : Colors.white,
         ).copyWith(fontWeight: FontWeight.w400),
       );
     }

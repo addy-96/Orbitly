@@ -56,8 +56,8 @@ PreferredSizeWidget createEditNoteAppBar({
       ),
       noteId != null
           ? PopupMenuButton(
-              icon: const Icon(HugeIcons.strokeRoundedMenu01),
-              color: notesPro.noteThemeColor,
+              icon: const Icon(HugeIcons.strokeRoundedMenu02),
+              iconColor: notesPro.noteThemeColor,
               borderRadius: BorderRadius.circular(14),
               itemBuilder: (final context) {
                 return [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:noted_d/providers/drawing_pro.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
 import 'package:noted_d/providers/notes_pro.dart';
@@ -13,6 +14,10 @@ import 'package:noted_d/core/router.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(
     MultiProvider(
       providers: [

@@ -23,8 +23,10 @@ class DrawingPageAppBar extends StatelessWidget implements PreferredSizeWidget {
         context: context,
         builder: (final context) {
           return AlertDialog(
+            backgroundColor: scaffoldBackgroudColor,
             title: Text(
               'Discard Changes?',
+              textAlign: TextAlign.center,
               style: textStyleOS(
                 fontSize: settingsPro.getFontSize() * 1.5,
                 fontColor: Colors.black,
@@ -33,7 +35,7 @@ class DrawingPageAppBar extends StatelessWidget implements PreferredSizeWidget {
             content: Text(
               'You have unsaved changes. Are you sure you want to discard them?',
               style: textStyleOS(
-                fontSize: settingsPro.getFontSize() * 1.5,
+                fontSize: settingsPro.getFontSize() * 1.2,
                 fontColor: Colors.black,
               ),
             ),
@@ -45,7 +47,7 @@ class DrawingPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Text(
                   'Cancel',
                   style: textStyleOS(
-                    fontSize: settingsPro.getFontSize() * 0.8,
+                    fontSize: settingsPro.getFontSize() * 1.1,
                     fontColor: themeOrange,
                   ),
                 ),
@@ -59,7 +61,7 @@ class DrawingPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Text(
                   'Discard',
                   style: textStyleOS(
-                    fontSize: settingsPro.getFontSize() * 0.8,
+                    fontSize: settingsPro.getFontSize() * 1.1,
                     fontColor: Colors.black,
                   ),
                 ),

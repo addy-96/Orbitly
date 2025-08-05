@@ -248,6 +248,18 @@ class NotesPro with ChangeNotifier {
     return;
   }
 
+  void updateTaskStatus({
+    required final int index,
+    required final int isComplete,
+  }) {
+    sectionList[index] = TaskBlock(
+      textEditingController:
+          (sectionList[index] as TaskBlock).textEditingController,
+      isComplete: isComplete,
+    );
+    notifyListeners();
+  }
+
   //add drawing section to notes
   Future<void> addDrawingSection({
     required final DrawingBlock drawingBlock,
@@ -384,7 +396,8 @@ class NotesPro with ChangeNotifier {
             final sectionModel = SectionModel(
               sectionNo: i,
               sectionType: 'task',
-              sectionContnet: '${section.textEditingController.text}~0~',
+              sectionContnet:
+                  '${section.textEditingController.text}~${section.isComplete}~',
             );
             sectionModelList.add(sectionModel);
           } else if (section is GestureBlock) {
@@ -515,6 +528,12 @@ class NotesPro with ChangeNotifier {
     _titleController.text = restorePreviusNote.notesTitle ?? '';
     _sectionList.clear();
 
+    _currentNoteBackground = restorePreviusNote.notesBackground;
+    _noteThemeColor = _currentNoteBackground == 'default'
+        ? Colors.black
+        : Colors.white;
+
+    log('current note background is $_currentNoteBackground');
     for (var i = 0; i < restorePreviusNote.sectionList.length; i++) {
       final secton = restorePreviusNote.sectionList[i];
 
@@ -563,6 +582,7 @@ class NotesPro with ChangeNotifier {
   }
 
   Future updateNote({required final NotesModel notesModel}) async {
+    log('message from update note : ${notesModel.notesBackground}');
     await notesLocalServiceInterface.updateNote(notesModel: notesModel);
     loadAllNotes();
     notifyListeners();

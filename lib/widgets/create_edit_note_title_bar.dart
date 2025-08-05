@@ -15,13 +15,16 @@ class CreateEditNoteTitleBar extends StatelessWidget {
       controller: notesPro.titleController,
       style: textStyleOS(
         fontSize: 25,
-        fontColor: Colors.grey.shade400,
+        fontColor: notesPro.noteThemeColor,
       ).copyWith(fontWeight: FontWeight.w700),
+      cursorColor: notesPro.noteThemeColor,
       decoration: InputDecoration(
         hintText: 'Title',
         hintStyle: textStyleOS(
           fontSize: settingPro.getFontSize() * 1.8,
-          fontColor: Colors.grey.shade400,
+          fontColor: notesPro.currentNoteBackground == 'default'
+              ? Colors.grey.shade400
+              : Colors.white.withOpacity(0.6),
         ).copyWith(fontWeight: FontWeight.w700),
         border: InputBorder.none,
       ),

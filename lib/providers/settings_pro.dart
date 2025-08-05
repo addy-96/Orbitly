@@ -48,13 +48,11 @@ class SettingsPro with ChangeNotifier {
 
   double getFontSize() {
     return _settings[fontSizeSetKey] == 'Small'
-        ? 10
+        ? 12
         : _settings[fontSizeSetKey] == 'Medium'
         ? 14
-        : 18;
+        : 16;
   }
-
-  
 
   Future<void> resetSettings() async {
     await settingsLocalService.resetSettings();

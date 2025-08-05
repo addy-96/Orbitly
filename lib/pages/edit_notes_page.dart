@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:noted_d/providers/notes_pro.dart';
@@ -43,12 +45,15 @@ class _EditNotesState extends State<EditNotes> {
   Widget build(final BuildContext context) {
     final notesProvider = Provider.of<NotesPro>(context);
     final settingsProvider = Provider.of<SettingsPro>(context);
+
+    final background = notesProvider.currentNoteBackground;
     return Hero(
       tag: widget.noteId,
       child: PopScope(
         canPop: false,
         onPopInvokedWithResult: (final didPop, final result) async {
           if (!didPop) {
+            log('step 1 : ................');
             await notesProvider.saveNote(
               context: context,
               isForEditPage: true,
@@ -57,30 +62,49 @@ class _EditNotesState extends State<EditNotes> {
           }
           return;
         },
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: createEditNoteAppBar(
-            isCreate: false,
-            notesPro: notesPro,
-            context: context,
-            noteId: widget.noteId,
-            settingPro: settingsProvider,
-          ),
-          body: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Gap(10),
-                CreateEditNoteTitleBar(),
-                Gap(10),
-                CreateEditNoteTimeSec(isEditPage: true),
-                Gap(10),
-                CreateEditNoteBody(),
-                CreatedEditNoteToolbar(),
-              ],
+        child: Stack(
+          children: [
+            background == 'default'
+                ? const SizedBox.shrink()
+                : Opacity(
+                    opacity: 0.5,
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      child: Image.asset(
+                        notesProvider.currentNoteBackground,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+            Scaffold(
+              backgroundColor: background == 'default'
+                  ? Colors.white
+                  : Colors.transparent,
+              appBar: createEditNoteAppBar(
+                isCreate: false,
+                notesPro: notesProvider,
+                context: context,
+                noteId: widget.noteId,
+                settingPro: settingsProvider,
+              ),
+              body: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Gap(10),
+                    CreateEditNoteTitleBar(),
+                    Gap(10),
+                    CreateEditNoteTimeSec(isEditPage: false),
+                    Gap(10),
+                    CreateEditNoteBody(),
+                    CreatedEditNoteToolbar(),
+                  ],
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

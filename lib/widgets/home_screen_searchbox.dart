@@ -11,7 +11,6 @@ class HomeScreenSearchbox extends StatelessWidget {
   const HomeScreenSearchbox({super.key, required this.isWithInputField});
   final bool isWithInputField;
 
-
   void _onChanged(final SearchBoxPro searchBoxProvider) {
     final searchValue = searchBoxProvider.searchController.text.trim();
     if (searchValue.isEmpty) {
@@ -48,9 +47,7 @@ class HomeScreenSearchbox extends StatelessWidget {
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 18,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
                     child: TextField(
                       style: textStyleOS(
                         fontSize: fontSize * 1.2,
@@ -90,7 +87,6 @@ class HomeScreenSearchbox extends StatelessWidget {
               ).copyWith(fontWeight: FontWeight.w600),
             ),
           ),
-
         ],
       );
     } else {
@@ -102,7 +98,7 @@ class HomeScreenSearchbox extends StatelessWidget {
           borderRadius: BorderRadius.circular(50),
           child: Container(
             decoration: BoxDecoration(
-              color: grey.withOpacity(0.4),
+              color: Colors.white,
               borderRadius: BorderRadius.circular(50),
             ),
 
@@ -112,11 +108,10 @@ class HomeScreenSearchbox extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-
                   Icon(
                     HugeIcons.strokeRoundedSearch01,
                     size: MediaQuery.of(context).size.width / 25,
-                    color: grey,
+                    color: darkkgrey,
                   ),
 
                   const Gap(10),
@@ -125,10 +120,9 @@ class HomeScreenSearchbox extends StatelessWidget {
                     'Search notes',
                     style: textStyleOS(
                       fontSize: fontSize,
-                      fontColor: grey,
+                      fontColor: darkkgrey,
                     ).copyWith(fontWeight: FontWeight.w500),
                   ),
-
                 ],
               ),
             ),
