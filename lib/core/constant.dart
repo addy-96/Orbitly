@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
@@ -123,6 +122,13 @@ void queryallTable() async {
   final List<Map<String, dynamic>> tables = await db.rawQuery(
     "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
   );
+
+  //yet to be implemented
+  const NOTES_MAX_LENGHT = 1000;
+  const SECTION_MAX_LENGHT = 500;
+  const TASK_MAX_LENGHT = 200;
+  const DRAWING_MAX_LENGHT = 500;
+  const FOLDER_MAX_LENGHT = 50;
 
   // Print table names
   for (var table in tables) {

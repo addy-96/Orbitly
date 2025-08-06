@@ -39,7 +39,9 @@ class _DrawingPageState extends State<DrawingPage> {
                 drawingProvider.addToSketch(
                   sketch: SketchModel(
                     points: drawingProvider.drawingPoints,
-                    sketchColor: drawingProvider.currentPaintColor,
+                    sketchColor: drawingProvider.isEraserSelected
+                        ? scaffoldBackgroudColor
+                        : drawingProvider.currentPaintColor,
                     strokeWidth: drawingProvider.currentStrokeWidth,
                   ),
                 );

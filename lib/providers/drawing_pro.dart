@@ -1,10 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:noted_d/models/sketch_model.dart';
 import 'package:noted_d/providers/notes_pro.dart';
 import 'package:path_provider/path_provider.dart';
@@ -47,6 +45,10 @@ class DrawingPro with ChangeNotifier {
   List<SketchModel> get sketchBuffer => _sketchBuffer;
 
   GlobalKey get drawingAreaKey => _drawingKey;
+
+  bool _isEraserSelected = false;
+
+  bool get isEraserSelected => _isEraserSelected;
 
   Future captureDrawingAndAdd(final BuildContext context) async {
     try {
@@ -129,6 +131,17 @@ class DrawingPro with ChangeNotifier {
   ////////////////////////////
   void selectColor({required final Color selectedColor}) {
     _currentPaintColor = selectedColor;
+    notifyListeners();
+  }
+
+  //////////////////////////////
+  void selectEraser() {
+    _isEraserSelected = !_isEraserSelected;
+    if (_isEraserSelected) {
+      _currentStrokeWidth = 20;
+    } else {
+      _currentStrokeWidth = 4;
+    }
     notifyListeners();
   }
 

@@ -43,7 +43,7 @@ class _TaskInsideNoteState extends State<TaskInsideNote> {
             if (widget.section.textEditingController.text.trim().isEmpty) {
               return;
             }
-            ;
+
             log('Task status toggled: ${widget.section.isComplete}');
             notesSectionProvider.updateTaskStatus(
               index: widget.index,

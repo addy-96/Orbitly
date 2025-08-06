@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/providers/drawing_pro.dart';
 
 class PaintingCanvas extends CustomPainter {
@@ -11,7 +12,9 @@ class PaintingCanvas extends CustomPainter {
   @override
   void paint(final Canvas canvas, final Size size) {
     final Paint paint = Paint()
-      ..color = provider.currentPaintColor
+      ..color = provider.isEraserSelected
+          ? scaffoldBackgroudColor
+          : provider.currentPaintColor
       ..style = PaintingStyle.fill
       ..strokeWidth = provider.currentStrokeWidth
       ..style = PaintingStyle.stroke;
