@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:noted_d/models/notes_model.dart';
 import 'package:noted_d/services/notes_local_service.dart';
@@ -28,13 +26,19 @@ class SearchBoxPro with ChangeNotifier {
 
   void clearSearchedNotes() {
     _searchedNotes.clear();
+    return;
   }
 
   void onSearch({required final String searchedString}) async {
     _searchedNotes = await notesLocalServiceInterface.getSearchedNotes(
       searchQuery: searchedString,
     );
-    log(searchNotes.length.toString());
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 }
