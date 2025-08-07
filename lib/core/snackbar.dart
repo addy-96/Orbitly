@@ -13,6 +13,7 @@ void cSnack({
       duration: Duration(milliseconds: 1500),
     ),
     SnackBar(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       behavior: SnackBarBehavior.floating,
       duration: const Duration(seconds: 2),
       elevation: 50,

@@ -88,9 +88,9 @@ var darkkgrey = Colors.grey.shade500;
 const themeOrange = Colors.deepOrange;
 
 //settings Constants
-const cloudSetKey = 'cloud-set';
-const cloudSetupSetVal = 'Setup';
-const cloudResetSetVal = 'Reset';
+const themeSetKey = 'theme';
+const themLightSetVal = 'Light';
+const themeDarkSetVal = 'Dark';
 
 const fontSizeSetKey = 'font-size-set';
 const fontSzieSmallSetVal = 'Small';

@@ -1,42 +1,52 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/core/constant.dart';
+import 'package:noted_d/core/snackbar.dart';
 import 'package:noted_d/core/textstyle.dart';
+import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/providers/search_box_pro.dart';
 import 'package:noted_d/providers/settings_pro.dart';
-
 import 'package:provider/provider.dart';
 
-class HomeScreenSearchbox extends StatelessWidget {
-  const HomeScreenSearchbox({super.key, required this.isWithInputField});
+class HomeScreenSearchbox extends StatefulWidget {
+  const HomeScreenSearchbox({
+    super.key,
+    required this.isWithInputField,
+    this.searchController,
+  });
   final bool isWithInputField;
+  final TextEditingController? searchController;
 
+  @override
+  State<HomeScreenSearchbox> createState() => _HomeScreenSearchboxState();
+}
+
+class _HomeScreenSearchboxState extends State<HomeScreenSearchbox> {
   void _onChanged(final SearchBoxPro searchBoxProvider) {
-    final searchValue = searchBoxProvider.searchController.text.trim();
-    if (searchValue.isEmpty) {
-      return;
+    final searchText = widget.searchController!.text.trim();
+    if (searchText.isNotEmpty) {
+      searchBoxProvider.onSearch(query: searchText);
+    } else {
+      searchBoxProvider.searchResults.clear();
     }
-    searchBoxProvider.clearSearchedNotes();
-    searchBoxProvider.onSearch(searchedString: searchValue);
   }
 
-  void _onCancel(final SearchBoxPro searchBoxProvider) {
-    searchBoxProvider.searchController.clear();
-    searchBoxProvider.clearSearchedNotes();
-    searchBoxProvider.toggelSearchBox();
+  void _onCancel() {
+    widget.searchController!.clear();
+    final searchBoxProvider = Provider.of<SearchBoxPro>(context, listen: false);
+    searchBoxProvider.searchResults.clear();
+    context.pop();
   }
 
   @override
   Widget build(final BuildContext context) {
     final searchBoxProvider = Provider.of<SearchBoxPro>(context);
     final settingsProvider = Provider.of<SettingsPro>(context);
+    final notesprovider = Provider.of<NotesPro>(context, listen: false);
     final fontSize = settingsProvider.getFontSize();
-    log('build outside');
-    if (isWithInputField) {
+    if (widget.isWithInputField) {
       return Row(
         children: [
           Expanded(
@@ -50,6 +60,7 @@ class HomeScreenSearchbox extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18),
                   child: TextField(
+                    controller: widget.searchController,
                     style: textStyleOS(
                       fontSize: fontSize * 1.2,
                       fontColor: Colors.black,
@@ -58,7 +69,6 @@ class HomeScreenSearchbox extends StatelessWidget {
                       _onChanged(searchBoxProvider);
                     },
                     autofocus: true,
-                    controller: searchBoxProvider.searchController,
                     keyboardType: TextInputType.text,
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
@@ -66,7 +76,7 @@ class HomeScreenSearchbox extends StatelessWidget {
                       border: InputBorder.none,
                       hintStyle: textStyleOS(
                         fontSize: fontSize,
-                        fontColor: grey,
+                        fontColor: darkkgrey,
                       ).copyWith(fontWeight: FontWeight.w500),
                     ),
                   ),
@@ -74,12 +84,9 @@ class HomeScreenSearchbox extends StatelessWidget {
               ),
             ),
           ),
-
           TextButton(
             onPressed: () {
-              _onCancel(searchBoxProvider);
-              FocusScope.of(context).unfocus();
-              context.pop();
+              _onCancel();
             },
             child: Text(
               'Cancel',
@@ -92,36 +99,51 @@ class HomeScreenSearchbox extends StatelessWidget {
         ],
       );
     } else {
-      return Material(
-        elevation: 2,
+      return InkWell(
         borderRadius: BorderRadius.circular(50),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(50),
-          ),
+        onTap: () {
+          if (notesprovider.notesList.isEmpty) {
+            cSnack(
+              message:
+                  'What are you planning to search?🤔 you dont have any notes!',
+              backgroundColor: Colors.white,
+              context: context,
+            );
+            return;
+          }
+          context.push('/search');
+        },
+        child: Material(
+          elevation: 2,
+          borderRadius: BorderRadius.circular(50),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(50),
+            ),
 
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  HugeIcons.strokeRoundedSearch01,
-                  size: MediaQuery.of(context).size.width / 25,
-                  color: darkkgrey,
-                ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    HugeIcons.strokeRoundedSearch01,
+                    size: MediaQuery.of(context).size.width / 25,
+                    color: darkkgrey,
+                  ),
 
-                const Gap(10),
-                Text(
-                  'Search notes',
-                  style: textStyleOS(
-                    fontSize: fontSize,
-                    fontColor: darkkgrey,
-                  ).copyWith(fontWeight: FontWeight.w500),
-                ),
-              ],
+                  const Gap(10),
+                  Text(
+                    'Search notes',
+                    style: textStyleOS(
+                      fontSize: fontSize,
+                      fontColor: darkkgrey,
+                    ).copyWith(fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

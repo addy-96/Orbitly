@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:noted_d/core/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,7 +20,7 @@ final class SettingsLocalServiceImpl implements SettingsLocalService {
       final sharedPref = await SharedPreferences.getInstance();
       final ifSettingIntialized = await checkIfSettingsExist();
       if (!ifSettingIntialized) {
-        await sharedPref.setString(cloudSetKey, cloudSetKey);
+        await sharedPref.setString(themeSetKey, themLightSetVal);
         await sharedPref.setString(fontSizeSetKey, fontSzieMediumSetVal);
         await sharedPref.setString(sortSetKey, sortBMDSetVal);
         await sharedPref.setString(layoutSetKey, layoutGridSetVal);
@@ -36,7 +35,7 @@ final class SettingsLocalServiceImpl implements SettingsLocalService {
   Future<bool> checkIfSettingsExist() async {
     try {
       final sharedPref = await SharedPreferences.getInstance();
-      final res = sharedPref.getString(cloudSetKey);
+      final res = sharedPref.getString(themeSetKey);
       if (res == null) {
         return false;
       }
@@ -82,6 +81,7 @@ final class SettingsLocalServiceImpl implements SettingsLocalService {
     try {
       log('reset settings called');
       final sharedPref = await SharedPreferences.getInstance();
+      await sharedPref.setString(themeSetKey, themLightSetVal);
       await sharedPref.setString(fontSizeSetKey, fontSzieMediumSetVal);
       await sharedPref.setString(sortSetKey, sortBMDSetVal);
       await sharedPref.setString(layoutSetKey, layoutGridSetVal);

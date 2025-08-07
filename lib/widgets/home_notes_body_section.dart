@@ -3,7 +3,6 @@ import 'package:gap/gap.dart';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/notes_pro.dart';
-import 'package:noted_d/providers/search_box_pro.dart';
 import 'package:noted_d/providers/settings_pro.dart';
 import 'package:noted_d/widgets/home_folder_list.dart';
 import 'package:noted_d/widgets/home_note_grid_box.dart';
@@ -28,32 +27,28 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
 
   @override
   Widget build(final BuildContext context) {
-    final searchBoxProvider = Provider.of<SearchBoxPro>(context);
     final settingsProvider = Provider.of<SettingsPro>(context);
+    final notesProvider = Provider.of<NotesPro>(context);
     return Column(
       children: [
-        InkWell(
-          onTap: () async {
-            queryallTable();
-          },
-          child: Text(
-            'Notes',
-            style: textStyleOS(
-              fontSize: settingsProvider.getFontSize() * 3,
-              fontColor: Colors.black,
-            ).copyWith(fontWeight: FontWeight.w300),
-          ),
+        Text(
+          'Notes',
+          style: textStyleOS(
+            fontSize: settingsProvider.getFontSize() * 3,
+            fontColor: Colors.black,
+          ).copyWith(fontWeight: FontWeight.w300),
         ),
         const Gap(10),
         InkWell(
           borderRadius: BorderRadius.circular(50),
-          onTap: () {
-            searchBoxProvider.toggelSearchBox();
-          },
+          onTap: () {},
           child: const HomeScreenSearchbox(isWithInputField: false),
         ),
         const Gap(10),
-        const HomeFolderList(),
+        notesProvider.notesList.isNotEmpty
+            ? const HomeFolderList()
+            : const SizedBox.shrink(),
+        const Gap(10),
         Consumer<NotesPro>(
           builder: (final context, final value, final child) {
             if (value.notesList.isEmpty) {

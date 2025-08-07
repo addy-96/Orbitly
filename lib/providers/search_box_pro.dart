@@ -7,38 +7,14 @@ class SearchBoxPro with ChangeNotifier {
 
   SearchBoxPro({required this.notesLocalServiceInterface});
 
-  bool _isSearchBoxOpened = false;
+  List<HomeNotesModel> _searchResults = [];
+  List<HomeNotesModel> get searchResults => _searchResults;
 
-  final TextEditingController _searchController = TextEditingController();
-
-  List<HomeNotesModel> _searchedNotes = [];
-
-  List<HomeNotesModel> get searchNotes => _searchedNotes;
-
-  TextEditingController get searchController => _searchController;
-
-  bool get isSearchBoxOpened => _isSearchBoxOpened;
-
-  void toggelSearchBox() {
-    _isSearchBoxOpened = !isSearchBoxOpened;
-    notifyListeners();
-  }
-
-  void clearSearchedNotes() {
-    _searchedNotes.clear();
-    return;
-  }
-
-  void onSearch({required final String searchedString}) async {
-    _searchedNotes = await notesLocalServiceInterface.getSearchedNotes(
-      searchQuery: searchedString,
+  void onSearch({required final String query}) async {
+    final result = await notesLocalServiceInterface.getSearchedNotes(
+      searchQuery: query,
     );
+    _searchResults = result;
     notifyListeners();
-  }
-
-  @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
   }
 }

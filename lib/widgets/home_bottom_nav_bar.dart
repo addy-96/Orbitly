@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/core/constant.dart';
@@ -16,7 +15,6 @@ Widget bottomNavbar({
   currentIndex: navIndexPro.index,
   onTap: (final value) async {
     if (navIndexPro.index == 1 && value == 0) {
-
       await taskPro.saveCurrentTasks();
     }
     navIndexPro.changeIndex(value);

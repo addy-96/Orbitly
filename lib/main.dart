@@ -28,8 +28,10 @@ void main() {
           ),
         ),
         ChangeNotifierProvider(
-          create: (final context) =>
-              SettingsPro(settingsLocalService: SettingsLocalServiceImpl()),
+          create: (final context) => SettingsPro(
+            notesPro: Provider.of<NotesPro>(context, listen: false),
+            settingsLocalService: SettingsLocalServiceImpl(),
+          ),
         ),
         ChangeNotifierProvider(
           create: (final context) => SearchBoxPro(

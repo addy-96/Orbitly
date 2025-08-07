@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -78,9 +77,7 @@ class DrawingPro with ChangeNotifier {
         drawingId: drawingId,
         context: context,
       );
-    } catch (err) {
-      log(err.toString());
-    }
+    } catch (err) {}
   }
 
   ////////////////////////////
@@ -111,8 +108,6 @@ class DrawingPro with ChangeNotifier {
   ////////////////////////////
   void undoSketch() {
     _sketchList.remove(_sketchList.last);
-    log('sketch removed : ${sketchList.length}');
-    log('sketch in buffer : ${sketchBuffer.length}');
     notifyListeners();
   }
 

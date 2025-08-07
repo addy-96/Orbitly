@@ -30,13 +30,13 @@ class _SettingsOptionsState extends State<SettingsOptions> {
             onTap: () {
               if (item == widget.selectedOption) {
               } else {
-                if (widget.settingkey == 'cloud-set' ||
-                    widget.settingkey == 'font-size-set') {
+                if (widget.settingkey == themeSetKey ||
+                    widget.settingkey == fontSizeSetKey) {
                   settingsProvider.changeSettings(
                     settingKey: widget.settingkey,
                     settingValue: item,
                   );
-                } else if (widget.settingkey == 'layout-set') {
+                } else if (widget.settingkey == layoutSetKey) {
                   if (item == 'Grid view') {
                     settingsProvider.changeSettings(
                       settingKey: widget.settingkey,
@@ -48,7 +48,7 @@ class _SettingsOptionsState extends State<SettingsOptions> {
                       settingValue: 'List',
                     );
                   }
-                } else if (widget.settingkey == 'sort-set') {
+                } else if (widget.settingkey == sortSetKey) {
                   if (item == 'By modification date') {
                     settingsProvider.changeSettings(
                       settingKey: widget.settingkey,

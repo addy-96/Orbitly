@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/providers/navbar_pro.dart';
-import 'package:noted_d/providers/search_box_pro.dart';
+import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/providers/settings_pro.dart';
 import 'package:noted_d/providers/task_pro.dart';
 import 'package:noted_d/widgets/home_app_bar_actions.dart';
@@ -26,7 +25,7 @@ class _NotesAppHomeState extends State<NotesAppHome> {
     final navIndexProvider = Provider.of<NavbarPro>(context);
     final taskProvider = Provider.of<TaskPro>(context);
     final settingsProvider = Provider.of<SettingsPro>(context);
-
+    final notesProvider = Provider.of<NotesPro>(context, listen: false);
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (final didPop, final result) async {
@@ -47,18 +46,7 @@ class _NotesAppHomeState extends State<NotesAppHome> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 20, top: 30, right: 20),
                 child: navIndexProvider.index == 0
-                    ? Consumer<SearchBoxPro>(
-                        builder: (final context, final value, final child) {
-                          if (value.isSearchBoxOpened) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              context.push('/search');
-                            });
-                            return const SizedBox.shrink();
-                          } else {
-                            return const HomeNotesBodySection();
-                          }
-                        },
-                      )
+                    ? const HomeNotesBodySection()
                     : const HomeNotesTasksSection(),
               ),
             ),
@@ -73,6 +61,7 @@ class _NotesAppHomeState extends State<NotesAppHome> {
           context: context,
           navIndexPro: navIndexProvider,
           taskPro: taskProvider,
+          notesPro: notesProvider,
         ),
       ),
     );

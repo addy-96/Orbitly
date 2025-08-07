@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/providers/drawing_pro.dart';

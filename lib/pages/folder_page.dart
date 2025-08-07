@@ -1,15 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/notes_pro.dart';
+import 'package:noted_d/providers/settings_pro.dart';
 import 'package:noted_d/widgets/folder_container_folder_page.dart';
 import 'package:provider/provider.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart' as p;
 
 class FolderPage extends StatefulWidget {
   const FolderPage({super.key});
@@ -30,7 +28,6 @@ class _FolderPageState extends State<FolderPage> {
 
   void _onAddFolder({required final NotesPro notesProvider}) {
     if (formkey.currentState!.validate()) {
-      log(foldernameController.text);
       notesProvider.addaFolder(foldername: foldernameController.text.trim());
       foldernameController.clear();
       context.pop();
@@ -40,26 +37,24 @@ class _FolderPageState extends State<FolderPage> {
   @override
   Widget build(final BuildContext context) {
     final notesProvider = Provider.of<NotesPro>(context);
+    final settingProvider = Provider.of<SettingsPro>(context);
     return Scaffold(
       backgroundColor: scaffoldBackgroudColor,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(HugeIcons.strokeRoundedArrowLeft01),
+          onPressed: () {
+            context.pop();
+          },
+        ),
         forceMaterialTransparency: true,
         centerTitle: true,
-        title: InkWell(
-          onTap: () async {
-            final getdbpath = await getDatabasesPath();
-            final dbpath = p.join(getdbpath, 'notes.db');
-            final db = await openDatabase(dbpath);
-            final res = await db.query(folderTable);
-            log(res.toString());
-          },
-          child: Text(
-            'Folders',
-            style: textStyleOS(
-              fontSize: 22,
-              fontColor: Colors.black,
-            ).copyWith(fontWeight: FontWeight.w400),
-          ),
+        title: Text(
+          'Folders',
+          style: textStyleOS(
+            fontSize: settingProvider.getFontSize() * 1.5,
+            fontColor: Colors.black,
+          ).copyWith(fontWeight: FontWeight.w400),
         ),
       ),
       body: Padding(
@@ -90,9 +85,9 @@ class _FolderPageState extends State<FolderPage> {
                             children: [
                               const Gap(20),
                               Text(
-                                'Enter folder name',
+                                'Create Folder',
                                 style: textStyleOS(
-                                  fontSize: 18,
+                                  fontSize: settingProvider.getFontSize() * 1.2,
                                   fontColor: Colors.black,
                                 ),
                               ),
@@ -101,6 +96,7 @@ class _FolderPageState extends State<FolderPage> {
                                 key: formkey,
                                 child: TextFormField(
                                   controller: foldernameController,
+                                  maxLength: 20,
                                   validator: (final value) {
                                     if (value == null || value.trim().isEmpty) {
                                       return 'Please enter folder name to proceed!';
@@ -119,7 +115,17 @@ class _FolderPageState extends State<FolderPage> {
                                     return null;
                                   },
                                   decoration: InputDecoration(
+                                    errorStyle: textStyleOS(
+                                      fontSize:
+                                          settingProvider.getFontSize() * 0.7,
+                                      fontColor: Colors.red,
+                                    ),
                                     hintText: 'Folder name',
+                                    hintStyle: textStyleOS(
+                                      fontSize:
+                                          settingProvider.getFontSize() * 1.2,
+                                      fontColor: darkkgrey,
+                                    ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(14),
                                       borderSide: BorderSide(
@@ -146,14 +152,15 @@ class _FolderPageState extends State<FolderPage> {
                                   height:
                                       MediaQuery.of(context).size.height / 14,
                                   decoration: BoxDecoration(
-                                    color: Colors.deepOrange,
+                                    color: themeOrange,
                                     borderRadius: BorderRadius.circular(14),
                                   ),
                                   child: Center(
                                     child: Text(
                                       'Add Folder',
                                       style: textStyleOS(
-                                        fontSize: 18,
+                                        fontSize:
+                                            settingProvider.getFontSize() * 1.2,
                                         fontColor: Colors.white,
                                       ).copyWith(fontWeight: FontWeight.bold),
                                     ),
@@ -170,14 +177,15 @@ class _FolderPageState extends State<FolderPage> {
                                   height:
                                       MediaQuery.of(context).size.height / 14,
                                   decoration: BoxDecoration(
-                                    color: Colors.deepOrange,
+                                    color: themeOrange,
                                     borderRadius: BorderRadius.circular(14),
                                   ),
                                   child: Center(
                                     child: Text(
                                       'Cancel',
                                       style: textStyleOS(
-                                        fontSize: 18,
+                                        fontSize:
+                                            settingProvider.getFontSize() * 1.2,
                                         fontColor: Colors.white,
                                       ).copyWith(fontWeight: FontWeight.bold),
                                     ),
@@ -195,15 +203,15 @@ class _FolderPageState extends State<FolderPage> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(width: 3, color: Colors.grey.shade300),
+                  border: Border.all(width: 3, color: themeOrange),
                 ),
                 padding: const EdgeInsets.all(8),
                 child: Center(
                   child: Text(
                     '${notesProvider.folderList.isEmpty ? 'Make' : 'Add'} a folder',
                     style: textStyleOS(
-                      fontSize: 18,
-                      fontColor: Colors.deepOrange,
+                      fontSize: settingProvider.getFontSize() * 1.2,
+                      fontColor: themeOrange,
                     ).copyWith(fontWeight: FontWeight.w600),
                   ),
                 ),

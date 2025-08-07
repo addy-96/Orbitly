@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -43,8 +41,6 @@ class _TaskInsideNoteState extends State<TaskInsideNote> {
             if (widget.section.textEditingController.text.trim().isEmpty) {
               return;
             }
-
-            log('Task status toggled: ${widget.section.isComplete}');
             notesSectionProvider.updateTaskStatus(
               index: widget.index,
               isComplete: widget.section.isComplete == 0 ? 1 : 0,
@@ -54,7 +50,7 @@ class _TaskInsideNoteState extends State<TaskInsideNote> {
             widget.section.isComplete == 0
                 ? HugeIcons.strokeRoundedSquare
                 : HugeIcons.strokeRoundedCheckmarkSquare01,
-            size: 18,
+            size: 20,
             color: widget.section.isComplete == 0
                 ? notesSectionProvider.noteThemeColor
                 : themeOrange,

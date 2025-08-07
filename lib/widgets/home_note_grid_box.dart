@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:noted_d/core/constant.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/models/notes_model.dart';
-import 'package:noted_d/pages/edit_notes_page.dart';
 import 'package:noted_d/providers/settings_pro.dart';
 import 'package:provider/provider.dart';
 
@@ -67,6 +65,29 @@ class HomeNoteGridBox extends StatelessWidget {
                               : const SizedBox.shrink(),
                         )
                       : const SizedBox.shrink(),
+                  settingProvider.settings[layoutSetKey] == 'Grid'
+                      ? Expanded(
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: Text(
+                              '${homeNotesModel.createdAt.day}/${homeNotesModel.createdAt.month}/${homeNotesModel.createdAt.year}',
+                              style: textStyleOS(
+                                fontSize: settingProvider.getFontSize() * 0.8,
+                                fontColor: Colors.grey.shade500,
+                              ).copyWith(fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        )
+                      : Align(
+                          alignment: Alignment.bottomRight,
+                          child: Text(
+                            '${homeNotesModel.createdAt.day}/${homeNotesModel.createdAt.month}/${homeNotesModel.createdAt.year}',
+                            style: textStyleOS(
+                              fontSize: settingProvider.getFontSize() * 0.8,
+                              fontColor: Colors.grey.shade500,
+                            ).copyWith(fontWeight: FontWeight.w400),
+                          ),
+                        ),
                 ],
               ),
             ),

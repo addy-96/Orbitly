@@ -1,18 +1,14 @@
-import 'dart:developer';
-import 'dart:io';
 import 'package:go_router/go_router.dart';
 import 'package:noted_d/core/constant.dart';
+import 'package:noted_d/core/snackbar.dart';
 import 'package:noted_d/widgets/settings_bottom_options.dart';
 import 'package:noted_d/widgets/settings_options.dart';
-import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:noted_d/core/textstyle.dart';
 import 'package:noted_d/providers/settings_pro.dart' hide ListView;
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart' as provider;
-import 'package:sqflite/sqflite.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -36,14 +32,22 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: scaffoldBackgroudColor,
       appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Settings',
+          style: textStyleOS(
+            fontSize: 2 * settingsProvider.getFontSize(),
+            fontColor: Colors.black,
+          ).copyWith(fontWeight: FontWeight.w500),
+        ),
         forceMaterialTransparency: true,
         leading: IconButton(
           onPressed: () {
             context.pop();
           },
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(HugeIcons.strokeRoundedArrowLeft01),
         ),
-        actions: [
+        /*     actions: [
           IconButton(
             onPressed: () async {
               final docsDirectory = await getApplicationDocumentsDirectory();
@@ -56,7 +60,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   final file = File(item.path);
                   await file.delete();
                 }
-                log('appicaltion directory cleared');
               }
             },
             icon: const Icon(Icons.delete_outline),
@@ -66,16 +69,16 @@ class _SettingsPageState extends State<SettingsPage> {
               final dbPath = await getDatabasesPath();
               final path = p.join(dbPath, 'notes.db');
               await deleteDatabase(path);
-              log('deleted $path');
             },
             icon: const Icon(Icons.delete),
           ),
-        ],
+        ],*/
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
+            const Gap(20),
             Expanded(
               child: ListView(
                 physics: const ScrollPhysics(parent: BouncingScrollPhysics()),
@@ -93,7 +96,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   const Gap(30),
                   Text(
-                    'Cloud Services',
+                    'Appearance',
                     style: textStyleOS(
                       fontSize: settingsProvider.getFontSize(),
                       fontColor: Colors.grey.shade500,
@@ -102,12 +105,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   ListTile(
                     onTap: () {
                       showOptionSheet(
-                        options: ['Setup', 'Reset'],
-                        topic: 'Cloud',
+                        options: ['Light', 'Dark'],
+                        topic: 'Theme',
                       );
                     },
                     leading: Text(
-                      'Cloud',
+                      'Theme',
                       style: textStyleOS(
                         fontSize: settingsProvider.getFontSize() + 8,
                         fontColor: Colors.black87,
@@ -119,7 +122,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         provider.Consumer<SettingsPro>(
                           builder: (final context, final value, final child) {
                             final settingValue =
-                                value.settings['cloud-set'] ?? '';
+                                value.settings[themeSetKey] ?? '';
                             return Text(
                               settingValue,
                               style: textStyleOS(
@@ -165,7 +168,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         provider.Consumer<SettingsPro>(
                           builder: (final context, final value, final child) {
                             final settingValue =
-                                value.settings['font-size-set'] ?? '';
+                                value.settings[fontSizeSetKey] ?? '';
                             return Text(
                               settingValue,
                               style: textStyleOS(
@@ -240,11 +243,12 @@ class _SettingsPageState extends State<SettingsPage> {
                       children: [
                         provider.Consumer<SettingsPro>(
                           builder: (final context, final value, final child) {
-                            var settingValue =
-                                value.settings[sortBMDSetVal] ?? '';
+                            var settingValue = value.settings[sortSetKey] ?? '';
+
                             settingValue = settingValue == sortBMDSetVal
                                 ? 'By modification date'
                                 : 'Oldest first';
+
                             return Text(
                               settingValue,
                               style: textStyleOS(
@@ -266,7 +270,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
             ),
-            const SettingsBottomOptions(),
+            SettingsBottomOptions(),
           ],
         ),
       ),
@@ -283,17 +287,17 @@ class _SettingsPageState extends State<SettingsPage> {
       listen: false,
     );
     String settingKey = '';
-    if (topic == 'Cloud') {
-      settingKey = 'cloud-set';
+    if (topic == 'Theme') {
+      settingKey = themeSetKey;
       selectedOptionValue = settingsProvider.settings[settingKey]!;
     } else if (topic == 'Font Size') {
-      settingKey = 'font-size-set';
+      settingKey = fontSizeSetKey;
       selectedOptionValue = settingsProvider.settings[settingKey]!;
     } else if (topic == 'Layout') {
-      settingKey = 'layout-set';
+      settingKey = layoutSetKey;
       selectedOptionValue = '${settingsProvider.settings[settingKey]!} view';
     } else if (topic == 'Sort by') {
-      settingKey = 'sort-set';
+      settingKey = sortSetKey;
       selectedOptionValue = settingsProvider.settings[settingKey]!;
       selectedOptionValue = selectedOptionValue == 'BMD'
           ? 'By modification date'
@@ -330,6 +334,16 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   IconButton(
                     onPressed: () {
+                      //shoiwng a snackbar as theme setting not implemned yet!
+
+                      if (topic == 'Theme') {
+                        cSnack(
+                          message:
+                              'See no change? 😁 Theme settings comming soon!',
+                          backgroundColor: Colors.white,
+                          context: context,
+                        );
+                      }
                       Navigator.of(context).pop();
                     },
                     icon: const Icon(HugeIcons.strokeRoundedMultiplicationSign),

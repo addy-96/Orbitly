@@ -1,13 +1,17 @@
-import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:noted_d/core/constant.dart';
+import 'package:noted_d/providers/notes_pro.dart';
 import 'package:noted_d/services/settings_local_service.dart';
 
 class SettingsPro with ChangeNotifier {
   final SettingsLocalService settingsLocalService;
-  SettingsPro({required this.settingsLocalService});
+  final NotesPro notesPro;
+
+  SettingsPro({required this.settingsLocalService, required this.notesPro}) {
+    initializeSettings();
+  }
   final Map<String, String> _settings = {
-    cloudSetKey: '',
+    themeSetKey: '',
     fontSizeSetKey: '',
     sortSetKey: '',
     layoutSetKey: '',
@@ -15,11 +19,10 @@ class SettingsPro with ChangeNotifier {
 
   Map<String, String> get settings => _settings;
 
-  void initializeSettings() async {
-    log('settings provider initalization called');
+  Future<void> initializeSettings() async {
     await settingsLocalService.initalizeSettings();
-    _settings[cloudSetKey] = await settingsLocalService.getSetting(
-      settingKey: cloudSetKey,
+    _settings[themeSetKey] = await settingsLocalService.getSetting(
+      settingKey: themeSetKey,
     );
     _settings[fontSizeSetKey] = await settingsLocalService.getSetting(
       settingKey: fontSizeSetKey,
@@ -30,19 +33,22 @@ class SettingsPro with ChangeNotifier {
     _settings[layoutSetKey] = await settingsLocalService.getSetting(
       settingKey: layoutSetKey,
     );
-    log(_settings.toString());
     notifyListeners();
   }
 
   void changeSettings({
     required final String settingKey,
     required final String settingValue,
-  }) {
+  }) async {
     settingsLocalService.changeSetting(
       settingKey: settingKey,
       settingValue: settingValue,
     );
-    initializeSettings();
+
+    await initializeSettings();
+
+    //to sort the home notes accordingly
+    rearrangeNotes();
     notifyListeners();
   }
 
@@ -58,5 +64,14 @@ class SettingsPro with ChangeNotifier {
     await settingsLocalService.resetSettings();
     initializeSettings();
     notifyListeners();
+  }
+
+  void rearrangeNotes() {
+    final config = _settings[sortSetKey];
+    if (config == 'OF') {
+      notesPro.notesList.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+    } else {
+      notesPro.notesList.sort((a, b) => b.modifiedAt.compareTo(a.modifiedAt));
+    }
   }
 }

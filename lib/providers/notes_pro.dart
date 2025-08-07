@@ -6,7 +6,6 @@ import 'package:noted_d/core/snackbar.dart';
 import 'package:noted_d/core/util_functions.dart';
 import 'package:noted_d/models/notes_model.dart';
 import 'package:noted_d/services/notes_local_service.dart';
-import 'package:path_provider/path_provider.dart';
 
 abstract class NoteBlocks {}
 
@@ -107,7 +106,6 @@ class NotesPro with ChangeNotifier {
   }
 
   void reset() {
-    log('reset called');
     _titleController.clear();
     for (var item in _sectionList) {
       if (item is TextBlock) {
@@ -347,12 +345,12 @@ class NotesPro with ChangeNotifier {
     notifyListeners();
 
     notesLocalServiceInterface.deleteDrawingImage(imagePath: drawingImagePath);
-    final dir = await getApplicationDocumentsDirectory();
+    /*    final dir = await getApplicationDocumentsDirectory();
     if (dir.listSync().isNotEmpty) {
       for (var item in dir.listSync()) {
         log(item.path);
       }
-    }
+    } */
     return;
   }
 
@@ -431,6 +429,7 @@ class NotesPro with ChangeNotifier {
             ? await addNote(notesModel: notesModel)
             : await updateNote(notesModel: notesModel);
       }
+      _currentNoteBackground = 'default';
       Future.delayed(const Duration(seconds: 1));
       context.pop();
       return;
@@ -505,6 +504,7 @@ class NotesPro with ChangeNotifier {
     _notesList = await notesLocalServiceInterface.getAllNotes(
       selectedFolder: _selectedFolder,
     );
+
     notifyListeners();
   }
 
@@ -577,12 +577,12 @@ class NotesPro with ChangeNotifier {
 
   Future deleteNote({required final String notesId}) async {
     await notesLocalServiceInterface.deleteNote(notesId: notesId);
+    _currentNoteBackground = 'default';
     loadAllNotes();
     notifyListeners();
   }
 
   Future updateNote({required final NotesModel notesModel}) async {
-    log('message from update note : ${notesModel.notesBackground}');
     await notesLocalServiceInterface.updateNote(notesModel: notesModel);
     loadAllNotes();
     notifyListeners();

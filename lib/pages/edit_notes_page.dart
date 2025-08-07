@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:noted_d/providers/notes_pro.dart';
@@ -45,7 +43,6 @@ class _EditNotesState extends State<EditNotes> {
   Widget build(final BuildContext context) {
     final notesProvider = Provider.of<NotesPro>(context);
     final settingsProvider = Provider.of<SettingsPro>(context);
-
     final background = notesProvider.currentNoteBackground;
     return Hero(
       tag: widget.noteId,
@@ -53,7 +50,6 @@ class _EditNotesState extends State<EditNotes> {
         canPop: false,
         onPopInvokedWithResult: (final didPop, final result) async {
           if (!didPop) {
-            log('step 1 : ................');
             await notesProvider.saveNote(
               context: context,
               isForEditPage: true,
