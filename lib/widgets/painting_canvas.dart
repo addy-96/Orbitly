@@ -1,7 +1,7 @@
 import 'dart:ui';
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/providers/drawing_pro.dart';
 import 'package:flutter/material.dart';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/providers/drawing_pro.dart';
 
 class PaintingCanvas extends CustomPainter {
   const PaintingCanvas(this.provider);

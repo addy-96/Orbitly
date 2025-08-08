@@ -1,10 +1,10 @@
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/core/textstyle.dart';
+import 'package:Orbitly/providers/navbar_pro.dart';
+import 'package:Orbitly/providers/settings_pro.dart';
+import 'package:Orbitly/providers/task_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/core/textstyle.dart';
-import 'package:noted_d/providers/navbar_pro.dart';
-import 'package:noted_d/providers/settings_pro.dart';
-import 'package:noted_d/providers/task_pro.dart';
 
 Widget bottomNavbar({
   required final NavbarPro navIndexPro,

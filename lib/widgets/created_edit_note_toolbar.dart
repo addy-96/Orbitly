@@ -1,8 +1,8 @@
+import 'package:Orbitly/providers/notes_pro.dart';
+import 'package:Orbitly/widgets/notes_background_image_option.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:noted_d/providers/notes_pro.dart';
-import 'package:noted_d/widgets/notes_background_image_option.dart';
 import 'package:provider/provider.dart';
 
 class CreatedEditNoteToolbar extends StatelessWidget {

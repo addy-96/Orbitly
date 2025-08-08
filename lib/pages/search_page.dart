@@ -1,11 +1,11 @@
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/core/textstyle.dart';
+import 'package:Orbitly/providers/search_box_pro.dart';
+import 'package:Orbitly/widgets/home_note_grid_box.dart';
+import 'package:Orbitly/widgets/home_screen_searchbox.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/core/textstyle.dart';
-import 'package:noted_d/providers/search_box_pro.dart';
-import 'package:noted_d/widgets/home_note_grid_box.dart';
-import 'package:noted_d/widgets/home_screen_searchbox.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {

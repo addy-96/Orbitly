@@ -85,7 +85,7 @@ final List<Color> colorPallets = [
 //App Color Pallets
 var grey = Colors.grey.shade300;
 var darkkgrey = Colors.grey.shade500;
-const themeOrange = Colors.deepOrange;
+const themeOrange = Color.from(alpha: 1, red: 1, green: 0.341, blue: 0.133);
 
 //settings Constants
 const themeSetKey = 'theme';

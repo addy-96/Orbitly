@@ -1,6 +1,6 @@
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/providers/drawing_pro.dart';
 import 'package:flutter/material.dart';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/providers/drawing_pro.dart';
 import 'package:provider/provider.dart';
 
 class DrawingEraser extends StatelessWidget {

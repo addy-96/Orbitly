@@ -1,11 +1,12 @@
 import 'dart:developer';
+import 'package:Orbitly/core/snackbar.dart';
+import 'package:Orbitly/core/util_functions.dart';
+import 'package:Orbitly/models/notes_model.dart';
+import 'package:Orbitly/services/notes_local_service.dart'
+    show NotesLocalServiceInterface;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:noted_d/core/snackbar.dart';
-import 'package:noted_d/core/util_functions.dart';
-import 'package:noted_d/models/notes_model.dart';
-import 'package:noted_d/services/notes_local_service.dart';
 
 abstract class NoteBlocks {}
 

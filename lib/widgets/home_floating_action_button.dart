@@ -1,9 +1,9 @@
+import 'package:Orbitly/providers/navbar_pro.dart';
+import 'package:Orbitly/providers/notes_pro.dart';
+import 'package:Orbitly/providers/task_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:noted_d/providers/navbar_pro.dart';
-import 'package:noted_d/providers/notes_pro.dart';
-import 'package:noted_d/providers/task_pro.dart';
 
 Widget homefloatingActionButton({
   required final BuildContext context,

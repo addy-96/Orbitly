@@ -1,11 +1,11 @@
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/core/textstyle.dart';
+import 'package:Orbitly/models/task_model.dart';
+import 'package:Orbitly/providers/settings_pro.dart';
+import 'package:Orbitly/providers/task_pro.dart';
+import 'package:Orbitly/widgets/tasks_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/core/textstyle.dart';
-import 'package:noted_d/models/task_model.dart';
-import 'package:noted_d/providers/settings_pro.dart';
-import 'package:noted_d/providers/task_pro.dart';
-import 'package:noted_d/widgets/tasks_checkbox.dart';
 import 'package:provider/provider.dart';
 
 class HomeNotesTasksSection extends StatefulWidget {

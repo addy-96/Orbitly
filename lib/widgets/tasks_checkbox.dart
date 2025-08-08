@@ -1,6 +1,6 @@
+import 'package:Orbitly/providers/task_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:noted_d/providers/task_pro.dart';
 import 'package:provider/provider.dart';
 
 class TasksCheckbox extends StatefulWidget {

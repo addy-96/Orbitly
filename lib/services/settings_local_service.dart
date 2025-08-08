@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:noted_d/core/constant.dart';
+import 'package:Orbitly/core/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract interface class SettingsLocalService {

@@ -1,14 +1,14 @@
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/core/exceptions.dart';
+import 'package:Orbitly/core/snackbar.dart';
+import 'package:Orbitly/core/textstyle.dart';
+import 'package:Orbitly/providers/notes_pro.dart';
+import 'package:Orbitly/providers/settings_pro.dart';
+import 'package:Orbitly/widgets/folder_container_folder_page.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/core/exceptions.dart';
-import 'package:noted_d/core/snackbar.dart';
-import 'package:noted_d/core/textstyle.dart';
-import 'package:noted_d/providers/notes_pro.dart';
-import 'package:noted_d/providers/settings_pro.dart';
-import 'package:noted_d/widgets/folder_container_folder_page.dart';
 
 PreferredSizeWidget createEditNoteAppBar({
   required final bool isCreate,

@@ -1,6 +1,6 @@
+import 'package:Orbitly/models/notes_model.dart';
+import 'package:Orbitly/services/notes_local_service.dart';
 import 'package:flutter/material.dart';
-import 'package:noted_d/models/notes_model.dart';
-import 'package:noted_d/services/notes_local_service.dart';
 
 class SearchBoxPro with ChangeNotifier {
   final NotesLocalServiceInterface notesLocalServiceInterface;

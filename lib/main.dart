@@ -1,16 +1,16 @@
+import 'package:Orbitly/core/router.dart';
+import 'package:Orbitly/providers/drawing_pro.dart';
+import 'package:Orbitly/providers/navbar_pro.dart';
+import 'package:Orbitly/providers/notes_pro.dart';
+import 'package:Orbitly/providers/search_box_pro.dart';
+import 'package:Orbitly/providers/settings_pro.dart';
+import 'package:Orbitly/providers/task_pro.dart';
+import 'package:Orbitly/services/notes_local_service.dart';
+import 'package:Orbitly/services/settings_local_service.dart';
+import 'package:Orbitly/services/tasks_local_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:noted_d/providers/drawing_pro.dart';
-import 'package:noted_d/providers/navbar_pro.dart';
-import 'package:noted_d/providers/notes_pro.dart';
-import 'package:noted_d/providers/search_box_pro.dart';
-import 'package:noted_d/providers/settings_pro.dart';
-import 'package:noted_d/providers/task_pro.dart';
-import 'package:noted_d/services/notes_local_service.dart';
-import 'package:noted_d/services/settings_local_service.dart';
-import 'package:noted_d/services/tasks_local_service.dart';
 import 'package:provider/provider.dart';
-import 'package:noted_d/core/router.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

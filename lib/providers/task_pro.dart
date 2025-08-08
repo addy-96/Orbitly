@@ -1,8 +1,8 @@
 import 'dart:developer';
+import 'package:Orbitly/models/task_model.dart';
+import 'package:Orbitly/services/tasks_local_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:noted_d/models/task_model.dart';
-import 'package:noted_d/services/tasks_local_service.dart';
 
 class TaskPro with ChangeNotifier {
   TaskPro({required this.tasksLocalServiceInterface});

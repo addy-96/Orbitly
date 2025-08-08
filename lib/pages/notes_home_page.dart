@@ -1,15 +1,16 @@
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/providers/navbar_pro.dart';
+import 'package:Orbitly/providers/notes_pro.dart';
+import 'package:Orbitly/providers/settings_pro.dart';
+import 'package:Orbitly/providers/task_pro.dart';
+import 'package:Orbitly/widgets/home_app_bar_actions.dart';
+import 'package:Orbitly/widgets/home_bottom_nav_bar.dart';
+import 'package:Orbitly/widgets/home_floating_action_button.dart';
+import 'package:Orbitly/widgets/home_notes_body_section.dart';
+import 'package:Orbitly/widgets/home_notes_tasks_section.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/providers/navbar_pro.dart';
-import 'package:noted_d/providers/notes_pro.dart';
-import 'package:noted_d/providers/settings_pro.dart';
-import 'package:noted_d/providers/task_pro.dart';
-import 'package:noted_d/widgets/home_app_bar_actions.dart';
-import 'package:noted_d/widgets/home_bottom_nav_bar.dart';
-import 'package:noted_d/widgets/home_floating_action_button.dart';
-import 'package:noted_d/widgets/home_notes_body_section.dart';
-import 'package:noted_d/widgets/home_notes_tasks_section.dart';
+
 import 'package:provider/provider.dart';
 
 class NotesAppHome extends StatefulWidget {

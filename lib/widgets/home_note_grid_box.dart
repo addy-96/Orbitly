@@ -1,9 +1,9 @@
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/core/textstyle.dart';
+import 'package:Orbitly/models/notes_model.dart';
+import 'package:Orbitly/providers/settings_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/core/textstyle.dart';
-import 'package:noted_d/models/notes_model.dart';
-import 'package:noted_d/providers/settings_pro.dart';
 import 'package:provider/provider.dart';
 
 class HomeNoteGridBox extends StatelessWidget {

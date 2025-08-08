@@ -1,8 +1,8 @@
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/providers/notes_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/providers/notes_pro.dart';
 import 'package:provider/provider.dart';
 
 class NotesBackgroundImageOption extends StatelessWidget {

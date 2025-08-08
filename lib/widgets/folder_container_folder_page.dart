@@ -1,5 +1,5 @@
+import 'package:Orbitly/core/textstyle.dart';
 import 'package:flutter/material.dart';
-import 'package:noted_d/core/textstyle.dart';
 
 class FolderContainerFolderPage extends StatelessWidget {
   const FolderContainerFolderPage({super.key, required this.foldername});

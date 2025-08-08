@@ -1,10 +1,10 @@
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/models/sketch_model.dart';
+import 'package:Orbitly/providers/drawing_pro.dart';
+import 'package:Orbitly/widgets/drawing_page_app_bar.dart';
+import 'package:Orbitly/widgets/drawing_page_bottom_toolbar.dart';
+import 'package:Orbitly/widgets/painting_canvas.dart';
 import 'package:flutter/material.dart';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/models/sketch_model.dart';
-import 'package:noted_d/providers/drawing_pro.dart';
-import 'package:noted_d/widgets/drawing_page_app_bar.dart';
-import 'package:noted_d/widgets/drawing_page_bottom_toolbar.dart';
-import 'package:noted_d/widgets/painting_canvas.dart';
 import 'package:provider/provider.dart';
 
 class DrawingPage extends StatefulWidget {

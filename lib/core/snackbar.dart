@@ -1,5 +1,5 @@
+import 'package:Orbitly/core/textstyle.dart';
 import 'package:flutter/material.dart';
-import 'package:noted_d/core/textstyle.dart';
 
 void cSnack({
   required final String message,

@@ -1,8 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/core/exceptions.dart';
-import 'package:noted_d/models/notes_model.dart';
+
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/core/exceptions.dart';
+import 'package:Orbitly/models/notes_model.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 

@@ -1,7 +1,7 @@
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/providers/settings_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/providers/settings_pro.dart';
 import 'package:provider/provider.dart';
 
 class HomeGridSettingIcon extends StatelessWidget {

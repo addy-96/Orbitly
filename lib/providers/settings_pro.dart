@@ -1,7 +1,7 @@
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/providers/notes_pro.dart';
+import 'package:Orbitly/services/settings_local_service.dart';
 import 'package:flutter/widgets.dart';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/providers/notes_pro.dart';
-import 'package:noted_d/services/settings_local_service.dart';
 
 class SettingsPro with ChangeNotifier {
   final SettingsLocalService settingsLocalService;

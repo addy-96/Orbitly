@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'package:Orbitly/providers/notes_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:noted_d/providers/notes_pro.dart';
 import 'package:provider/provider.dart';
 
 class NoteBodyImage extends StatelessWidget {

@@ -1,13 +1,13 @@
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/core/snackbar.dart';
+import 'package:Orbitly/core/textstyle.dart';
+import 'package:Orbitly/providers/settings_pro.dart';
+import 'package:Orbitly/widgets/settings_bottom_options.dart';
+import 'package:Orbitly/widgets/settings_options.dart';
 import 'package:go_router/go_router.dart';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/core/snackbar.dart';
-import 'package:noted_d/widgets/settings_bottom_options.dart';
-import 'package:noted_d/widgets/settings_options.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:noted_d/core/textstyle.dart';
-import 'package:noted_d/providers/settings_pro.dart' hide ListView;
 import 'package:provider/provider.dart' as provider;
 
 class SettingsPage extends StatefulWidget {
@@ -270,7 +270,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
             ),
-            SettingsBottomOptions(),
+            const SettingsBottomOptions(),
           ],
         ),
       ),

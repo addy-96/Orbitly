@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:Orbitly/models/sketch_model.dart';
+import 'package:Orbitly/providers/notes_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:noted_d/models/sketch_model.dart';
-import 'package:noted_d/providers/notes_pro.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 

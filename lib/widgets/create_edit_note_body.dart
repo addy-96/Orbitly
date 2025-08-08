@@ -1,9 +1,9 @@
+import 'package:Orbitly/providers/notes_pro.dart';
+import 'package:Orbitly/widgets/note_body_drawing_image.dart';
+import 'package:Orbitly/widgets/note_body_image.dart';
+import 'package:Orbitly/widgets/note_body_textfield.dart';
+import 'package:Orbitly/widgets/task_inside_note.dart';
 import 'package:flutter/material.dart';
-import 'package:noted_d/providers/notes_pro.dart';
-import 'package:noted_d/widgets/note_body_drawing_image.dart';
-import 'package:noted_d/widgets/note_body_image.dart';
-import 'package:noted_d/widgets/note_body_textfield.dart';
-import 'package:noted_d/widgets/task_inside_note.dart';
 import 'package:provider/provider.dart';
 
 class CreateEditNoteBody extends StatelessWidget {

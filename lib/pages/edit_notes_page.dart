@@ -1,12 +1,12 @@
+import 'package:Orbitly/providers/notes_pro.dart';
+import 'package:Orbitly/providers/settings_pro.dart';
+import 'package:Orbitly/widgets/create_edit_note_appbar.dart';
+import 'package:Orbitly/widgets/create_edit_note_body.dart';
+import 'package:Orbitly/widgets/create_edit_note_time_sec.dart';
+import 'package:Orbitly/widgets/create_edit_note_title_bar.dart';
+import 'package:Orbitly/widgets/created_edit_note_toolbar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:noted_d/providers/notes_pro.dart';
-import 'package:noted_d/providers/settings_pro.dart';
-import 'package:noted_d/widgets/create_edit_note_title_bar.dart';
-import 'package:noted_d/widgets/create_edit_note_appbar.dart';
-import 'package:noted_d/widgets/create_edit_note_body.dart';
-import 'package:noted_d/widgets/create_edit_note_time_sec.dart';
-import 'package:noted_d/widgets/created_edit_note_toolbar.dart';
 import 'package:provider/provider.dart';
 
 class EditNotes extends StatefulWidget {

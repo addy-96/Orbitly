@@ -1,13 +1,13 @@
+import 'package:Orbitly/core/snackbar.dart';
+import 'package:Orbitly/pages/create_notes_page.dart';
+import 'package:Orbitly/pages/drawing_page.dart';
+import 'package:Orbitly/pages/edit_notes_page.dart';
+import 'package:Orbitly/pages/folder_page.dart';
+import 'package:Orbitly/pages/notes_home_page.dart';
+import 'package:Orbitly/pages/search_page.dart';
+import 'package:Orbitly/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:noted_d/core/snackbar.dart';
-import 'package:noted_d/pages/create_notes_page.dart';
-import 'package:noted_d/pages/drawing_page.dart';
-import 'package:noted_d/pages/edit_notes_page.dart';
-import 'package:noted_d/pages/folder_page.dart';
-import 'package:noted_d/pages/notes_home_page.dart';
-import 'package:noted_d/pages/search_page.dart';
-import 'package:noted_d/pages/settings_page.dart';
 
 final GoRouter goRouterConfig = GoRouter(
   routes: [

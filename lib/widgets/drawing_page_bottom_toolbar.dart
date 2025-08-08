@@ -1,12 +1,12 @@
+import 'package:Orbitly/core/constant.dart';
+import 'package:Orbitly/core/textstyle.dart';
+import 'package:Orbitly/pages/drawing_page.dart';
+import 'package:Orbitly/providers/drawing_pro.dart';
+import 'package:Orbitly/providers/settings_pro.dart';
+import 'package:Orbitly/widgets/drawing_eraser.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:noted_d/core/constant.dart';
-import 'package:noted_d/core/textstyle.dart';
-import 'package:noted_d/pages/drawing_page.dart';
-import 'package:noted_d/providers/drawing_pro.dart';
-import 'package:noted_d/providers/settings_pro.dart';
-import 'package:noted_d/widgets/drawing_eraser.dart';
 import 'package:provider/provider.dart';
 
 class DrawingPageBottomToolbar extends StatelessWidget {
