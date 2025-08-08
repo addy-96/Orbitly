@@ -65,8 +65,6 @@ splits {
     }
 }
 
-
-
 }
 
 flutter {
