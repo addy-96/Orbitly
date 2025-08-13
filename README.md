@@ -9,7 +9,7 @@
   <a href="https://flutter.dev/"><img src="https://img.shields.io/badge/Flutter-3.19-blue?logo=flutter"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg"></a>
   <a href="#"><img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS-blueviolet"></a>
-  <a href="build/app/outputs/apk/release/app-x86-release.apk"><img src="https://img.shields.io/badge/Download-APK-brightgreen?logo=android"></a>
+  <a href="apk/app-x86-release.apk"><img src="https://img.shields.io/badge/Download-APK-brightgreen?logo=android"></a>
 </p>
 
 ---
