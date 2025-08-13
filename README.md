@@ -71,11 +71,29 @@ lib/
  └─ core/        # Constants, styles, helpers
 ```
 
-## 📸 Demo
-Comming Soon....
+## 📷 Screenshots
 
+Here are some screenshots showing Orbitly in action:
 
+<p align="center">
+  <img src="samples/home1.png" alt="Home Screen" width="200"/>
+  <img src="samples/create-not1-1.png" alt="Create Note" width="200"/>
+  <img src="samples/image-note-1.png" alt="Image Note" width="200"/>
+  <img src="samples/drawing1.png" alt="Drawing Note" width="200"/>
+  <img src="samples/search1.png" alt="Search Feature" width="200"/>
+  <img src="samples/setting1.png" alt="Settings Page" width="200"/>
+  <img src="samples/task1.png" alt="Task Page" width="200"/>
+</p>
+---
 
-![Demo](https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif)
+<div align="center">
+
+<h3>🙌 Support</h3>
+
+<p>If you like <b>Orbitly</b>, consider giving it a ⭐ on GitHub — it helps others discover the project and keeps me motivated!</p>
+
+<img src="https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif" alt="Demo" width="400"/>
+
+</div>
 
 ---

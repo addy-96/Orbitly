@@ -137,7 +137,8 @@ class _HomeNotesTasksSectionState extends State<HomeNotesTasksSection> {
                               Text(
                                 getTakSubtitle(task) ?? "",
                                 style: textStyleOS(
-                                  fontSize: 18,
+                                  fontSize:
+                                      settingsProvider.getFontSize() * 0.8,
                                   fontColor: Colors.black,
                                 ),
                               ),

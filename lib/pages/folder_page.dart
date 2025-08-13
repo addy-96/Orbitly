@@ -67,6 +67,7 @@ class _FolderPageState extends State<FolderPage> {
               borderRadius: BorderRadius.circular(8),
               onTap: () {
                 showModalBottomSheet(
+                  backgroundColor: scaffoldBackgroudColor,
                   isScrollControlled: true,
                   context: context,
                   builder: (final BuildContext context) {

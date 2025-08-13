@@ -17,7 +17,7 @@ class DrawingPageBottomToolbar extends StatelessWidget {
     final drawingPro = Provider.of<DrawingPro>(context);
     final settingPro = Provider.of<SettingsPro>(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: drawingPro.sketchList.isEmpty
@@ -29,6 +29,7 @@ class DrawingPageBottomToolbar extends StatelessWidget {
             onTap: () {
               drawingPro.isEraserSelected ? drawingPro.selectEraser() : null;
               showModalBottomSheet(
+                backgroundColor: scaffoldBackgroudColor,
                 isScrollControlled: true,
                 showDragHandle: true,
                 isDismissible: true,
@@ -93,6 +94,10 @@ class DrawingPageBottomToolbar extends StatelessWidget {
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor: themeOrange,
+                                ),
                                 child: const Icon(
                                   HugeIcons.strokeRoundedMultiplicationSign,
                                 ),
@@ -129,6 +134,7 @@ class DrawingPageBottomToolbar extends StatelessWidget {
             borderRadius: BorderRadius.circular(14),
             onTap: () {
               showModalBottomSheet(
+                backgroundColor: scaffoldBackgroudColor,
                 isScrollControlled: true,
                 showDragHandle: true,
                 isDismissible: true,

@@ -56,6 +56,7 @@ PreferredSizeWidget createEditNoteAppBar({
       ),
       noteId != null
           ? PopupMenuButton(
+              color: scaffoldBackgroudColor,
               icon: const Icon(HugeIcons.strokeRoundedMenu02),
               iconColor: notesPro.noteThemeColor,
               borderRadius: BorderRadius.circular(14),
@@ -138,7 +139,7 @@ PreferredSizeWidget createEditNoteAppBar({
                                                         context.pop();
                                                         cSnack(
                                                           message:
-                                                              'Added to ${notesPro.notesList[index]}',
+                                                              'Added to ${notesPro.folderList[index]}',
                                                           backgroundColor:
                                                               Colors.white,
                                                           context: context,

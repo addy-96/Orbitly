@@ -84,6 +84,7 @@ class _HomeFolderListState extends State<HomeFolderList> {
                         notesProvider.selectFolder(selectedFolderName: folder);
                       },
                       child: Material(
+                        color: Colors.white,
                         elevation: selectedFolder == folder ? 3 : 0,
                         borderRadius: BorderRadius.circular(14),
                         child: Padding(

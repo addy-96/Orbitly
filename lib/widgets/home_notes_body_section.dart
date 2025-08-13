@@ -28,7 +28,7 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
   @override
   Widget build(final BuildContext context) {
     final settingsProvider = Provider.of<SettingsPro>(context);
-    final notesProvider = Provider.of<NotesPro>(context);
+
     return Column(
       children: [
         Text(
@@ -39,16 +39,9 @@ class _HomeNotesBodySectionState extends State<HomeNotesBodySection> {
           ).copyWith(fontWeight: FontWeight.w300),
         ),
         const Gap(10),
-        InkWell(
-          borderRadius: BorderRadius.circular(50),
-          onTap: () {},
-          child: const HomeScreenSearchbox(isWithInputField: false),
-        ),
+        const HomeScreenSearchbox(isWithInputField: false),
         const Gap(10),
-        notesProvider.notesList.isNotEmpty
-            ? const HomeFolderList()
-            : const SizedBox.shrink(),
-        const Gap(10),
+        const HomeFolderList(),
         Consumer<NotesPro>(
           builder: (final context, final value, final child) {
             if (value.notesList.isEmpty) {

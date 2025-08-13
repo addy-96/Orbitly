@@ -475,13 +475,13 @@ class NotesPro with ChangeNotifier {
         highlight = 'Image Block';
       }
       if (item is TextBlock) {
-        if (item.textEditingController.text.trim().length < 30) {
+        if (item.textEditingController.text.trim().length < 60) {
           highlight = item.textEditingController.text.substring(
             0,
             item.textEditingController.text.length,
           );
         } else {
-          highlight = item.textEditingController.text.substring(0, 30);
+          highlight = item.textEditingController.text.substring(0, 60);
         }
         break;
       }
