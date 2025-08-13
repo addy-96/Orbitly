@@ -69,9 +69,13 @@ class SettingsPro with ChangeNotifier {
   void rearrangeNotes() {
     final config = _settings[sortSetKey];
     if (config == 'OF') {
-      notesPro.notesList.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+      notesPro.notesList.sort(
+        (final a, final b) => a.createdAt.compareTo(b.createdAt),
+      );
     } else {
-      notesPro.notesList.sort((a, b) => b.modifiedAt.compareTo(a.modifiedAt));
+      notesPro.notesList.sort(
+        (final a, final b) => b.modifiedAt.compareTo(a.modifiedAt),
+      );
     }
   }
 }

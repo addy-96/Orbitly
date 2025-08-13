@@ -124,11 +124,11 @@ void queryallTable() async {
   );
 
   //yet to be implemented
-  const NOTES_MAX_LENGHT = 1000;
-  const SECTION_MAX_LENGHT = 500;
-  const TASK_MAX_LENGHT = 200;
-  const DRAWING_MAX_LENGHT = 500;
-  const FOLDER_MAX_LENGHT = 50;
+  const notesMaxLenght = 1000;
+  const sectionMaxLenght = 500;
+  const taskMaxLenght = 200;
+  const drawingMaxLenght = 500;
+  const folderMaxLenght = 50;
 
   // Print table names
   for (var table in tables) {

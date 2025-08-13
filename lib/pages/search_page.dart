@@ -31,7 +31,7 @@ class _SearchPageState extends State<SearchPage> {
     ); // Only read, no listening
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
+      onPopInvokedWithResult: (final didPop, final result) {
         if (!didPop) {
           context.pop();
         }
@@ -77,7 +77,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   /// Reusable widget for empty messages
-  Widget _buildMessage(String message) {
+  Widget _buildMessage(final String message) {
     return Center(
       child: Text(
         message,
