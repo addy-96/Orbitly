@@ -1,13 +1,11 @@
 <p align="center">
   <img src="assets/icon/icon.png" alt="Orbitly Logo" width="120" />
 </p>
-
 <h1 align="center">🚀 Orbitly</h1>
 <p align="center"><b>Your all-in-one productivity app for notes, tasks, and more!</b></p>
 
 <p align="center">
   <a href="https://flutter.dev/"><img src="https://img.shields.io/badge/Flutter-3.19-blue?logo=flutter"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg"></a>
   <a href="#"><img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS-blueviolet"></a>
   <a href="apk/app-x86-release.apk"><img src="https://img.shields.io/badge/Download-APK-brightgreen?logo=android"></a>
 </p>
