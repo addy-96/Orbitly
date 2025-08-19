@@ -284,13 +284,12 @@ class NotesLocalServiceInterfaceImpl implements NotesLocalServiceInterface {
           : log('highlight null');
       final db = await createDatabase();
 
-      final deleteAllSections = await db.delete(
+      await db.delete(
         sectionTable,
         where: '$notesIdSTC = ?',
         whereArgs: [notesModel.notesId],
       );
-
-      final updateNotesTable = await db.update(
+      await db.update(
         notesTable,
         {
           modifiedAtNTC: notesModel.modifiedAt.toIso8601String(),
